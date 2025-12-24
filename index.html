@@ -146,7 +146,55 @@
 </html>
 
 <script>
-    const scriptURL = https://script.google.com/macros/s/AKfycbwE1li-QuSShamicCbStTFrqQw9pLW82MbnDpiPVOrYvt8ghbNXwf3AsusnnoSzvf4k/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwt5JVECYKttDqLcsXTetp5uIdYqopUzDtPdoYu1XvHD_7msi_uC3nwO34osWjdvScH/exec';
+
+    const form = document.getElementById('rekapanForm');
+    const btn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        btn.disabled = true;
+        btn.innerHTML = "Sedang Memproses...";
+
+        const params = new URLSearchParams(new FormData(form)).toString();
+
+        fetch(`${scriptURL}?${params}`, { method: 'GET' })
+        .then(res => res.text())
+        .then(result => {
+            btn.disabled = false;
+            btn.innerHTML = "SIMPAN DATA";
+
+            if (result.trim() === "SUCCESS") {
+                alert("✅ BERHASIL: Data telah tertulis di Spreadsheet!");
+                form.reset();
+            } else if (result.trim() === "DUPLICATE") {
+                alert("⚠️ GAGAL: Data Nama atau ID CST sudah ada di Spreadsheet (Duplikat)!");
+            } else {
+                alert("❌ GAGAL: " + result);
+            }
+        })
+        .catch(err => {
+            alert("❌ ERROR KONEKSI: Pastikan internet stabil dan URL Script benar.");
+            btn.disabled = false;
+            btn.innerHTML = "SIMPAN DATA";
+        });
+    });
+
+    // Fungsi CEK DATA (Tombol Cek)
+    async function checkData() {
+        const query = document.getElementById('searchInput').value;
+        if (!query) return alert("Masukkan Nama atau ID untuk dicek!");
+        
+        fetch(`${scriptURL}?action=check&query=${encodeURIComponent(query)}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.exists) {
+                    alert("⚠️ PERHATIAN: Data sudah ada di spreadsheet (DUPLIKAT)!");
+                } else {
+                    alert("✅ AMAN: Data belum ada, silakan lanjut isi form.");
+                }
+            });
+    }
 
     function formatPhone() {
         let p = document.getElementById('phone');
@@ -155,46 +203,4 @@
         if (val !== "" && !val.startsWith('+62')) val = '+62' + val;
         p.value = val;
     }
-
-    async function checkData() {
-        const query = document.getElementById('searchInput').value;
-        if (!query) return alert("Isi nama/ID!");
-        fetch(`${scriptURL}?action=check&query=${encodeURIComponent(query)}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.exists) alert("⚠️ DATA SUDAH ADA!");
-                else alert("✅ Aman, data belum ada.");
-            });
-    }
-
-    const form = document.getElementById('rekapanForm');
-    form.addEventListener('submit', e => {
-        e.preventDefault();
-        const btn = document.getElementById('submitBtn');
-        btn.disabled = true; 
-        btn.innerHTML = "Menyimpan...";
-
-        const params = new URLSearchParams(new FormData(form)).toString();
-        
-        // MENGGUNAKAN GET UNTUK MENGHINDARI ERROR 405 DI GITHUB
-        fetch(`${scriptURL}?${params}`, { 
-            method: 'GET'
-        })
-        .then(res => res.text())
-        .then(result => {
-            if (result.includes("Success")) {
-                alert("Berhasil Tersimpan!");
-                form.reset();
-            } else {
-                alert("Respon Server: " + result);
-            }
-            btn.disabled = false; 
-            btn.innerHTML = "SIMPAN DATA";
-        })
-        .catch(err => {
-            alert("Error Koneksi. Pastikan sudah Deploy ulang.");
-            btn.disabled = false;
-        });
-    });
 </script>
-
