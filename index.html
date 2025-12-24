@@ -102,7 +102,7 @@
 
 <script>
     // --- MASUKKAN URL WEB APP ANDA DI SINI ---
-    const scriptURL = https://script.google.com/macros/s/AKfycbwjGKYBa7eUZD-MDxuJF0ivrA2ArXC4vWpXJPH2_hkrtca54A1t1yybfJ3ykRLYNhml/exec';
+    const scriptURL = https://script.google.com/macros/s/AKfycbzXn0I3kzD_TuO9muByv6diu-XEaYsvt_ICqXeh3QVMxhCqqQwxdEUrcPvMomTWN8jk/exec';
 
     function formatPhone() {
         let p = document.getElementById('phone');
@@ -112,16 +112,36 @@
         p.value = val;
     }
 
-    async function checkData() {
-        const query = document.getElementById('searchInput').value;
-        if (!query) return alert("Isi nama/ID!");
-        fetch(`${scriptURL}?action=check&query=${query}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.exists) alert("⚠️ DATA SUDAH ADA DI SPREADSHEET!");
-                else alert("✅ Data belum terdaftar.");
-            });
+   async function checkData() {
+    const searchInput = document.getElementById('searchInput');
+    const query = searchInput.value.trim();
+    
+    if (!query) {
+        alert("Silakan masukkan Nama atau ID CST untuk mencari.");
+        return;
     }
+
+    const btnCheck = document.querySelector('.btn-check'); // Sesuaikan class tombol cek Anda
+    btnCheck.innerHTML = "Mencari...";
+    btnCheck.disabled = true;
+
+    try {
+        const response = await fetch(`${scriptURL}?action=check&query=${encodeURIComponent(query)}`);
+        const data = await response.json();
+
+        if (data.exists) {
+            // Menampilkan pesan detail jika data ditemukan
+            alert(data.message);
+        } else {
+            alert("✅ DATA TIDAK DITEMUKAN.\nNama atau ID ini belum terdaftar di sheet.");
+        }
+    } catch (error) {
+        alert("Terjadi kesalahan saat mencari data. Pastikan URL Script benar.");
+    } finally {
+        btnCheck.innerHTML = "CEK DATA";
+        btnCheck.disabled = false;
+    }
+}
 
     const form = document.getElementById('rekapanForm');
     form.addEventListener('submit', e => {
@@ -204,6 +224,7 @@
         p.value = val;
     }
 </script>
+
 
 
 
