@@ -2,114 +2,84 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Sistem Rekapan CST</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Data Rekapan</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; padding: 20px; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        .search-section { background: #e7f3ff; padding: 20px; border-radius: 10px; margin-bottom: 25px; border-left: 5px solid #007bff; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; color: #333; }
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; }
-        button:hover { background: #218838; }
-        #searchResult { margin-top: 10px; font-size: 14px; color: #555; background: #fff; padding: 10px; border-radius: 5px; display: none; }
+        body { font-family: sans-serif; background: #f4f7f6; padding: 20px; }
+        .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 12px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        #loader { display: none; text-align: center; color: blue; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="search-section">
-        <label>🔍 PENCARIAN DATA (NAMA / ID CST)</label>
-        <input type="text" id="q" placeholder="Ketik nama atau ID untuk cek...">
-        <button type="button" onclick="searchData()" style="background: #007bff; margin-top: 10px;">Cari Data</button>
-        <div id="searchResult"></div>
-    </div>
-
-    <h2>Input Rekapan Baru</h2>
-    <form id="rekapanForm">
-        <div class="form-group"><label>BILLING (Kolom B)</label><input type="text" name="billing"></div>
-        <div class="form-group"><label>TANGGAL (Kolom C)</label><input type="date" name="tanggal" required></div>
-        <div class="form-group"><label>JAPO (Kolom D - Angka)</label><input type="number" name="japo" required></div>
-        <div class="form-group"><label>NAMA (Kolom E)</label><input type="text" name="nama" required></div>
-        <div class="form-group"><label>ID CST (Kolom F - Angka)</label><input type="number" name="id_cst"></div>
-        <div class="form-group"><label>NOMOR HP (Kolom G)</label><input type="tel" id="hp" name="nomor_hp" value="+62" required></div>
-        <div class="form-group"><label>ALAMAT (Kolom H - Wajib)</label><textarea name="alamat" required></textarea></div>
-        
+    <h2>Form Rekapan CST</h2>
+    <form id="formInput">
+        <div class="form-group"><label>BILLING (B)</label><input type="text" name="billing"></div>
+        <div class="form-group"><label>TANGGAL (C)</label><input type="date" name="tanggal" required></div>
+        <div class="form-group"><label>JAPO (D - Angka)</label><input type="number" name="japo" required></div>
+        <div class="form-group"><label>NAMA (E)</label><input type="text" name="nama" required></div>
+        <div class="form-group"><label>ID CST (F - Angka)</label><input type="number" name="id_cst"></div>
+        <div class="form-group"><label>NOMOR HP (G)</label><input type="tel" id="no_hp" name="nomor_hp" value="+62" required></div>
+        <div class="form-group"><label>ALAMAT (H - Wajib)</label><textarea name="alamat" required></textarea></div>
         <div class="form-group">
-            <label>PAKET (Kolom I)</label>
+            <label>PAKET (I)</label>
             <select name="paket" required>
                 <option value="10Mbps">10Mbps</option>
                 <option value="20Mbps">20Mbps</option>
                 <option value="50Mbps">50Mbps</option>
-                <option value="100Mbps">100Mbps</option>
             </select>
         </div>
-
         <div class="form-group">
-            <label>POINT (Kolom J)</label>
+            <label>POINT (J)</label>
             <select name="point" required>
                 <option value="0">0</option>
                 <option value="0.25">0.25</option>
                 <option value="1">1</option>
             </select>
         </div>
+        <div class="form-group"><label>BONUS (K)</label><input type="text" name="bonus"></div>
+        <div class="form-group"><label>EMAIL (L - Wajib Email)</label><input type="email" name="email" required></div>
+        <div class="form-group"><label>COMMAND (M)</label><input type="text" name="command"></div>
 
-        <div class="form-group"><label>BONUS (Kolom K)</label><input type="text" name="bonus"></div>
-        <div class="form-group"><label>EMAIL (Kolom L - Wajib Format)</label><input type="email" name="email" required></div>
-        <div class="form-group"><label>COMMAND (Kolom M)</label><input type="text" name="command"></div>
-
-        <button type="submit" id="submitBtn">KIRIM DATA</button>
+        <button type="submit" id="btnSubmit">SIMPAN DATA</button>
+        <div id="loader">Sedang mengirim...</div>
     </form>
 </div>
 
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbztls7rqvQhAPRIw1M3VbR2j9XE4ZDBMw369nOXKPB3i9tT_LvWeOFL600cJt-QL26a/exec';
-    const form = document.getElementById('rekapanForm');
-    const hpInput = document.getElementById('hp');
+    // GANTI URL DI BAWAH INI DENGAN URL WEB APP BARU ANDA
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwoaNwxSY1APtxrLRuLjM8CfmxmiSb5W91G9ClIYK687VLtHakXVRbK_CVSPqUw0naJ/exec';
+    const form = document.getElementById('formInput');
+    const hpInput = document.getElementById('no_hp');
 
-    // Paksa format +62
     hpInput.addEventListener('input', function() {
         if (!this.value.startsWith('+62')) this.value = '+62';
     });
 
-    // Fungsi Pencarian
-    function searchData() {
-        const query = document.getElementById('q').value;
-        const resDiv = document.getElementById('searchResult');
-        if (!query) return alert("Masukkan kata kunci!");
-        
-        resDiv.style.display = 'block';
-        resDiv.innerHTML = "Sedang mencari...";
-
-        fetch(`${scriptURL}?action=search&q=${query}`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.length > 0) {
-                resDiv.innerHTML = `<strong>Ditemukan:</strong> ${data.length} data.<br>Terakhir: ${data[0][4]} - ${data[0][8]}`;
-            } else {
-                resDiv.innerHTML = "Data tidak ditemukan.";
-            }
-        });
-    }
-
-    // Submit Form
     form.addEventListener('submit', e => {
         e.preventDefault();
-        document.getElementById('submitBtn').disabled = true;
-        
+        document.getElementById('btnSubmit').disabled = true;
+        document.getElementById('loader').style.display = 'block';
+
         fetch(scriptURL, { method: 'POST', body: new FormData(form)})
         .then(res => res.text())
         .then(response => {
-            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('btnSubmit').disabled = false;
             if (response === "DUPLIKAT") {
-                alert("❌ GAGAL: ID CST ini sudah ada di rekapan!");
+                alert("⚠️ ERROR: ID CST ini sudah ada!");
             } else {
-                alert("✅ SUKSES: Data tersimpan di kolom B-M");
+                alert("✅ BERHASIL: Data tersimpan di kolom B-M");
                 form.reset();
                 hpInput.value = "+62";
             }
         })
-        .catch(error => alert("Error: " + error.message));
+        .catch(err => alert("Error: " + err.message));
     });
 </script>
 </body>
