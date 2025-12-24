@@ -163,9 +163,44 @@
         });
     }
 </script>
+    // Logika Pencarian Otomatis saat mengetik
+let typingTimer;
+const doneTypingInterval = 800; // Tunggu 0.8 detik setelah berhenti mengetik
+const searchInput = document.getElementById('searchInput');
+
+searchInput.addEventListener('input', () => {
+    clearTimeout(typingTimer);
+    if (searchInput.value.length >= 3) {
+        typingTimer = setTimeout(prosesCari, doneTypingInterval);
+    }
+});
+
+function prosesCari() {
+    const s = searchInput.value;
+    const resDiv = document.getElementById('searchResult');
+    
+    resDiv.style.display = "block";
+    resDiv.style.background = "#f1f3f5";
+    resDiv.innerText = "⏳ Mengecek data...";
+
+    fetch(`${scriptURL}?search=${encodeURIComponent(s)}`)
+    .then(r => r.json())
+    .then(d => {
+        if(d.found) {
+            resDiv.style.background = "#fff3cd";
+            resDiv.style.color = "#856404";
+            resDiv.innerHTML = `⚠️ <b>Data Ditemukan:</b> ${d.Nama} sudah terdaftar di sistem.`;
+        } else {
+            resDiv.style.background = "#d4edda";
+            resDiv.style.color = "#155724";
+            resDiv.innerText = "✅ Data belum ada, silakan lanjut isi form.";
+        }
+    });
+}
 
 </body>
 </html>
+
 
 
 
