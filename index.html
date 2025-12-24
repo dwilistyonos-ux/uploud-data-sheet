@@ -3,143 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input & Cari Data Rekapan</title>
+    <title>Formulir Input Data Pelanggan</title>
     <style>
-        body { font-family: sans-serif; background: #f4f7f6; padding: 20px; }
-        .container { max-width: 550px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        
-        /* Gaya Kotak Pencarian */
-        .search-box { background: #e7f3ff; padding: 15px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #b6d4fe; }
-        .search-box h3 { margin-top: 0; color: #084298; font-size: 16px; }
-        
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
+        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); max-width: 600px; margin: auto; }
         .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
-        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-        
-        button { width: 100%; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.3s; }
-        .btn-submit { background: #28a745; color: white; margin-top: 10px; }
-        .btn-submit:hover { background: #218838; }
-        .btn-search { background: #0d6efd; color: white; margin-top: 5px; }
-        
-        #searchResult { margin-top: 10px; padding: 10px; background: white; border-radius: 4px; display: none; font-size: 13px; border: 1px solid #dee2e6; }
-        #loader { display: none; text-align: center; color: blue; margin-top: 10px; font-size: 14px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input, select, textarea { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        button { background: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px; }
+        button:hover { background: #218838; }
+        .search-section { margin-bottom: 20px; border-bottom: 2px solid #ddd; padding-bottom: 20px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="search-box">
-        <h3>🔍 Cari Data (Berdasarkan ID CST / Nama)</h3>
-        <input type="text" id="keyword" placeholder="Ketik ID CST atau Nama...">
-        <button type="button" class="btn-search" onclick="cariData()">Cek Data di Spreadsheet</button>
-        <div id="searchResult"></div>
+    <h2>Pencarian & Input Data</h2>
+    
+    <div class="search-section">
+        <label>Cek ID CST / Nama di Spreadsheet:</label>
+        <input type="text" id="searchInput" placeholder="Masukkan ID atau Nama untuk cek...">
+        <button onclick="checkData()" style="background: #007bff; margin-top: 10px;">Cek Ketersediaan Data</button>
     </div>
 
-    <hr>
-
-    <h2>Form Rekapan CST</h2>
-    <form id="formInput">
-        <div class="form-group"><label>BILLING (B) - Opsional</label><input type="text" name="billing"></div>
-        <div class="form-group"><label>TANGGAL (C)</label><input type="date" name="tanggal" required></div>
-        <div class="form-group"><label>JAPO (D - Angka Saja)</label><input type="number" name="japo" required></div>
-        <div class="form-group"><label>NAMA (E)</label><input type="text" name="nama" required></div>
-        <div class="form-group"><label>ID CST (F - Angka Saja)</label><input type="number" name="id_cst"></div>
-        <div class="form-group"><label>NOMOR HP (G)</label><input type="tel" id="no_hp" name="nomor_hp" value="+62" required></div>
-        <div class="form-group"><label>ALAMAT (H - Wajib Isi)</label><textarea name="alamat" required></textarea></div>
-        
+    <form id="customerForm">
         <div class="form-group">
-            <label>PAKET (I)</label>
-            <select name="paket" required>
+            <label>Billing (Table B):</label>
+            <input type="text" name="billing" placeholder="Opsional">
+        </div>
+        <div class="form-group">
+            <label>Tanggal (Table C):</label>
+            <input type="date" name="tanggal" required>
+        </div>
+        <div class="form-group">
+            <label>Japo (Table D):</label>
+            <input type="number" name="japo" placeholder="Hanya angka (Contoh: 15)" required>
+        </div>
+        <div class="form-group">
+            <label>Nama (Table E):</label>
+            <input type="text" name="nama" required>
+        </div>
+        <div class="form-group">
+            <label>ID CST (Table F):</label>
+            <input type="number" name="id_cst" placeholder="Hanya angka (Opsional)">
+        </div>
+        <div class="form-group">
+            <label>Nomor HP (Table G):</label>
+            <input type="text" id="phone" name="phone" placeholder="Contoh: 0812..." required onblur="formatPhone()">
+        </div>
+        <div class="form-group">
+            <label>Alamat (Table H):</label>
+            <textarea name="alamat" required></textarea>
+        </div>
+        <div class="form-group">
+            <label>Paket (Table I):</label>
+            <select name="paket">
                 <option value="10Mbps">10Mbps</option>
+                <option value="15Mbps">15Mbps</option>
                 <option value="20Mbps">20Mbps</option>
-                <option value="50Mbps">50Mbps</option>
+                <option value="30Mbps">30Mbps</option>
+                <option value="100Mbps">100Mbps</option>
+                <option value="200Mbps">200Mbps</option>
+                <option value="300Mbps">300Mbps</option>
+                <option value="400Mbps">400Mbps</option>
+                <option value="500Mbps">500Mbps</option>
             </select>
         </div>
-
         <div class="form-group">
-            <label>POINT (J)</label>
-            <select name="point" required>
-                <option value="0">0</option>
-                <option value="0.25">0.25</option>
+            <label>Point (Table J):</label>
+            <select name="point">
+                <option value="0,25">0,25</option>
                 <option value="1">1</option>
+                <option value="2">2</option>
             </select>
         </div>
-
-        <div class="form-group"><label>BONUS (K)</label><input type="text" name="bonus"></div>
-        <div class="form-group"><label>EMAIL (L - Wajib Format Email)</label><input type="email" name="email" required></div>
-        <div class="form-group"><label>COMMAND (M)</label><input type="text" name="command"></div>
-
-        <button type="submit" id="btnSubmit" class="btn-submit">SIMPAN DATA</button>
-        <div id="loader">Sedang diproses...</div>
+        <div class="form-group">
+            <label>Bonus (Table K):</label>
+            <select name="bonus">
+                <option value="Rp25,000">Rp25,000</option>
+                <option value="Rp50,000">Rp50,000</option>
+                <option value="Rp100,000">Rp100,000</option>
+                <option value="Rp200,000">Rp200,000</option>
+                <option value="Rp300,000">Rp300,000</option>
+                <option value="Rp350,000">Rp350,000</option>
+                <option value="Rp400,000">Rp400,000</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Email (Table L):</label>
+            <input type="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label>Command (Table M):</label>
+            <textarea name="command"></textarea>
+        </div>
+        
+        <button type="submit">Simpan Data</button>
     </form>
 </div>
 
 <script>
-    // GANTI URL DI BAWAH INI DENGAN URL WEB APP BARU ANDA
-    const scriptURL = https://script.google.com/macros/s/AKfycbybQzqhyxWxJo12VYp2VpB5PRKa3oVzQvdmDiqSc7wEz3AdOAxjFzKZQEGcsQsSGoo/exec';
-    const form = document.getElementById('formInput');
-    const hpInput = document.getElementById('no_hp');
-
-    // Otomatis +62
-    hpInput.addEventListener('input', function() {
-        if (!this.value.startsWith('+62')) this.value = '+62';
-    });
-
-    // FUNGSI PENCARIAN
-    function cariData() {
-        const keyword = document.getElementById('keyword').value;
-        const resultDiv = document.getElementById('searchResult');
-        if (!keyword) return alert("Ketik ID atau Nama dulu!");
-
-        resultDiv.style.display = 'block';
-        resultDiv.innerHTML = "⌛ Mencari data...";
-
-        // Kita menggunakan parameter 'action=search' yang diproses di Code.gs
-        fetch(`${scriptURL}?action=search&keyword=${keyword}`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.status === "found") {
-                resultDiv.innerHTML = `✅ <b>Data Ditemukan:</b><br>
-                                       Nama: ${data.nama}<br>
-                                       ID CST: ${data.id_cst}<br>
-                                       Paket: ${data.paket}<br>
-                                       Alamat: ${data.alamat}`;
-                resultDiv.style.color = "green";
-            } else {
-                resultDiv.innerHTML = "❌ Data tidak ditemukan di Spreadsheet.";
-                resultDiv.style.color = "red";
-            }
-        })
-        .catch(err => {
-            resultDiv.innerHTML = "⚠️ Masalah koneksi atau script belum update.";
-            console.error(err);
-        });
+    // Validasi Nomor HP Otomatis
+    function formatPhone() {
+        let phoneInput = document.getElementById('phone');
+        let val = phoneInput.value.trim();
+        
+        // Hapus angka 0 di depan jika ada
+        if (val.startsWith('0')) {
+            val = val.substring(1);
+        }
+        
+        // Tambahkan +62 jika belum ada
+        if (val !== "" && !val.startsWith('+62')) {
+            val = '+62' + val;
+        }
+        
+        phoneInput.value = val;
     }
 
-    // KIRIM DATA
-    form.addEventListener('submit', e => {
-        e.preventDefault();
-        document.getElementById('btnSubmit').disabled = true;
-        document.getElementById('loader').style.display = 'block';
+    // Fungsi Cek Data (Akan terhubung ke Apps Script)
+    async function checkData() {
+        const query = document.getElementById('searchInput').value;
+        if (!query) return alert("Masukkan kata kunci pencarian");
 
-        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-        .then(res => res.text())
-        .then(response => {
-            document.getElementById('loader').style.display = 'none';
-            document.getElementById('btnSubmit').disabled = false;
-            
-            if (response === "DUPLIKAT") {
-                alert("⚠️ PERINGATAN: ID CST ini sudah terdaftar!");
+        // Ganti URL ini dengan URL Web App dari Google Apps Script Anda
+        const url = "https://script.google.com/macros/s/AKfycbzLMLgQlZ5HrnFjyT8mFWwFlNS35uoY7TYsmcYZMbdwhgOtl5O7PZfjELp2lJEDfkd9/exec?action=check&query=" + query;
+
+        try {
+            const response = await fetch(url);
+            const result = await response.json();
+            if (result.exists) {
+                alert("⚠️ PERINGATAN: Data sudah terdaftar di database!");
             } else {
-                alert("✅ BERHASIL: Data tersimpan di kolom B-M");
-                form.reset();
-                hpInput.value = "+62";
-                document.getElementById('searchResult').style.display = 'none';
+                alert("✅ Data belum terdaftar. Silakan lanjut mengisi.");
             }
-        })
-        .catch(err => alert("Error: " + err.message));
-    });
+        } catch (e) {
+            alert("Gagal terhubung ke database. Pastikan URL Script sudah benar.");
+        }
+    }
 </script>
+
 </body>
 </html>
-
