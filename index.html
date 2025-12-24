@@ -126,22 +126,62 @@
         const query = document.getElementById('searchInput').value;
         if (!query) return alert("Masukkan kata kunci pencarian");
 
-        // Ganti URL ini dengan URL Web App dari Google Apps Script Anda
-        const url = "https://script.google.com/macros/s/AKfycbyyyuFvvXvjUoyxrF9pT7ZMpjtG3obdWGrs_PK4YI_jyoY6PqQpzWtiTXpT3FCgSGNh/exec?action=check&query=" + query;
+<script>
+    // UPDATE URL INI SETIAP HABIS DEPLOY BARU
+    const scriptURL = 'TEMPEL_URL_BARU_ANDA_DI_SINI'; 
 
-        try {
-            const response = await fetch(url);
-            const result = await response.json();
-            if (result.exists) {
-                alert("⚠️ PERINGATAN: Data sudah terdaftar di database!");
+    const form = document.getElementById('rekapanForm');
+    const btn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        btn.disabled = true;
+        btn.innerHTML = "Sedang Menulis ke Kolom B...";
+
+        const params = new URLSearchParams(new FormData(form)).toString();
+
+        fetch(`${scriptURL}?${params}`, { method: 'GET' })
+        .then(res => res.text())
+        .then(result => {
+            btn.disabled = false;
+            btn.innerHTML = "SIMPAN DATA";
+
+            if (result.trim() === "SUCCESS") {
+                alert("✅ BERHASIL: Data masuk di Kolom B baris terakhir!");
+                form.reset();
+            } else if (result.trim() === "DUPLICATE") {
+                alert("⚠️ GAGAL: Nama atau ID CST sudah terdaftar!");
             } else {
-                alert("✅ Data belum terdaftar. Silakan lanjut mengisi.");
+                alert("❌ ERROR SERVER: " + result);
             }
-        } catch (e) {
-            alert("Gagal terhubung ke database. Pastikan URL Script sudah benar.");
-        }
+        })
+        .catch(err => {
+            alert("❌ ERROR KONEKSI: Cek internet Anda.");
+            btn.disabled = false;
+            btn.innerHTML = "SIMPAN DATA";
+        });
+    });
+
+    // Fungsi Cek Data (Tombol CEK)
+    async function checkData() {
+        const query = document.getElementById('searchInput').value;
+        if (!query) return alert("Isi Nama/ID!");
+        fetch(`${scriptURL}?action=check&query=${encodeURIComponent(query)}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.exists) alert("⚠️ Data DUPLIKAT!");
+                else alert("✅ Data AMAN (Belum ada).");
+            });
+    }
+
+    function formatPhone() {
+        let p = document.getElementById('phone');
+        let val = p.value.trim();
+        if (val.startsWith('0')) val = val.substring(1);
+        if (val !== "" && !val.startsWith('+62')) val = '+62' + val;
+        p.value = val;
     }
 </script>
-
 </body>
 </html>
+
