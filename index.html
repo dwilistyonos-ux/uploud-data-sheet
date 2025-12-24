@@ -27,7 +27,7 @@
     <div id="searchStatus" style="font-size: 11px; margin-top: 5px;"></div>
     <table id="resultsTable" style="display:none;">
       <thead>
-        <tr><th>Nama</th><th>ID CST</th><th>Paket</th></tr>
+        <tr><th>Nama</th><th>ID CST</th><th>Paket</th>Alamat</tr>
       </thead>
       <tbody id="resultsBody"></tbody>
     </table>
@@ -66,17 +66,49 @@
       <label>Bonus</label>
       <select name="Bonus" id="bonusSelect" required></select>
     </div>
+<div class="form-group">
+  <label>Tanggal</label>
+  <input type="date" name="Tanggal">
+</div>
 
-    <div class="form-group">
-      <label>Tanggal</label>
-      <input type="date" name="Tanggal">
-    </div>
+<div class="form-group"><label>Billing</label><input type="text" name="Billing"></div>
+<div class="form-group"><label>Email</label><input type="text" name="Email"></div>
+<div class="form-group"><label>Japo</label><input type="text" name="Japo"></div>
 
-    <div class="form-group"><label>Billing</label><input type="text" name="Billing"></div>
-    <div class="form-group"><label>Japo</label><input type="text" name="Japo"></div>
-    <div class="form-group"><label>No HP</label><input type="text" name="No_HP"></div>
-    <div class="form-group"><label>Alamat</label><textarea name="Alamat"></textarea></div>
+<div class="form-group">
+  <label>No HP (Otomatis ke wa.me)</label>
+  <input type="text" id="no_hp" name="No_HP" placeholder="Contoh: 08123456789">
+  <small id="wa_link_preview" style="display:block; color: blue;"></small>
+</div>
 
+<div class="form-group"><label>Alamat</label><textarea name="Alamat"></textarea></div>
+
+<script>
+  const inputHp = document.getElementById('no_hp');
+  const preview = document.getElementById('wa_link_preview');
+
+  inputHp.addEventListener('input', function(e) {
+    let num = e.target.value;
+
+    // 1. Hapus semua karakter yang bukan angka
+    num = num.replace(/\D/g, '');
+
+    // 2. Ubah awalan 0 menjadi 62
+    if (num.startsWith('0')) {
+      num = '62' + num.slice(1);
+    }
+
+    // 3. Update nilai input jika ingin langsung berubah di kotak teks
+    // e.target.value = num; 
+
+    // 4. Tampilkan preview link wa.me
+    if (num.length > 5) {
+      preview.innerText = "Link WA: https://wa.me/" + num;
+    } else {
+      preview.innerText = "";
+    }
+  });
+</script>
     <button type="submit" id="submitBtn">SIMPAN KE DATABASE</button>
     <div id="successMsg" class="success-msg">✅ Data berhasil disimpan!</div>
   </form>
@@ -166,4 +198,5 @@
 
 </body>
 </html>
+
 
