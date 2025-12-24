@@ -3,163 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulir Input Pelanggan</title>
+    <title>Sistem Input Data Spreadsheet</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
-        .container { max-width: 600px; background: white; padding: 20px; border-radius: 8px; shadow: 0 0 10px rgba(0,0,0,0.1); }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; }
+        .container { max-width: 600px; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: auto; }
+        h2 { text-align: center; color: #333; }
         .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; }
-        input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        button { background-color: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background-color: #218838; }
-        .search-section { border-bottom: 2px solid #ddd; margin-bottom: 20px; padding-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        input:required { border-left: 4px solid #dc3545; }
+        button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        button:hover { background: #0056b3; }
+        .search-section { margin-top: 30px; border-top: 2px solid #eee; pt: 20px; }
+        #status { text-align: center; margin-top: 15px; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="search-section">
-        <h3>Cari Data Pelanggan (REKAPAN)</h3>
-        <input type="text" id="searchID" placeholder="Masukkan ID CST untuk cek...">
-        <button type="button" onclick="searchData()" style="margin-top: 10px; background-color: #007bff;">Cek Data</button>
-    </div>
-
-    <form id="customerForm">
-        <h3>Input Data Baru</h3>
-        
+    <h2>Input Data Pelanggan</h2>
+    
+    <form id="mainForm">
         <div class="form-group">
-            <label>Billing (Table B)</label>
-            <input type="text" name="billing">
+            <label>Billing (Opsional)</label>
+            <input type="text" name="Billing">
         </div>
 
         <div class="form-group">
-            <label>Tanggal (Table C) *</label>
-            <input type="date" name="tanggal" required>
+            <label>Tanggal</label>
+            <input type="date" name="Tanggal" required>
         </div>
 
         <div class="form-group">
-            <label>Japo (Table D - Angka Saja) *</label>
-            <input type="number" name="japo" required>
+            <label>Japo (Hanya Angka)</label>
+            <input type="number" name="Japo" required>
         </div>
 
         <div class="form-group">
-            <label>Nama (Table E) *</label>
-            <input type="text" name="nama" required>
+            <label>Nama Pelanggan</label>
+            <input type="text" name="Nama" required>
         </div>
 
         <div class="form-group">
-            <label>ID CST (Table F - Angka Saja)</label>
-            <input type="number" name="id_cst">
+            <label>ID CST (Angka - Opsional)</label>
+            <input type="number" name="ID_CST">
         </div>
 
         <div class="form-group">
-            <label>Nomor HP (Table G) *</label>
-            <input type="text" id="phone" name="hp" placeholder="Contoh: 0812..." required>
+            <label>Nomor HP</label>
+            <input type="tel" id="no_hp" name="No_HP" placeholder="8123456..." required>
+            <small>*Otomatis ditambah +62</small>
         </div>
 
         <div class="form-group">
-            <label>Alamat (Table H) *</label>
-            <textarea name="alamat" required></textarea>
+            <label>Alamat Lengkap</label>
+            <textarea name="Alamat" required></textarea>
         </div>
 
         <div class="form-group">
-            <label>Paket (Table I) *</label>
-            <select name="paket" required>
-                <option value="">-- Pilih Paket --</option>
-                <option value="10Mbps">10Mbps</option>
-                <option value="15Mbps">15Mbps</option>
-                <option value="20Mbps">20Mbps</option>
-                <option value="30Mbps">30Mbps</option>
-                <option value="100Mbps">100Mbps</option>
-                <option value="200Mbps">200Mbps</option>
-                <option value="300Mbps">300Mbps</option>
-                <option value="400Mbps">400Mbps</option>
-                <option value="500Mbps">500Mbps</option>
-            </select>
+            <label>Paket</label>
+            <input type="text" name="Paket" required>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+            <div class="form-group" style="flex: 1;">
+                <label>Point</label>
+                <input type="number" name="Point">
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label>Bonus</label>
+                <input type="text" name="Bonus">
+            </div>
         </div>
 
         <div class="form-group">
-            <label>Point (Table J) *</label>
-            <select name="point" required>
-                <option value="0.25">0.25</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-            </select>
+            <label>Email</label>
+            <input type="email" name="Email" required placeholder="contoh@mail.com">
         </div>
 
         <div class="form-group">
-            <label>Bonus (Table K) *</label>
-            <select name="bonus" required>
-                <option value="Rp25,000">Rp25,000</option>
-                <option value="Rp50,000">Rp50,000</option>
-                <option value="Rp100,000">Rp100,000</option>
-                <option value="Rp200,000">Rp200,000</option>
-                <option value="Rp300,000">Rp300,000</option>
-                <option value="Rp350,000">Rp350,000</option>
-                <option value="Rp400,000">Rp400,000</option>
-            </select>
+            <label>Command</label>
+            <input type="text" name="Command">
         </div>
 
-        <div class="form-group">
-            <label>Email (Table L) *</label>
-            <input type="email" name="email" required>
-        </div>
-
-        <div class="form-group">
-            <label>Command (Table M)</label>
-            <input type="text" name="command">
-        </div>
-
-        <button type="submit">Simpan Data</button>
+        <button type="submit" id="btnSubmit">Simpan Data</button>
     </form>
+
+    <div id="status"></div>
+
+    <div class="search-section">
+        <h3>Cari Data di Spreadsheet</h3>
+        <input type="text" id="searchInput" placeholder="Masukkan Nama atau ID CST...">
+        <button onclick="searchData()" style="background: #6c757d;">Cari</button>
+        <div id="searchResult" style="margin-top: 10px; font-size: 14px;"></div>
+    </div>
 </div>
 
 <script>
-    const form = document.getElementById('customerForm');
-    
-    // Fungsi untuk memproses pengiriman data ke Google Sheets
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Ambil data dari form
-        const formData = new FormData(form);
-        const dataObj = {};
-        formData.forEach((value, key) => dataObj[key] = value);
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxE7mVhrluJhubfjNqqQyFQvrhDzQ40x0EossMtxj4NLC40RBHZjtckk_AbYy8JruyV/exec';
+    const form = document.getElementById('mainForm');
+    const btnSubmit = document.getElementById('btnSubmit');
 
-        // Logika Format Nomor HP ke WA.me
-        let rawPhone = dataObj.hp.replace(/\D/g, ''); 
-        if (rawPhone.startsWith('0')) {
-            rawPhone = '62' + rawPhone.substring(1);
-        } else if (!rawPhone.startsWith('62')) {
-            rawPhone = '62' + rawPhone;
+    // Otomatis format +62 saat input Nomor HP
+    document.getElementById('no_hp').addEventListener('blur', function(e) {
+        let val = e.target.value;
+        if (val && !val.startsWith('+62')) {
+            if (val.startsWith('0')) val = val.substring(1);
+            e.target.value = '+62' + val;
         }
-        dataObj.hp = rawPhone; // Update nomor hp dengan format internasional
-
-        // Panggil fungsi Apps Script (processForm)
-        google.script.run.withSuccessHandler(function(response) {
-            alert(response); // Munculkan popup sukses
-            form.reset();    // Kosongkan form kembali
-        }).processForm(dataObj);
     });
 
-    // Fungsi untuk Mencari Data Pelanggan (Popup)
-    function searchData() {
-        let id = document.getElementById('searchID').value;
-        if(!id) return alert("Masukkan ID CST");
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        btnSubmit.disabled = true;
+        document.getElementById('status').innerText = "Mengecek duplikat & mengirim data...";
 
-        // Panggil fungsi Apps Script (searchCustomer)
-        google.script.run.withSuccessHandler(function(res) {
-            if(res.found) {
-                alert("DATA DITEMUKAN!\n\nNama: " + res.nama + 
-                      "\nPaket: " + res.paket + 
-                      "\nAlamat: " + res.alamat +
-                      "\nID CST: " + id);
+        // Logic kirim data
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => response.json())
+        .then(res => {
+            if(res.result === 'error' && res.type === 'duplicate') {
+                alert("PERINGATAN: Data dengan ID CST atau Nama tersebut sudah ada!");
             } else {
-                alert("Data tidak ditemukan atau ID CST belum terdaftar.");
+                alert("Berhasil! Data telah tersimpan.");
+                form.reset();
             }
-        }).searchCustomer(id);
+            btnSubmit.disabled = false;
+            document.getElementById('status').innerText = "";
+        })
+        .catch(error => {
+            alert("Error: " + error.message);
+            btnSubmit.disabled = false;
+        });
+    });
+
+    function searchData() {
+        const query = document.getElementById('searchInput').value;
+        if(!query) return alert("Masukkan kata kunci");
+        
+        document.getElementById('searchResult').innerText = "Mencari...";
+        
+        fetch(`${scriptURL}?search=${query}`)
+        .then(res => res.json())
+        .then(data => {
+            if(data.found) {
+                document.getElementById('searchResult').innerHTML = 
+                    `<div style="background:#e9ecef; padding:10px; border-radius:5px;">
+                        Found: <b>${data.Nama}</b> - ${data.Paket} (${data.No_HP})
+                    </div>`;
+            } else {
+                document.getElementById('searchResult').innerText = "Data tidak ditemukan.";
+            }
+        });
     }
 </script>
-    
+
 </body>
 </html>
