@@ -3,235 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input MyRepublic - REKAPAN</title>
+    <title>Formulir Input Data Pelanggan</title>
     <style>
-        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
-        .card { max-width: 600px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 8px solid #6c5ce7; }
-        h2 { color: #6c5ce7; text-align: center; margin-bottom: 20px; }
-        .search-area { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ddd; }
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
+        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); max-width: 600px; margin: auto; }
         .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
-        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-check { background: #00cec9; color: white; margin-top: 10px; }
-        .btn-submit { background: #6c5ce7; color: white; font-size: 16px; margin-top: 10px; }
-        button:hover { opacity: 0.8; }
-        button:disabled { background: #ccc; cursor: not-allowed; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input, select, textarea { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        button { background: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px; }
+        button:hover { background: #218838; }
+        .search-section { margin-bottom: 20px; border-bottom: 2px solid #ddd; padding-bottom: 20px; }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h2>Form Rekapan MyRepublic</h2>
-
-    <div class="search-area">
-        <label>🔍 Cari Nama / ID CST di Sheet</label>
-        <input type="text" id="searchInput" placeholder="Masukkan Nama atau ID...">
-        <button type="button" class="btn-check" onclick="checkData()">CEK DATA</button>
+<div class="container">
+    <h2>Pencarian & Input Data</h2>
+    
+    <div class="search-section">
+        <label>Cek ID CST / Nama di Spreadsheet:</label>
+        <input type="text" id="searchInput" placeholder="Masukkan ID atau Nama untuk cek...">
+        <button onclick="checkData()" style="background: #007bff; margin-top: 10px;">Cek Ketersediaan Data</button>
     </div>
 
-    <form id="rekapanForm">
+    <form id="customerForm">
         <div class="form-group">
-            <label>Billing (B) - Tidak Wajib</label>
-            <input type="text" name="billing">
-        </div>
-        <div style="display:flex; gap:10px">
-            <div class="form-group" style="flex:1">
-                <label>Tanggal (C)</label>
-                <input type="date" name="tanggal" required>
-            </div>
-            <div class="form-group" style="flex:1">
-                <label>Japo (D) - Angka</label>
-                <input type="number" name="japo" required placeholder="Contoh: 15">
-            </div>
+            <label>Billing (Table B):</label>
+            <input type="text" name="billing" placeholder="Opsional">
         </div>
         <div class="form-group">
-            <label>Nama (E)</label>
+            <label>Tanggal (Table C):</label>
+            <input type="date" name="tanggal" required>
+        </div>
+        <div class="form-group">
+            <label>Japo (Table D):</label>
+            <input type="number" name="japo" placeholder="Hanya angka (Contoh: 15)" required>
+        </div>
+        <div class="form-group">
+            <label>Nama (Table E):</label>
             <input type="text" name="nama" required>
         </div>
         <div class="form-group">
-            <label>ID CST (F) - Angka</label>
-            <input type="number" name="id_cst">
+            <label>ID CST (Table F):</label>
+            <input type="number" name="id_cst" placeholder="Hanya angka (Opsional)">
         </div>
         <div class="form-group">
-            <label>Nomor HP (G)</label>
-            <input type="text" id="phone" name="phone" placeholder="08..." required onblur="formatPhone()">
+            <label>Nomor HP (Table G):</label>
+            <input type="text" id="phone" name="phone" placeholder="Contoh: 0812..." required onblur="formatPhone()">
         </div>
         <div class="form-group">
-            <label>Alamat (H)</label>
+            <label>Alamat (Table H):</label>
             <textarea name="alamat" required></textarea>
         </div>
         <div class="form-group">
-            <label>Paket (I)</label>
+            <label>Paket (Table I):</label>
             <select name="paket">
-                <option value="10Mbps">10Mbps</option><option value="15Mbps">15Mbps</option>
-                <option value="20Mbps">20Mbps</option><option value="30Mbps">30Mbps</option>
-                <option value="100Mbps">100Mbps</option><option value="200Mbps">200Mbps</option>
-                <option value="300Mbps">300Mbps</option><option value="400Mbps">400Mbps</option>
+                <option value="10Mbps">10Mbps</option>
+                <option value="15Mbps">15Mbps</option>
+                <option value="20Mbps">20Mbps</option>
+                <option value="30Mbps">30Mbps</option>
+                <option value="100Mbps">100Mbps</option>
+                <option value="200Mbps">200Mbps</option>
+                <option value="300Mbps">300Mbps</option>
+                <option value="400Mbps">400Mbps</option>
                 <option value="500Mbps">500Mbps</option>
             </select>
         </div>
-        <div style="display:flex; gap:10px">
-            <div class="form-group" style="flex:1">
-                <label>Point (J)</label>
-                <select name="point">
-                    <option value="0,25">0,25</option><option value="1">1</option><option value="2">2</option>
-                </select>
-            </div>
-            <div class="form-group" style="flex:1">
-                <label>Bonus (K)</label>
-                <select name="bonus">
-                    <option value="Rp25,000">Rp25,000</option><option value="Rp50,000">Rp50,000</option>
-                    <option value="Rp100,000">Rp100,000</option><option value="Rp200,000">Rp200,000</option>
-                    <option value="Rp300,000">Rp300,000</option><option value="Rp350,000">Rp350,000</option>
-                    <option value="Rp400,000">Rp400,000</option>
-                </select>
-            </div>
+        <div class="form-group">
+            <label>Point (Table J):</label>
+            <select name="point">
+                <option value="0,25">0,25</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
         </div>
         <div class="form-group">
-            <label>Email (L)</label>
+            <label>Bonus (Table K):</label>
+            <select name="bonus">
+                <option value="Rp25,000">Rp25,000</option>
+                <option value="Rp50,000">Rp50,000</option>
+                <option value="Rp100,000">Rp100,000</option>
+                <option value="Rp200,000">Rp200,000</option>
+                <option value="Rp300,000">Rp300,000</option>
+                <option value="Rp350,000">Rp350,000</option>
+                <option value="Rp400,000">Rp400,000</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Email (Table L):</label>
             <input type="email" name="email" required>
         </div>
         <div class="form-group">
-            <label>Command (M)</label>
+            <label>Command (Table M):</label>
             <textarea name="command"></textarea>
         </div>
-        <button type="submit" id="submitBtn" class="btn-submit">SIMPAN DATA</button>
+        
+        <button type="submit">Simpan Data</button>
     </form>
 </div>
 
 <script>
-    // --- MASUKKAN URL WEB APP ANDA DI SINI ---
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwzjNvW0FfXFzDkGDJAUIhQN6L8yrU6gpf-EU-I1PlxRHat8xQqDyzKF_klCWu7n8Fr/exec';
-
+    // Validasi Nomor HP Otomatis
     function formatPhone() {
-        let p = document.getElementById('phone');
-        let val = p.value.trim();
-        if (val.startsWith('0')) val = val.substring(1);
-        if (val !== "" && !val.startsWith('+62')) val = '+62' + val;
-        p.value = val;
-    }
-
-
-    async function checkData() {
-    const query = document.getElementById('searchInput').value.trim();
-    if (!query) return alert("Masukkan Nama atau ID!");
-
-    const btn = document.querySelector('.btn-check');
-    btn.innerHTML = "🔍 Mencari...";
-
-    try {
-        const response = await fetch(`${scriptURL}?action=check&query=${encodeURIComponent(query)}`);
-        const result = await response.json();
-
-        if (result.exists) {
-            const d = result.details;
-            alert(
-                `⚠️ DATA DITEMUKAN!\n--------------------------\n` +
-                `NO URUT : ${d.no}\nBILLING : ${d.billing}\nTANGGAL : ${d.tanggal}\n` +
-                `JAPO    : ${d.japo}\nNAMA    : ${d.nama}\nID CST  : ${d.id_cst}\n` +
-                `NO HP   : ${d.phone}\nALAMAT  : ${d.alamat}\nPAKET   : ${d.paket}\n` +
-                `POINT   : ${d.point}\nBONUS   : ${d.bonus}\nEMAIL   : ${d.email}\n` +
-                `COMMAND : ${d.command}\n--------------------------`
-            );
-        } else {
-            alert("✅ AMAN: Data belum ada.");
+        let phoneInput = document.getElementById('phone');
+        let val = phoneInput.value.trim();
+        
+        // Hapus angka 0 di depan jika ada
+        if (val.startsWith('0')) {
+            val = val.substring(1);
         }
-    } catch (err) {
-        alert("Gagal koneksi server.");
-    } finally {
-        btn.innerHTML = "CEK DATA";
+        
+        // Tambahkan +62 jika belum ada
+        if (val !== "" && !val.startsWith('+62')) {
+            val = '+62' + val;
+        }
+        
+        phoneInput.value = val;
     }
-}
-    
-    const form = document.getElementById('rekapanForm');
-    form.addEventListener('submit', e => {
-        e.preventDefault();
-        const btn = document.getElementById('submitBtn');
-        btn.disabled = true; btn.innerHTML = "Menyimpan...";
 
-        const params = new URLSearchParams(new FormData(form)).toString();
-        fetch(`${scriptURL}?${params}`, { method: 'POST' })
-            .then(res => res.text())
-            .then(result => {
-                if (result === "Success") {
-                    alert("Berhasil Tersimpan!");
-                    form.reset();
-                } else { alert("Gagal: " + result); }
-                btn.disabled = false; btn.innerHTML = "SIMPAN DATA";
-            })
-            .catch(() => { alert("Koneksi Error"); btn.disabled = false; });
-    });
-</script>
-</body>
-</html>
-
-<script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxyOw6tlUPyw2kCj1TgrExx6x838xV5c8wwaa7_AHOYGwP1WMOh_pyvWkBlxvbwpmEL/exec';
-
-    const form = document.getElementById('rekapanForm');
-    const btn = document.getElementById('submitBtn');
-
-    form.addEventListener('submit', e => {
-        e.preventDefault();
-        btn.disabled = true;
-        btn.innerHTML = "Sedang Memproses...";
-
-        const params = new URLSearchParams(new FormData(form)).toString();
-
-        fetch(`${scriptURL}?${params}`, { method: 'GET' })
-        .then(res => res.text())
-        .then(result => {
-            btn.disabled = false;
-            btn.innerHTML = "SIMPAN DATA";
-
-            if (result.trim() === "SUCCESS") {
-                alert("✅ BERHASIL: Data telah tertulis di Spreadsheet!");
-                form.reset();
-            } else if (result.trim() === "DUPLICATE") {
-                alert("⚠️ GAGAL: Data Nama atau ID CST sudah ada di Spreadsheet (Duplikat)!");
-            } else {
-                alert("❌ GAGAL: " + result);
-            }
-        })
-        .catch(err => {
-            alert("❌ ERROR KONEKSI: Pastikan internet stabil dan URL Script benar.");
-            btn.disabled = false;
-            btn.innerHTML = "SIMPAN DATA";
-        });
-    });
-
-    // Fungsi CEK DATA (Tombol Cek)
+    // Fungsi Cek Data (Akan terhubung ke Apps Script)
     async function checkData() {
         const query = document.getElementById('searchInput').value;
-        if (!query) return alert("Masukkan Nama atau ID untuk dicek!");
-        
-        fetch(`${scriptURL}?action=check&query=${encodeURIComponent(query)}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.exists) {
-                    alert("⚠️ PERHATIAN: Data sudah ada di spreadsheet (DUPLIKAT)!");
-                } else {
-                    alert("✅ AMAN: Data belum ada, silakan lanjut isi form.");
-                }
-            });
-    }
+        if (!query) return alert("Masukkan kata kunci pencarian");
 
-    function formatPhone() {
-        let p = document.getElementById('phone');
-        let val = p.value.trim();
-        if (val.startsWith('0')) val = val.substring(1);
-        if (val !== "" && !val.startsWith('+62')) val = '+62' + val;
-        p.value = val;
+        // Ganti URL ini dengan URL Web App dari Google Apps Script Anda
+        const url = "https://script.google.com/macros/s/AKfycbyyyuFvvXvjUoyxrF9pT7ZMpjtG3obdWGrs_PK4YI_jyoY6PqQpzWtiTXpT3FCgSGNh/exec?action=check&query=" + query;
+
+        try {
+            const response = await fetch(url);
+            const result = await response.json();
+            if (result.exists) {
+                alert("⚠️ PERINGATAN: Data sudah terdaftar di database!");
+            } else {
+                alert("✅ Data belum terdaftar. Silakan lanjut mengisi.");
+            }
+        } catch (e) {
+            alert("Gagal terhubung ke database. Pastikan URL Script sudah benar.");
+        }
     }
 </script>
 
-
-
-
-
-
-
-
-
-
+</body>
+</html>
