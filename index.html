@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Data Pelanggan</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #eef2f3; padding: 20px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 500px; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #2c3e50; margin-bottom: 20px; border-bottom: 2px solid #28a745; padding-bottom: 10px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; color: #444; font-size: 14px; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+        input:focus, select:focus { border-color: #28a745; outline: none; box-shadow: 0 0 5px rgba(40,167,69,0.2); }
+        button { width: 100%; padding: 12px; background: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.3s; margin-top: 10px; }
+        button:hover { background: #218838; }
+        #loader { display: none; text-align: center; margin-top: 15px; font-weight: bold; color: #007bff; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Input Data CST</h2>
+    <form id="form-pelanggan">
+        <div class="form-group"><label>BILLING</label><input type="text" name="billing" required></div>
+        <div class="form-group"><label>TANGGAL</label><input type="date" name="tanggal" required></div>
+        <div class="form-group"><label>JAPO (Jatuh Tempo)</label><input type="date" name="japo" required></div>
+        <div class="form-group"><label>NAMA</label><input type="text" name="nama" required></div>
+        <div class="form-group"><label>ID CST</label><input type="text" name="id_cst" required></div>
+        <div class="form-group"><label>NOMOR HP</label><input type="tel" name="nomor_hp" placeholder="0812..." required></div>
+        <div class="form-group"><label>ALAMAT</label><textarea name="alamat" rows="2" required></textarea></div>
+        
+        <div class="form-group">
+            <label>PAKET</label>
+            <select name="paket" required>
+                <option value="" disabled selected>-- Pilih Paket --</option>
+                <option value="10Mbps">10Mbps</option>
+                <option value="15Mbps">15Mbps</option>
+                <option value="20Mbps">20Mbps</option>
+                <option value="30Mbps">30Mbps</option>
+                <option value="50Mbps">50Mbps</option>
+                <option value="100Mbps">100Mbps</option>
+                <option value="200Mbps">200Mbps</option>
+                <option value="400Mbps">400Mbps</option>
+                <option value="500Mbps">500Mbps</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>POINT</label>
+            <select name="point" required>
+                <option value="" disabled selected>-- Pilih Point --</option>
+                <option value="0">0</option>
+                <option value="0.25">0.25</option>
+                <option value="1">1</option>
+            </select>
+        </div>
+
+        <div class="form-group"><label>BONUS</label><input type="text" name="bonus"></div>
+        <div class="form-group"><label>EMAIL</label><input type="email" name="email"></div>
+        <div class="form-group"><label>COMMAND</label><input type="text" name="command"></div>
+        
+        <button type="submit" id="btn-submit">KIRIM DATA</button>
+        <div id="loader">Mohon tunggu, sedang mengirim...</div>
+    </form>
+</div>
+
+<script>
+    // GANTI URL DI BAWAH INI DENGAN URL WEB APP ANDA
+    const scriptURL = 'URL_WEB_APP_ANDA'
+    const form = document.getElementById('form-pelanggan')
+    const loader = document.getElementById('loader')
+    const btnSubmit = document.getElementById('btn-submit')
+
+    form.addEventListener('submit', e => {
+        e.preventDefault()
+        btnSubmit.disabled = true
+        btnSubmit.style.backgroundColor = '#ccc'
+        loader.style.display = 'block'
+        
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => {
+                loader.style.display = 'none'
+                btnSubmit.disabled = false
+                btnSubmit.style.backgroundColor = '#28a745'
+                alert("Data Berhasil Tersimpan di Spreadsheet!")
+                form.reset()
+            })
+            .catch(error => {
+                loader.style.display = 'none'
+                btnSubmit.disabled = false
+                btnSubmit.style.backgroundColor = '#28a745'
+                alert("Terjadi kesalahan: " + error.message)
+            })
+    })
+</script>
+
+</body>
+</html>
