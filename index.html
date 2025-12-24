@@ -138,9 +138,9 @@
     // 2. Format +62 HP
     document.getElementById('hpInput').addEventListener('blur', function() {
         let v = this.value.trim();
-        if(v && !v.startsWith('+62')) {
+        if(v && !v.startsWith('wa.me/+62')) {
             if(v.startsWith('0')) v = v.substring(1);
-            this.value = '+62' + v;
+            this.value = 'wa.me/+62' + v;
         }
     });
 
@@ -172,4 +172,5 @@
 
 </body>
 </html>
+
 
