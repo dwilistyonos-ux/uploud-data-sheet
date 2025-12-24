@@ -117,7 +117,7 @@
     if (!query) return alert("Masukkan Nama atau ID untuk mencari!");
 
     const btn = document.querySelector('.btn-check');
-    btn.innerHTML = "Mencari...";
+    btn.innerHTML = "Mencari Data...";
 
     try {
         const response = await fetch(`${scriptURL}?action=check&query=${encodeURIComponent(query)}`);
@@ -125,27 +125,29 @@
 
         if (result.exists) {
             const d = result.details;
-            // Menampilkan data lengkap dalam pesan
+            // Menampilkan Data Lengkap A-M
             alert(
-                `⚠️ DATA DITEMUKAN!\n\n` +
-                `Nama: ${d.nama}\n` +
-                `ID CST: ${d.id_cst}\n` +
-                `Tanggal: ${d.tanggal}\n` +
-                `Paket: ${d.paket}\n` +
-                `Alamat: ${d.alamat}\n` +
-                `Bonus: ${d.bonus}\n` +
-                `Catatan: ${d.command}`
+                `📊 DATA DITEMUKAN (Baris ${result.row})\n` +
+                `----------------------------------\n` +
+                `🔹 Billing : ${d.billing}\n` +
+                `🔹 Tanggal : ${d.tanggal}\n` +
+                `🔹 Japo    : ${d.japo}\n` +
+                `🔹 Nama    : ${d.nama}\n` +
+                `🔹 ID CST  : ${d.id_cst}\n` +
+                `🔹 Phone   : ${d.phone}\n` +
+                `🔹 Alamat  : ${d.alamat}\n` +
+                `🔹 Paket   : ${d.paket}\n` +
+                `🔹 Point   : ${d.point}\n` +
+                `🔹 Bonus   : ${d.bonus}\n` +
+                `🔹 Email   : ${d.email}\n` +
+                `🔹 Command : ${d.command}\n` +
+                `----------------------------------`
             );
-            
-            // OPSIONAL: Mengisi otomatis form jika ingin diedit
-            // document.getElementsByName('nama')[0].value = d.nama;
-            // document.getElementsByName('id_cst')[0].value = d.id_cst;
-            
         } else {
-            alert("✅ AMAN: Data tidak ditemukan dalam database.");
+            alert("✅ AMAN: Data tidak ditemukan. Silakan lanjut isi form.");
         }
     } catch (err) {
-        alert("Gagal terhubung ke server.");
+        alert("Gagal mengambil data. Pastikan URL Script benar.");
     } finally {
         btn.innerHTML = "CEK DATA";
     }
@@ -232,6 +234,7 @@
         p.value = val;
     }
 </script>
+
 
 
 
