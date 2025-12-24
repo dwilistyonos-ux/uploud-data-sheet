@@ -102,7 +102,7 @@
 
 <script>
     // --- MASUKKAN URL WEB APP ANDA DI SINI ---
-    const scriptURL = https://script.google.com/macros/s/AKfycbzXn0I3kzD_TuO9muByv6diu-XEaYsvt_ICqXeh3QVMxhCqqQwxdEUrcPvMomTWN8jk/exec';
+    const scriptURL = https://script.google.com/macros/s/AKfycbwQeDDt0VoRch_vBNm-sr3MNOacv7l1sT1cnTDy6_XPscGhUb3VT7oOaaC3uBmPdXqR/exec';
 
     function formatPhone() {
         let p = document.getElementById('phone');
@@ -116,8 +116,8 @@
     const query = document.getElementById('searchInput').value.trim();
     if (!query) return alert("Masukkan Nama atau ID untuk mencari!");
 
-    const btn = document.querySelector('.btn-check');
-    btn.innerHTML = "Mencari Data...";
+    const btn = document.querySelector('.btn-check'); // Pastikan class tombol CEK DATA sesuai
+    btn.innerHTML = "Mencari...";
 
     try {
         const response = await fetch(`${scriptURL}?action=check&query=${encodeURIComponent(query)}`);
@@ -125,26 +125,23 @@
 
         if (result.exists) {
             const d = result.details;
-            // Menampilkan Data Lengkap A-M
+            // Menampilkan seluruh data dari A sampai M dalam satu alert
             alert(
-                `📊 DATA DITEMUKAN (Baris ${result.row})\n` +
+                `📊 DATA DITEMUKAN!\n` +
                 `----------------------------------\n` +
-                `🔹 Billing : ${d.billing}\n` +
-                `🔹 Tanggal : ${d.tanggal}\n` +
-                `🔹 Japo    : ${d.japo}\n` +
-                `🔹 Nama    : ${d.nama}\n` +
-                `🔹 ID CST  : ${d.id_cst}\n` +
-                `🔹 Phone   : ${d.phone}\n` +
-                `🔹 Alamat  : ${d.alamat}\n` +
-                `🔹 Paket   : ${d.paket}\n` +
-                `🔹 Point   : ${d.point}\n` +
-                `🔹 Bonus   : ${d.bonus}\n` +
-                `🔹 Email   : ${d.email}\n` +
-                `🔹 Command : ${d.command}\n` +
+                `📌 No Urut : ${d.nomor}\n` +
+                `👤 Nama    : ${d.nama}\n` +
+                `🆔 ID CST  : ${d.id_cst}\n` +
+                `📞 No HP   : ${d.phone}\n` +
+                `🏠 Alamat  : ${d.alamat}\n` +
+                `📦 Paket   : ${d.paket}\n` +
+                `📅 Tanggal : ${d.tanggal}\n` +
+                `⌛ Japo    : ${d.japo}\n` +
+                `💬 Command : ${d.command}\n` +
                 `----------------------------------`
             );
         } else {
-            alert("✅ AMAN: Data tidak ditemukan. Silakan lanjut isi form.");
+            alert("✅ AMAN: Data tidak ditemukan, silakan lanjut isi form.");
         }
     } catch (err) {
         alert("Gagal mengambil data. Pastikan URL Script benar.");
@@ -152,7 +149,7 @@
         btn.innerHTML = "CEK DATA";
     }
 }
-
+    
     const form = document.getElementById('rekapanForm');
     form.addEventListener('submit', e => {
         e.preventDefault();
@@ -234,6 +231,7 @@
         p.value = val;
     }
 </script>
+
 
 
 
