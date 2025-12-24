@@ -3,35 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input Data REKAPAN MyRepublic</title>
+    <title>Sistem Input REKAPAN MyRepublic</title>
     <style>
-        :root { --primary: #7b2cbf; --bg: #f8f9fa; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .container { background: white; width: 100%; max-width: 550px; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-        h2 { text-align: center; color: var(--primary); margin-bottom: 25px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        .form-group { margin-bottom: 12px; }
-        label { display: block; margin-bottom: 4px; font-weight: 600; color: #555; font-size: 13px; }
-        input, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 14px; outline: none; }
-        input:focus { border-color: var(--primary); box-shadow: 0 0 5px rgba(123, 44, 191, 0.2); }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        button { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 15px; margin-top: 10px; transition: 0.2s; }
-        button:hover { background: #5a189a; }
+        /* --- CSS STYLE --- */
+        :root { --primary: #7b2cbf; --bg: #f8f9fa; --success: #28a745; --danger: #dc3545; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { background: white; width: 100%; max-width: 600px; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: var(--primary); margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; color: #444; font-size: 13px; }
+        input, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px; transition: 0.3s; outline: none; }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 8px rgba(123, 44, 191, 0.2); }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        button { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px; transition: 0.3s; }
+        button:hover { background: #5a189a; transform: translateY(-1px); }
+        button:disabled { background: #ccc; cursor: not-allowed; }
         
-        .search-area { margin-top: 35px; border-top: 2px dashed #eee; padding-top: 20px; width: 100%; }
-        .search-title { font-size: 14px; font-weight: bold; color: #888; margin-bottom: 10px; text-transform: uppercase; }
-        .search-flex { display: flex; gap: 8px; }
-        #searchResult { margin-top: 12px; padding: 12px; border-radius: 6px; font-size: 14px; display: none; border: 1px solid transparent; }
+        /* --- Search Section --- */
+        .search-area { margin-top: 40px; border-top: 2px dashed #ddd; padding-top: 25px; }
+        .search-title { font-size: 14px; font-weight: bold; color: #777; margin-bottom: 12px; text-transform: uppercase; }
+        #searchResult { margin-top: 15px; padding: 15px; border-radius: 8px; font-size: 14px; display: none; line-height: 1.5; }
+        .status-loading { background: #e9ecef; color: #495057; border: 1px solid #dee2e6; }
+        .status-found { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .status-ok { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>REKAPAN MyRepublic</h2>
+    <h2>Input Data REKAPAN</h2>
     
-    <form id="rekapanForm">
+    <form id="mainForm">
         <div class="form-group">
             <label>BILLING (Opsional)</label>
-            <input type="text" name="Billing" placeholder="Tidak wajib diisi">
+            <input type="text" name="Billing" placeholder="Boleh dikosongkan">
         </div>
 
         <div class="grid">
@@ -40,35 +45,35 @@
                 <input type="date" name="Tanggal" required>
             </div>
             <div class="form-group">
-                <label>JAPO (Angka)</label>
-                <input type="number" name="Japo" required placeholder="Hanya format angka">
+                <label>JAPO (Hanya Angka)</label>
+                <input type="number" name="Japo" required placeholder="Contoh: 15">
             </div>
         </div>
 
         <div class="form-group">
-            <label>NAMA</label>
-            <input type="text" name="Nama" required placeholder="Nama Lengkap">
+            <label>NAMA PELANGGAN</label>
+            <input type="text" id="inputNama" name="Nama" required placeholder="Input nama untuk cek otomatis">
         </div>
 
         <div class="form-group">
-            <label>ID CST (Angka - Opsional)</label>
-            <input type="number" name="ID_CST" placeholder="Hanya angka">
+            <label>ID CST (Hanya Angka - Opsional)</label>
+            <input type="number" name="ID_CST" placeholder="Contoh: 123456">
         </div>
 
         <div class="form-group">
             <label>NOMOR HP</label>
-            <input type="tel" id="hpInput" name="No_HP" placeholder="812xxxx" required>
+            <input type="tel" id="inputHP" name="No_HP" placeholder="812xxxxxxxx" required>
         </div>
 
         <div class="form-group">
-            <label>ALAMAT (Wajib)</label>
-            <textarea name="Alamat" rows="2" required placeholder="Wajib diisi"></textarea>
+            <label>ALAMAT LENGKAP</label>
+            <textarea name="Alamat" rows="2" required placeholder="Alamat pemasangan wajib diisi"></textarea>
         </div>
 
         <div class="grid">
             <div class="form-group">
                 <label>PAKET</label>
-                <input type="text" name="Paket">
+                <input type="text" name="Paket" placeholder="Contoh: Gamer 50Mbps">
             </div>
             <div class="form-group">
                 <label>POINT</label>
@@ -82,8 +87,8 @@
                 <input type="text" name="Bonus">
             </div>
             <div class="form-group">
-                <label>EMAIL (Wajib)</label>
-                <input type="email" name="Email" required placeholder="format wajib email">
+                <label>EMAIL</label>
+                <input type="email" name="Email" required placeholder="wajib format email">
             </div>
         </div>
 
@@ -92,115 +97,93 @@
             <input type="text" name="Command">
         </div>
 
-        <button type="submit" id="btnSubmit">SIMPAN KE REKAPAN</button>
+        <button type="submit" id="btnSubmit">SIMPAN DATA KE BARIS KOSONG</button>
     </form>
 
     <div class="search-area">
-        <div class="search-title">Cari Data di Spreadsheet</div>
-        <div class="search-flex">
-            <input type="text" id="searchInput" placeholder="Nama atau ID CST...">
-            <button onclick="prosesCari()" style="width: 100px; margin-top: 0; background: #495057;">Cari</button>
-        </div>
-        <div id="searchResult"></div>
+        <div class="search-title">🔍 Hasil Pengecekan Database</div>
+        <div id="searchResult">Gunakan kolom Nama di atas untuk mengecek data otomatis.</div>
     </div>
 </div>
 
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzQ0a3eJNgXN28gp2njpMPzFKPsMb_pjOybxFBu9yPXKs2mSBLtKDgM51Kbr22v3TWJ/exec';
-    const form = document.getElementById('rekapanForm');
+    /* --- PENTING: GANTI URL DI BAWAH INI DENGAN URL DEPLOY ANDA --- */
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxme9OW5MYI1We94JJzeEdjrkUVgTciNRpRQ6gUDVR4raS7EsVvxlutDtAJWEwEPqjT/exec';
 
-    document.getElementById('hpInput').addEventListener('blur', function() {
-        let v = this.value.trim();
-        if(v && !v.startsWith('+62')) {
-            if(v.startsWith('0')) v = v.substring(1);
-            this.value = '+62' + v;
+    const form = document.getElementById('mainForm');
+    const btnSubmit = document.getElementById('btnSubmit');
+    const inputNama = document.getElementById('inputNama');
+    const inputHP = document.getElementById('inputHP');
+    const resDiv = document.getElementById('searchResult');
+
+    // 1. Format +62 Otomatis saat kursor keluar dari kolom HP
+    inputHP.addEventListener('blur', function() {
+        let val = this.value.trim();
+        if(val && !val.startsWith('+62')) {
+            if(val.startsWith('0')) val = val.substring(1);
+            this.value = '+62' + val;
         }
     });
 
+    // 2. Pencarian Otomatis Saat Mengetik Nama (Minimal 3 Karakter)
+    let typingTimer;
+    inputNama.addEventListener('input', function() {
+        clearTimeout(typingTimer);
+        const query = this.value.trim();
+        
+        if (query.length >= 3) {
+            resDiv.style.display = "block";
+            resDiv.className = "status-loading";
+            resDiv.innerText = "⏳ Mengecek nama '" + query + "' di database...";
+
+            typingTimer = setTimeout(() => {
+                fetch(`${scriptURL}?search=${encodeURIComponent(query)}`)
+                .then(r => r.json())
+                .then(d => {
+                    if(d.found) {
+                        resDiv.className = "status-found";
+                        resDiv.innerHTML = `⚠️ <b>PERINGATAN:</b> Nama <b>${d.Nama}</b> sudah terdaftar dengan Paket <b>${d.Paket}</b>. Mohon cek kembali agar tidak duplikat.`;
+                    } else {
+                        resDiv.className = "status-ok";
+                        resDiv.innerText = "✅ Nama tersedia. Belum ada di sheet REKAPAN.";
+                    }
+                })
+                .catch(() => {
+                    resDiv.innerText = "❌ Gagal terhubung ke database.";
+                });
+            }, 800); // Delay 0.8 detik setelah berhenti mengetik
+        } else {
+            resDiv.style.display = "none";
+        }
+    });
+
+    // 3. Proses Pengiriman Data (Simpan)
     form.addEventListener('submit', e => {
         e.preventDefault();
-        const btn = document.getElementById('btnSubmit');
-        btn.disabled = true;
-        btn.innerText = "Sedang Menyimpan...";
+        btnSubmit.disabled = true;
+        btnSubmit.innerText = "Sedang Menyimpan...";
 
         fetch(scriptURL, { method: 'POST', body: new FormData(form)})
         .then(res => res.json())
         .then(data => {
             if(data.result === 'duplicate') {
-                alert("⚠️ DATA DUPLIKAT! Nama atau ID CST tersebut sudah ada di sheet REKAPAN.");
+                alert("❌ GAGAL: Data Duplikat ditemukan (Nama atau ID CST sudah ada)!");
             } else {
-                alert("✅ Berhasil! Data disimpan di sheet REKAPAN (Kolom A Kosong).");
+                alert("✅ BERHASIL: Data disimpan di baris " + data.row + " (Kolom A kosong)");
                 form.reset();
+                resDiv.style.display = "none";
             }
         })
-        .catch(err => alert("Terjadi kesalahan koneksi."))
-        .finally(() => { 
-            btn.disabled = false; 
-            btn.innerText = "SIMPAN KE REKAPAN"; 
+        .catch(error => {
+            alert("❌ ERROR: Periksa koneksi internet atau URL Script Anda.");
+            console.error('Error!', error.message);
+        })
+        .finally(() => {
+            btnSubmit.disabled = false;
+            btnSubmit.innerText = "SIMPAN DATA KE BARIS KOSONG";
         });
     });
-
-    function prosesCari() {
-        const s = document.getElementById('searchInput').value;
-        const resDiv = document.getElementById('searchResult');
-        if(!s) return;
-        
-        resDiv.style.display = "block";
-        resDiv.innerText = "Mencari...";
-
-        fetch(`${scriptURL}?search=${s}`)
-        .then(r => r.json())
-        .then(d => {
-            if(d.found) {
-                resDiv.style.backgroundColor = "#d1e7dd";
-                resDiv.style.color = "#0f5132";
-                resDiv.innerHTML = `✅ <b>Ditemukan:</b> ${d.Nama} (Paket: ${d.Paket})`;
-            } else {
-                resDiv.style.backgroundColor = "#f8d7da";
-                resDiv.style.color = "#842029";
-                resDiv.innerText = "❌ Data tidak ditemukan di sheet REKAPAN.";
-            }
-        });
-    }
 </script>
-    // Logika Pencarian Otomatis saat mengetik
-let typingTimer;
-const doneTypingInterval = 800; // Tunggu 0.8 detik setelah berhenti mengetik
-const searchInput = document.getElementById('searchInput');
-
-searchInput.addEventListener('input', () => {
-    clearTimeout(typingTimer);
-    if (searchInput.value.length >= 3) {
-        typingTimer = setTimeout(prosesCari, doneTypingInterval);
-    }
-});
-
-function prosesCari() {
-    const s = searchInput.value;
-    const resDiv = document.getElementById('searchResult');
-    
-    resDiv.style.display = "block";
-    resDiv.style.background = "#f1f3f5";
-    resDiv.innerText = "⏳ Mengecek data...";
-
-    fetch(`${scriptURL}?search=${encodeURIComponent(s)}`)
-    .then(r => r.json())
-    .then(d => {
-        if(d.found) {
-            resDiv.style.background = "#fff3cd";
-            resDiv.style.color = "#856404";
-            resDiv.innerHTML = `⚠️ <b>Data Ditemukan:</b> ${d.Nama} sudah terdaftar di sistem.`;
-        } else {
-            resDiv.style.background = "#d4edda";
-            resDiv.style.color = "#155724";
-            resDiv.innerText = "✅ Data belum ada, silakan lanjut isi form.";
-        }
-    });
-}
 
 </body>
 </html>
-
-
-
-
