@@ -3,61 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulir Input Data Pelanggan</title>
+    <title>Formulir Input Pelanggan</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
-        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); max-width: 600px; margin: auto; }
+        .container { max-width: 600px; background: white; padding: 20px; border-radius: 8px; shadow: 0 0 10px rgba(0,0,0,0.1); }
         .form-group { margin-bottom: 15px; }
         label { display: block; font-weight: bold; margin-bottom: 5px; }
-        input, select, textarea { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
-        button { background: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px; }
-        button:hover { background: #218838; }
-        .search-section { margin-bottom: 20px; border-bottom: 2px solid #ddd; padding-bottom: 20px; }
+        input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background-color: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #218838; }
+        .search-section { border-bottom: 2px solid #ddd; margin-bottom: 20px; padding-bottom: 20px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Pencarian & Input Data</h2>
-    
     <div class="search-section">
-        <label>Cek ID CST / Nama di Spreadsheet:</label>
-        <input type="text" id="searchInput" placeholder="Masukkan ID atau Nama untuk cek...">
-        <button onclick="checkData()" style="background: #007bff; margin-top: 10px;">Cek Ketersediaan Data</button>
+        <h3>Cari Data Pelanggan (REKAPAN)</h3>
+        <input type="text" id="searchID" placeholder="Masukkan ID CST untuk cek...">
+        <button type="button" onclick="searchData()" style="margin-top: 10px; background-color: #007bff;">Cek Data</button>
     </div>
 
     <form id="customerForm">
+        <h3>Input Data Baru</h3>
+        
         <div class="form-group">
-            <label>Billing (Table B):</label>
-            <input type="text" name="billing" placeholder="Opsional">
+            <label>Billing (Table B)</label>
+            <input type="text" name="billing">
         </div>
+
         <div class="form-group">
-            <label>Tanggal (Table C):</label>
+            <label>Tanggal (Table C) *</label>
             <input type="date" name="tanggal" required>
         </div>
+
         <div class="form-group">
-            <label>Japo (Table D):</label>
-            <input type="number" name="japo" placeholder="Hanya angka (Contoh: 15)" required>
+            <label>Japo (Table D - Angka Saja) *</label>
+            <input type="number" name="japo" required>
         </div>
+
         <div class="form-group">
-            <label>Nama (Table E):</label>
+            <label>Nama (Table E) *</label>
             <input type="text" name="nama" required>
         </div>
+
         <div class="form-group">
-            <label>ID CST (Table F):</label>
-            <input type="number" name="id_cst" placeholder="Hanya angka (Opsional)">
+            <label>ID CST (Table F - Angka Saja)</label>
+            <input type="number" name="id_cst">
         </div>
+
         <div class="form-group">
-            <label>Nomor HP (Table G):</label>
-            <input type="text" id="phone" name="phone" placeholder="Contoh: 0812..." required onblur="formatPhone()">
+            <label>Nomor HP (Table G) *</label>
+            <input type="text" id="phone" name="hp" placeholder="Contoh: 0812..." required>
         </div>
+
         <div class="form-group">
-            <label>Alamat (Table H):</label>
+            <label>Alamat (Table H) *</label>
             <textarea name="alamat" required></textarea>
         </div>
+
         <div class="form-group">
-            <label>Paket (Table I):</label>
-            <select name="paket">
+            <label>Paket (Table I) *</label>
+            <select name="paket" required>
+                <option value="">-- Pilih Paket --</option>
                 <option value="10Mbps">10Mbps</option>
                 <option value="15Mbps">15Mbps</option>
                 <option value="20Mbps">20Mbps</option>
@@ -69,17 +77,19 @@
                 <option value="500Mbps">500Mbps</option>
             </select>
         </div>
+
         <div class="form-group">
-            <label>Point (Table J):</label>
-            <select name="point">
-                <option value="0,25">0,25</option>
+            <label>Point (Table J) *</label>
+            <select name="point" required>
+                <option value="0.25">0.25</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
             </select>
         </div>
+
         <div class="form-group">
-            <label>Bonus (Table K):</label>
-            <select name="bonus">
+            <label>Bonus (Table K) *</label>
+            <select name="bonus" required>
                 <option value="Rp25,000">Rp25,000</option>
                 <option value="Rp50,000">Rp50,000</option>
                 <option value="Rp100,000">Rp100,000</option>
@@ -89,99 +99,67 @@
                 <option value="Rp400,000">Rp400,000</option>
             </select>
         </div>
+
         <div class="form-group">
-            <label>Email (Table L):</label>
+            <label>Email (Table L) *</label>
             <input type="email" name="email" required>
         </div>
+
         <div class="form-group">
-            <label>Command (Table M):</label>
-            <textarea name="command"></textarea>
+            <label>Command (Table M)</label>
+            <input type="text" name="command">
         </div>
-        
+
         <button type="submit">Simpan Data</button>
     </form>
 </div>
 
 <script>
-    // Validasi Nomor HP Otomatis
-    function formatPhone() {
-        let phoneInput = document.getElementById('phone');
-        let val = phoneInput.value.trim();
-        
-        // Hapus angka 0 di depan jika ada
-        if (val.startsWith('0')) {
-            val = val.substring(1);
-        }
-        
-        // Tambahkan +62 jika belum ada
-        if (val !== "" && !val.startsWith('+62')) {
-            val = '+62' + val;
-        }
-        
-        phoneInput.value = val;
-    }
-
-    // Fungsi Cek Data (Akan terhubung ke Apps Script)
-    async function checkData() {
-        const query = document.getElementById('searchInput').value;
-        if (!query) return alert("Masukkan kata kunci pencarian");
-
-<script>
-    // UPDATE URL INI SETIAP HABIS DEPLOY BARU
-    const scriptURL = 'TEMPEL_URL_BARU_ANDA_DI_SINI'; 
-
-    const form = document.getElementById('rekapanForm');
-    const btn = document.getElementById('submitBtn');
-
-    form.addEventListener('submit', e => {
+    const form = document.getElementById('customerForm');
+    
+    // Fungsi untuk memproses pengiriman data ke Google Sheets
+    form.addEventListener('submit', function(e) {
         e.preventDefault();
-        btn.disabled = true;
-        btn.innerHTML = "Sedang Menulis ke Kolom B...";
+        
+        // Ambil data dari form
+        const formData = new FormData(form);
+        const dataObj = {};
+        formData.forEach((value, key) => dataObj[key] = value);
 
-        const params = new URLSearchParams(new FormData(form)).toString();
+        // Logika Format Nomor HP ke WA.me
+        let rawPhone = dataObj.hp.replace(/\D/g, ''); 
+        if (rawPhone.startsWith('0')) {
+            rawPhone = '62' + rawPhone.substring(1);
+        } else if (!rawPhone.startsWith('62')) {
+            rawPhone = '62' + rawPhone;
+        }
+        dataObj.hp = rawPhone; // Update nomor hp dengan format internasional
 
-        fetch(`${scriptURL}?${params}`, { method: 'GET' })
-        .then(res => res.text())
-        .then(result => {
-            btn.disabled = false;
-            btn.innerHTML = "SIMPAN DATA";
-
-            if (result.trim() === "SUCCESS") {
-                alert("✅ BERHASIL: Data masuk di Kolom B baris terakhir!");
-                form.reset();
-            } else if (result.trim() === "DUPLICATE") {
-                alert("⚠️ GAGAL: Nama atau ID CST sudah terdaftar!");
-            } else {
-                alert("❌ ERROR SERVER: " + result);
-            }
-        })
-        .catch(err => {
-            alert("❌ ERROR KONEKSI: Cek internet Anda.");
-            btn.disabled = false;
-            btn.innerHTML = "SIMPAN DATA";
-        });
+        // Panggil fungsi Apps Script (processForm)
+        google.script.run.withSuccessHandler(function(response) {
+            alert(response); // Munculkan popup sukses
+            form.reset();    // Kosongkan form kembali
+        }).processForm(dataObj);
     });
 
-    // Fungsi Cek Data (Tombol CEK)
-    async function checkData() {
-        const query = document.getElementById('searchInput').value;
-        if (!query) return alert("Isi Nama/ID!");
-        fetch(`${scriptURL}?action=check&query=${encodeURIComponent(query)}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.exists) alert("⚠️ Data DUPLIKAT!");
-                else alert("✅ Data AMAN (Belum ada).");
-            });
-    }
+    // Fungsi untuk Mencari Data Pelanggan (Popup)
+    function searchData() {
+        let id = document.getElementById('searchID').value;
+        if(!id) return alert("Masukkan ID CST");
 
-    function formatPhone() {
-        let p = document.getElementById('phone');
-        let val = p.value.trim();
-        if (val.startsWith('0')) val = val.substring(1);
-        if (val !== "" && !val.startsWith('+62')) val = '+62' + val;
-        p.value = val;
+        // Panggil fungsi Apps Script (searchCustomer)
+        google.script.run.withSuccessHandler(function(res) {
+            if(res.found) {
+                alert("DATA DITEMUKAN!\n\nNama: " + res.nama + 
+                      "\nPaket: " + res.paket + 
+                      "\nAlamat: " + res.alamat +
+                      "\nID CST: " + id);
+            } else {
+                alert("Data tidak ditemukan atau ID CST belum terdaftar.");
+            }
+        }).searchCustomer(id);
     }
 </script>
+    
 </body>
 </html>
-
