@@ -3,40 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Input REKAPAN MyRepublic</title>
+    <title>Form Rekapan MyRepublic</title>
     <style>
-        /* --- CSS STYLE --- */
-        :root { --primary: #7b2cbf; --bg: #f8f9fa; --success: #28a745; --danger: #dc3545; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .container { background: white; width: 100%; max-width: 600px; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: var(--primary); margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        :root { --primary: #7b2cbf; --bg: #f3f4f7; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .container { background: white; width: 100%; max-width: 550px; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: var(--primary); margin-bottom: 20px; text-transform: uppercase; }
         .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: 600; color: #444; font-size: 13px; }
-        input, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px; transition: 0.3s; outline: none; }
-        input:focus { border-color: var(--primary); box-shadow: 0 0 8px rgba(123, 44, 191, 0.2); }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; font-size: 13px; }
+        input, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 5px rgba(123,44,191,0.2); }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        button { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px; transition: 0.3s; }
-        button:hover { background: #5a189a; transform: translateY(-1px); }
-        button:disabled { background: #ccc; cursor: not-allowed; }
+        button { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px; }
+        button:hover { background: #5a189a; }
         
-        /* --- Search Section --- */
-        .search-area { margin-top: 40px; border-top: 2px dashed #ddd; padding-top: 25px; }
-        .search-title { font-size: 14px; font-weight: bold; color: #777; margin-bottom: 12px; text-transform: uppercase; }
-        #searchResult { margin-top: 15px; padding: 15px; border-radius: 8px; font-size: 14px; display: none; line-height: 1.5; }
-        .status-loading { background: #e9ecef; color: #495057; border: 1px solid #dee2e6; }
-        .status-found { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
-        .status-ok { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        /* Search styling */
+        .search-section { margin-top: 30px; padding-top: 20px; border-top: 2px dashed #eee; }
+        #searchBox { background: #e9ecef; border-radius: 8px; padding: 15px; display: none; margin-top: 10px; font-size: 14px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Input Data REKAPAN</h2>
-    
-    <form id="mainForm">
+    <h2>Form Rekapan</h2>
+    <form id="rekapanForm">
         <div class="form-group">
             <label>BILLING (Opsional)</label>
-            <input type="text" name="Billing" placeholder="Boleh dikosongkan">
+            <input type="text" name="Billing">
         </div>
 
         <div class="grid">
@@ -45,35 +38,35 @@
                 <input type="date" name="Tanggal" required>
             </div>
             <div class="form-group">
-                <label>JAPO (Hanya Angka)</label>
-                <input type="number" name="Japo" required placeholder="Contoh: 15">
+                <label>JAPO (Angka)</label>
+                <input type="number" name="Japo" required>
             </div>
         </div>
 
         <div class="form-group">
             <label>NAMA PELANGGAN</label>
-            <input type="text" id="inputNama" name="Nama" required placeholder="Input nama untuk cek otomatis">
+            <input type="text" id="namaInput" name="Nama" required placeholder="Ketik nama untuk cek otomatis...">
         </div>
 
         <div class="form-group">
-            <label>ID CST (Hanya Angka - Opsional)</label>
-            <input type="number" name="ID_CST" placeholder="Contoh: 123456">
+            <label>ID CST (Hanya Angka)</label>
+            <input type="number" name="ID_CST">
         </div>
 
         <div class="form-group">
             <label>NOMOR HP</label>
-            <input type="tel" id="inputHP" name="No_HP" placeholder="812xxxxxxxx" required>
+            <input type="tel" id="hpInput" name="No_HP" placeholder="812xxxx" required>
         </div>
 
         <div class="form-group">
-            <label>ALAMAT LENGKAP</label>
-            <textarea name="Alamat" rows="2" required placeholder="Alamat pemasangan wajib diisi"></textarea>
+            <label>ALAMAT</label>
+            <textarea name="Alamat" rows="2" required></textarea>
         </div>
 
         <div class="grid">
             <div class="form-group">
                 <label>PAKET</label>
-                <input type="text" name="Paket" placeholder="Contoh: Gamer 50Mbps">
+                <input type="text" name="Paket">
             </div>
             <div class="form-group">
                 <label>POINT</label>
@@ -88,7 +81,7 @@
             </div>
             <div class="form-group">
                 <label>EMAIL</label>
-                <input type="email" name="Email" required placeholder="wajib format email">
+                <input type="email" name="Email" required>
             </div>
         </div>
 
@@ -97,90 +90,82 @@
             <input type="text" name="Command">
         </div>
 
-        <button type="submit" id="btnSubmit">SIMPAN DATA KE BARIS KOSONG</button>
+        <button type="submit" id="btnKirim">SIMPAN KE BARIS KOSONG</button>
     </form>
 
-    <div class="search-area">
-        <div class="search-title">🔍 Hasil Pengecekan Database</div>
-        <div id="searchResult">Gunakan kolom Nama di atas untuk mengecek data otomatis.</div>
+    <div class="search-section">
+        <label>STATUS PENGECEKAN NAMA:</label>
+        <div id="searchBox"></div>
     </div>
 </div>
 
 <script>
-    /* --- PENTING: GANTI URL DI BAWAH INI DENGAN URL DEPLOY ANDA --- */
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxme9OW5MYI1We94JJzeEdjrkUVgTciNRpRQ6gUDVR4raS7EsVvxlutDtAJWEwEPqjT/exec';
+    // --- TEMPEL URL DEPLOY ANDA DI SINI ---
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbya1wWVkUFx1eetR0VutranYC5LWjBic2dZregLXOFpiHAuHRYducIMEeoPKcAOhpjd/exec';
 
-    const form = document.getElementById('mainForm');
-    const btnSubmit = document.getElementById('btnSubmit');
-    const inputNama = document.getElementById('inputNama');
-    const inputHP = document.getElementById('inputHP');
-    const resDiv = document.getElementById('searchResult');
+    const form = document.getElementById('rekapanForm');
+    const namaInput = document.getElementById('namaInput');
+    const searchBox = document.getElementById('searchBox');
 
-    // 1. Format +62 Otomatis saat kursor keluar dari kolom HP
-    inputHP.addEventListener('blur', function() {
-        let val = this.value.trim();
-        if(val && !val.startsWith('+62')) {
-            if(val.startsWith('0')) val = val.substring(1);
-            this.value = '+62' + val;
-        }
-    });
-
-    // 2. Pencarian Otomatis Saat Mengetik Nama (Minimal 3 Karakter)
+    // 1. Logika Cari Otomatis saat mengetik nama
     let typingTimer;
-    inputNama.addEventListener('input', function() {
+    namaInput.addEventListener('input', () => {
         clearTimeout(typingTimer);
-        const query = this.value.trim();
-        
-        if (query.length >= 3) {
-            resDiv.style.display = "block";
-            resDiv.className = "status-loading";
-            resDiv.innerText = "⏳ Mengecek nama '" + query + "' di database...";
-
+        const val = namaInput.value.trim();
+        if (val.length >= 3) {
+            searchBox.style.display = "block";
+            searchBox.style.background = "#e9ecef";
+            searchBox.innerText = "🔍 Mengecek database...";
+            
             typingTimer = setTimeout(() => {
-                fetch(`${scriptURL}?search=${encodeURIComponent(query)}`)
-                .then(r => r.json())
-                .then(d => {
-                    if(d.found) {
-                        resDiv.className = "status-found";
-                        resDiv.innerHTML = `⚠️ <b>PERINGATAN:</b> Nama <b>${d.Nama}</b> sudah terdaftar dengan Paket <b>${d.Paket}</b>. Mohon cek kembali agar tidak duplikat.`;
+                fetch(`${scriptURL}?search=${encodeURIComponent(val)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.found) {
+                        searchBox.style.background = "#fff3cd";
+                        searchBox.innerHTML = `⚠️ <b>Nama sudah ada:</b> ${data.Nama} (${data.Paket})`;
                     } else {
-                        resDiv.className = "status-ok";
-                        resDiv.innerText = "✅ Nama tersedia. Belum ada di sheet REKAPAN.";
+                        searchBox.style.background = "#d4edda";
+                        searchBox.innerText = "✅ Nama tersedia / Belum ada di rekapan.";
                     }
-                })
-                .catch(() => {
-                    resDiv.innerText = "❌ Gagal terhubung ke database.";
                 });
-            }, 800); // Delay 0.8 detik setelah berhenti mengetik
+            }, 800);
         } else {
-            resDiv.style.display = "none";
+            searchBox.style.display = "none";
         }
     });
 
-    // 3. Proses Pengiriman Data (Simpan)
+    // 2. Format +62 HP
+    document.getElementById('hpInput').addEventListener('blur', function() {
+        let v = this.value.trim();
+        if(v && !v.startsWith('+62')) {
+            if(v.startsWith('0')) v = v.substring(1);
+            this.value = '+62' + v;
+        }
+    });
+
+    // 3. Kirim Data
     form.addEventListener('submit', e => {
         e.preventDefault();
-        btnSubmit.disabled = true;
-        btnSubmit.innerText = "Sedang Menyimpan...";
+        const btn = document.getElementById('btnKirim');
+        btn.disabled = true;
+        btn.innerText = "Proses Menyimpan...";
 
         fetch(scriptURL, { method: 'POST', body: new FormData(form)})
         .then(res => res.json())
         .then(data => {
             if(data.result === 'duplicate') {
-                alert("❌ GAGAL: Data Duplikat ditemukan (Nama atau ID CST sudah ada)!");
+                alert("Gagal! Nama pelanggan sudah terdaftar.");
             } else {
-                alert("✅ BERHASIL: Data disimpan di baris " + data.row + " (Kolom A kosong)");
+                alert("Berhasil disimpan di baris " + data.row);
                 form.reset();
-                resDiv.style.display = "none";
+                searchBox.style.display = "none";
             }
         })
-        .catch(error => {
-            alert("❌ ERROR: Periksa koneksi internet atau URL Script Anda.");
-            console.error('Error!', error.message);
-        })
+        .catch(err => alert("Koneksi Error"))
         .finally(() => {
-            btnSubmit.disabled = false;
-            btnSubmit.innerText = "SIMPAN DATA KE BARIS KOSONG";
+            btn.disabled = false;
+            btn.innerText = "SIMPAN KE BARIS KOSONG";
         });
     });
 </script>
