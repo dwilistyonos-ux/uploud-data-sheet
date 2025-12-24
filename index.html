@@ -2,56 +2,51 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Input & Cari Data</title>
+    <title>Sistem Rekapan CST</title>
     <style>
-        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
-        .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; padding: 20px; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .search-section { background: #e7f3ff; padding: 20px; border-radius: 10px; margin-bottom: 25px; border-left: 5px solid #007bff; }
         .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 13px; }
-        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        .search-box { margin-bottom: 30px; border: 2px solid #007bff; padding: 15px; border-radius: 8px; }
-        #loader { display: none; color: blue; text-align: center; margin-top: 10px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #333; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; }
+        button:hover { background: #218838; }
+        #searchResult { margin-top: 10px; font-size: 14px; color: #555; background: #fff; padding: 10px; border-radius: 5px; display: none; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="search-box">
-        <label>CARI DATA (ID CST / NAMA)</label>
-        <input type="text" id="searchInput" placeholder="Masukkan ID atau Nama...">
-        <button type="button" onclick="cariData()" style="background: #007bff;">CEK DATA SPREADSHEET</button>
+    <div class="search-section">
+        <label>🔍 PENCARIAN DATA (NAMA / ID CST)</label>
+        <input type="text" id="q" placeholder="Ketik nama atau ID untuk cek...">
+        <button type="button" onclick="searchData()" style="background: #007bff; margin-top: 10px;">Cari Data</button>
+        <div id="searchResult"></div>
     </div>
 
-    <hr>
-
-    <h2>Form Input Rekapan</h2>
-    <form id="mainForm">
-        <div class="form-group"><label>BILLING (Opsional)</label><input type="text" name="billing"></div>
-        <div class="form-group"><label>TANGGAL</label><input type="date" name="tanggal" required></div>
-        <div class="form-group"><label>JAPO (Format Angka)</label><input type="number" name="japo" required></div>
-        <div class="form-group"><label>NAMA</label><input type="text" name="nama" required></div>
-        <div class="form-group"><label>ID CST (Angka - Opsional)</label><input type="number" name="id_cst"></div>
+    <h2>Input Rekapan Baru</h2>
+    <form id="rekapanForm">
+        <div class="form-group"><label>BILLING (Kolom B)</label><input type="text" name="billing"></div>
+        <div class="form-group"><label>TANGGAL (Kolom C)</label><input type="date" name="tanggal" required></div>
+        <div class="form-group"><label>JAPO (Kolom D - Angka)</label><input type="number" name="japo" required></div>
+        <div class="form-group"><label>NAMA (Kolom E)</label><input type="text" name="nama" required></div>
+        <div class="form-group"><label>ID CST (Kolom F - Angka)</label><input type="number" name="id_cst"></div>
+        <div class="form-group"><label>NOMOR HP (Kolom G)</label><input type="tel" id="hp" name="nomor_hp" value="+62" required></div>
+        <div class="form-group"><label>ALAMAT (Kolom H - Wajib)</label><textarea name="alamat" required></textarea></div>
         
         <div class="form-group">
-            <label>NOMOR HP</label>
-            <input type="tel" id="noHp" name="nomor_hp" value="+62" required>
-        </div>
-
-        <div class="form-group"><label>ALAMAT (Wajib)</label><textarea name="alamat" required></textarea></div>
-        
-        <div class="form-group">
-            <label>PAKET</label>
+            <label>PAKET (Kolom I)</label>
             <select name="paket" required>
                 <option value="10Mbps">10Mbps</option>
                 <option value="20Mbps">20Mbps</option>
                 <option value="50Mbps">50Mbps</option>
+                <option value="100Mbps">100Mbps</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label>POINT</label>
+            <label>POINT (Kolom J)</label>
             <select name="point" required>
                 <option value="0">0</option>
                 <option value="0.25">0.25</option>
@@ -59,55 +54,63 @@
             </select>
         </div>
 
-        <div class="form-group"><label>BONUS</label><input type="text" name="bonus"></div>
-        <div class="form-group"><label>EMAIL (Wajib Format Email)</label><input type="email" name="email" required></div>
-        <div class="form-group"><label>COMMAND</label><input type="text" name="command"></div>
+        <div class="form-group"><label>BONUS (Kolom K)</label><input type="text" name="bonus"></div>
+        <div class="form-group"><label>EMAIL (Kolom L - Wajib Format)</label><input type="email" name="email" required></div>
+        <div class="form-group"><label>COMMAND (Kolom M)</label><input type="text" name="command"></div>
 
-        <button type="submit" id="btnSubmit">KIRIM KE REKAPAN</button>
-        <div id="loader">Memproses data...</div>
+        <button type="submit" id="submitBtn">KIRIM DATA</button>
     </form>
 </div>
 
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbw9_Ey8lJiw5deU1jI4FVFGxU6En6Ujui_2q_KWNgRI4wcYi1P-8dgq3H9RNVBhvi_r/exec';
-    const form = document.getElementById('mainForm');
-    const noHpInput = document.getElementById('noHp');
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbztls7rqvQhAPRIw1M3VbR2j9XE4ZDBMw369nOXKPB3i9tT_LvWeOFL600cJt-QL26a/exec';
+    const form = document.getElementById('rekapanForm');
+    const hpInput = document.getElementById('hp');
 
-    // Otomatisasi format +62
-    noHpInput.addEventListener('input', function() {
-        if (!this.value.startsWith('+62')) {
-            this.value = '+62';
-        }
+    // Paksa format +62
+    hpInput.addEventListener('input', function() {
+        if (!this.value.startsWith('+62')) this.value = '+62';
     });
 
+    // Fungsi Pencarian
+    function searchData() {
+        const query = document.getElementById('q').value;
+        const resDiv = document.getElementById('searchResult');
+        if (!query) return alert("Masukkan kata kunci!");
+        
+        resDiv.style.display = 'block';
+        resDiv.innerHTML = "Sedang mencari...";
+
+        fetch(`${scriptURL}?action=search&q=${query}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.length > 0) {
+                resDiv.innerHTML = `<strong>Ditemukan:</strong> ${data.length} data.<br>Terakhir: ${data[0][4]} - ${data[0][8]}`;
+            } else {
+                resDiv.innerHTML = "Data tidak ditemukan.";
+            }
+        });
+    }
+
+    // Submit Form
     form.addEventListener('submit', e => {
         e.preventDefault();
-        document.getElementById('btnSubmit').disabled = true;
-        document.getElementById('loader').style.display = 'block';
-
+        document.getElementById('submitBtn').disabled = true;
+        
         fetch(scriptURL, { method: 'POST', body: new FormData(form)})
         .then(res => res.text())
         .then(response => {
-            document.getElementById('loader').style.display = 'none';
-            document.getElementById('btnSubmit').disabled = false;
-
+            document.getElementById('submitBtn').disabled = false;
             if (response === "DUPLIKAT") {
-                alert("⚠️ PERINGATAN: ID CST sudah terdaftar di rekapan!");
-            } else if (response === "SUKSES") {
-                alert("✅ Data berhasil disimpan!");
-                form.reset();
-                noHpInput.value = "+62";
+                alert("❌ GAGAL: ID CST ini sudah ada di rekapan!");
             } else {
-                alert("Terjadi kesalahan: " + response);
+                alert("✅ SUKSES: Data tersimpan di kolom B-M");
+                form.reset();
+                hpInput.value = "+62";
             }
         })
         .catch(error => alert("Error: " + error.message));
     });
-
-    function cariData() {
-        alert("Fitur pencarian langsung memerlukan API khusus. Sementara gunakan CTRL+F di Spreadsheet atau saya buatkan skrip tambahan?");
-    }
 </script>
 </body>
 </html>
-
