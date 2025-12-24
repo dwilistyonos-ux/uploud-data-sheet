@@ -2,160 +2,106 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Input Data Spreadsheet</title>
+    <title>Form Input MyRepublic</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; }
-        .container { max-width: 600px; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: auto; }
-        h2 { text-align: center; color: #333; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
-        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        input:required { border-left: 4px solid #dc3545; }
-        button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 10px; }
-        button:hover { background: #0056b3; }
-        .search-section { margin-top: 30px; border-top: 2px solid #eee; pt: 20px; }
-        #status { text-align: center; margin-top: 15px; font-weight: bold; }
+        body { font-family: sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding: 20px; }
+        .card { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #555; }
+        input, textarea { width: 100%; padding: 8px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background: #7b2cbf; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        button:disabled { background: #ccc; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>Input Data Pelanggan</h2>
-    
-    <form id="mainForm">
-        <div class="form-group">
-            <label>Billing (Opsional)</label>
-            <input type="text" name="Billing">
-        </div>
+<div class="card">
+    <h2 style="color:#7b2cbf; text-align:center">Input Data Pelanggan</h2>
+    <form id="formInput">
+        <label>BILLING (Opsional)</label>
+        <input type="text" name="Billing">
 
-        <div class="form-group">
-            <label>Tanggal</label>
-            <input type="date" name="Tanggal" required>
-        </div>
-
-        <div class="form-group">
-            <label>Japo (Hanya Angka)</label>
-            <input type="number" name="Japo" required>
-        </div>
-
-        <div class="form-group">
-            <label>Nama Pelanggan</label>
-            <input type="text" name="Nama" required>
-        </div>
-
-        <div class="form-group">
-            <label>ID CST (Angka - Opsional)</label>
-            <input type="number" name="ID_CST">
-        </div>
-
-        <div class="form-group">
-            <label>Nomor HP</label>
-            <input type="tel" id="no_hp" name="No_HP" placeholder="8123456..." required>
-            <small>*Otomatis ditambah +62</small>
-        </div>
-
-        <div class="form-group">
-            <label>Alamat Lengkap</label>
-            <textarea name="Alamat" required></textarea>
-        </div>
-
-        <div class="form-group">
-            <label>Paket</label>
-            <input type="text" name="Paket" required>
-        </div>
-
-        <div style="display: flex; gap: 10px;">
-            <div class="form-group" style="flex: 1;">
-                <label>Point</label>
-                <input type="number" name="Point">
+        <div class="grid">
+            <div>
+                <label>TANGGAL</label>
+                <input type="date" name="Tanggal" required>
             </div>
-            <div class="form-group" style="flex: 1;">
-                <label>Bonus</label>
+            <div>
+                <label>JAPO (Angka)</label>
+                <input type="number" name="Japo" required>
+            </div>
+        </div>
+
+        <label>NAMA</label>
+        <input type="text" name="Nama" required>
+
+        <label>ID CST (Angka)</label>
+        <input type="number" name="ID_CST">
+
+        <label>NOMOR HP</label>
+        <input type="tel" id="hp" name="No_HP" placeholder="812xxxx" required>
+
+        <label>ALAMAT</label>
+        <textarea name="Alamat" rows="2" required></textarea>
+
+        <div class="grid">
+            <div>
+                <label>PAKET</label>
+                <input type="text" name="Paket">
+            </div>
+            <div>
+                <label>POINT</label>
+                <input type="text" name="Point">
+            </div>
+        </div>
+
+        <div class="grid">
+            <div>
+                <label>BONUS</label>
                 <input type="text" name="Bonus">
             </div>
+            <div>
+                <label>EMAIL</label>
+                <input type="email" name="Email" required>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label>Email</label>
-            <input type="email" name="Email" required placeholder="contoh@mail.com">
-        </div>
+        <label>COMMAND</label>
+        <input type="text" name="Command">
 
-        <div class="form-group">
-            <label>Command</label>
-            <input type="text" name="Command">
-        </div>
-
-        <button type="submit" id="btnSubmit">Simpan Data</button>
+        <button type="submit" id="submitBtn">SIMPAN DATA KE BARIS 8+</button>
     </form>
-
-    <div id="status"></div>
-
-    <div class="search-section">
-        <h3>Cari Data di Spreadsheet</h3>
-        <input type="text" id="searchInput" placeholder="Masukkan Nama atau ID CST...">
-        <button onclick="searchData()" style="background: #6c757d;">Cari</button>
-        <div id="searchResult" style="margin-top: 10px; font-size: 14px;"></div>
-    </div>
 </div>
 
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxE7mVhrluJhubfjNqqQyFQvrhDzQ40x0EossMtxj4NLC40RBHZjtckk_AbYy8JruyV/exec';
-    const form = document.getElementById('mainForm');
-    const btnSubmit = document.getElementById('btnSubmit');
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyv87Gc2RwdL77KsK9rveFZG5QrbZ90vbFfjXgVpGK9mtpCxmeTG5XJI8KJZt8276rs/exec';
+    const form = document.getElementById('formInput');
+    const btn = document.getElementById('submitBtn');
 
-    // Otomatis format +62 saat input Nomor HP
-    document.getElementById('no_hp').addEventListener('blur', function(e) {
-        let val = e.target.value;
-        if (val && !val.startsWith('+62')) {
-            if (val.startsWith('0')) val = val.substring(1);
-            e.target.value = '+62' + val;
+    // Format otomatis +62
+    document.getElementById('hp').addEventListener('blur', function(e) {
+        if(this.value && !this.value.startsWith('+62')) {
+            let val = this.value.startsWith('0') ? this.value.substring(1) : this.value;
+            this.value = '+62' + val;
         }
     });
 
     form.addEventListener('submit', e => {
         e.preventDefault();
-        btnSubmit.disabled = true;
-        document.getElementById('status').innerText = "Mengecek duplikat & mengirim data...";
+        btn.disabled = true;
+        btn.innerHTML = "Memproses...";
 
-        // Logic kirim data
         fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-        .then(response => response.json())
         .then(res => {
-            if(res.result === 'error' && res.type === 'duplicate') {
-                alert("PERINGATAN: Data dengan ID CST atau Nama tersebut sudah ada!");
-            } else {
-                alert("Berhasil! Data telah tersimpan.");
-                form.reset();
-            }
-            btnSubmit.disabled = false;
-            document.getElementById('status').innerText = "";
+            alert("Data Berhasil Disimpan di Baris 8+!");
+            form.reset();
         })
-        .catch(error => {
-            alert("Error: " + error.message);
-            btnSubmit.disabled = false;
+        .catch(err => alert("Error: " + err.message))
+        .finally(() => {
+            btn.disabled = false;
+            btn.innerHTML = "SIMPAN DATA KE BARIS 8+";
         });
     });
-
-    function searchData() {
-        const query = document.getElementById('searchInput').value;
-        if(!query) return alert("Masukkan kata kunci");
-        
-        document.getElementById('searchResult').innerText = "Mencari...";
-        
-        fetch(`${scriptURL}?search=${query}`)
-        .then(res => res.json())
-        .then(data => {
-            if(data.found) {
-                document.getElementById('searchResult').innerHTML = 
-                    `<div style="background:#e9ecef; padding:10px; border-radius:5px;">
-                        Found: <b>${data.Nama}</b> - ${data.Paket} (${data.No_HP})
-                    </div>`;
-            } else {
-                document.getElementById('searchResult').innerText = "Data tidak ditemukan.";
-            }
-        });
-    }
 </script>
 
 </body>
