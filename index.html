@@ -112,12 +112,13 @@
         p.value = val;
     }
 
- async function checkData() {
-    const query = document.getElementById('searchInput').value.trim();
-    if (!query) return alert("Masukkan Nama atau ID untuk mencari!");
 
-    const btn = document.querySelector('.btn-check'); // Pastikan class tombol CEK DATA sesuai
-    btn.innerHTML = "Mencari...";
+    async function checkData() {
+    const query = document.getElementById('searchInput').value.trim();
+    if (!query) return alert("Masukkan Nama atau ID!");
+
+    const btn = document.querySelector('.btn-check');
+    btn.innerHTML = "🔍 Mencari...";
 
     try {
         const response = await fetch(`${scriptURL}?action=check&query=${encodeURIComponent(query)}`);
@@ -125,26 +126,19 @@
 
         if (result.exists) {
             const d = result.details;
-            // Menampilkan seluruh data dari A sampai M dalam satu alert
             alert(
-                `📊 DATA DITEMUKAN!\n` +
-                `----------------------------------\n` +
-                `📌 No Urut : ${d.nomor}\n` +
-                `👤 Nama    : ${d.nama}\n` +
-                `🆔 ID CST  : ${d.id_cst}\n` +
-                `📞 No HP   : ${d.phone}\n` +
-                `🏠 Alamat  : ${d.alamat}\n` +
-                `📦 Paket   : ${d.paket}\n` +
-                `📅 Tanggal : ${d.tanggal}\n` +
-                `⌛ Japo    : ${d.japo}\n` +
-                `💬 Command : ${d.command}\n` +
-                `----------------------------------`
+                `⚠️ DATA DITEMUKAN!\n--------------------------\n` +
+                `NO URUT : ${d.no}\nBILLING : ${d.billing}\nTANGGAL : ${d.tanggal}\n` +
+                `JAPO    : ${d.japo}\nNAMA    : ${d.nama}\nID CST  : ${d.id_cst}\n` +
+                `NO HP   : ${d.phone}\nALAMAT  : ${d.alamat}\nPAKET   : ${d.paket}\n` +
+                `POINT   : ${d.point}\nBONUS   : ${d.bonus}\nEMAIL   : ${d.email}\n` +
+                `COMMAND : ${d.command}\n--------------------------`
             );
         } else {
-            alert("✅ AMAN: Data tidak ditemukan, silakan lanjut isi form.");
+            alert("✅ AMAN: Data belum ada.");
         }
     } catch (err) {
-        alert("Gagal mengambil data. Pastikan URL Script benar.");
+        alert("Gagal koneksi server.");
     } finally {
         btn.innerHTML = "CEK DATA";
     }
@@ -231,6 +225,7 @@
         p.value = val;
     }
 </script>
+
 
 
 
