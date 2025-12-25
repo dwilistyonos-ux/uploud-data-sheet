@@ -10,13 +10,8 @@
       background: linear-gradient(135deg, #4c1d95 0%, #1e1b4b 100%);
       min-height: 100vh;
     }
-    .copy-anim:active {
-      transform: scale(0.95);
-      background-color: #4ade80;
-    }
-    .fade-in {
-      animation: fadeIn 0.5s ease-in;
-    }
+    .copy-anim:active { transform: scale(0.95); background-color: #4ade80; }
+    .fade-in { animation: fadeIn 0.5s ease-in; }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -46,8 +41,8 @@
       const list = document.getElementById('resultsList');
       const loader = document.getElementById('loader');
       
-      // --- URL WEB APP ANDA DI BAWAH INI ---
-      const url = "https://script.google.com/macros/s/AKfycbwGnCfDLY6e6CI_09PV5ItSscoBe3mtvRhXfs54ry-Kq4t4YZL9Vf-1DDvtjGutBQXb/exec";
+      // URL Web App Anda
+      const url = "https://script.google.com/macros/s/AKfycbyENDC0na4ERr7hnHI6AAxxI8iIB2FodD0KMPp-g5ps5uChQACH-RrdOR2EoPMwsPqd/exec";
 
       if(!kueri) return alert("Masukkan Nama atau ID!");
 
@@ -67,6 +62,7 @@
             if (num.startsWith('0')) num = '62' + num.slice(1);
             if (!num.startsWith('62')) num = '62' + num;
 
+            // --- LOGIKA PERHITUNGAN UMUR ---
             const tglBersih = item.tanggal.split('T')[0]; 
             const [hari, bulan, tahun] = tglBersih.includes('/') ? tglBersih.split('/') : tglBersih.split('-').reverse();
             const tglPasang = new Date(`${tahun}-${bulan}-${hari}`);
@@ -74,10 +70,14 @@
             const selisihWaktu = tglSekarang.getTime() - tglPasang.getTime();
             const selisihHari = Math.floor(selisihWaktu / (1000 * 3600 * 24));
             
-            const isLama = selisihHari >= 90;
-            const labelLama = isLama ? 
-              `<span class="bg-amber-100 text-amber-700 text-[9px] px-2 py-1 rounded-md font-bold border border-amber-200 uppercase tracking-tighter">⚠️ Pelanggan 3+ Bulan</span>` 
-              : "";
+            let badgeStatus = "";
+            if (selisihHari >= 90) {
+              // Pelanggan Lama (3 Bulan keatas) -> ORANYE
+              badgeStatus = `<span class="bg-orange-100 text-orange-700 text-[9px] px-2 py-1 rounded-md font-bold border border-orange-200 uppercase">✨ Pelanggan 3+ Bulan</span>`;
+            } else {
+              // Pelanggan Baru (Dibawah 3 Bulan) -> HIJAU/BIRU
+              badgeStatus = `<span class="bg-emerald-100 text-emerald-700 text-[9px] px-2 py-1 rounded-md font-bold border border-emerald-200 uppercase">⚠️ Pelanggan Baru (-3 Bln)</span>`;
+            }
 
             const card = `
               <div class="bg-white rounded-3xl p-6 shadow-xl text-slate-800 border-l-[12px] border-indigo-500 fade-in">
@@ -85,7 +85,7 @@
                   <h3 class="font-extrabold text-indigo-900 uppercase text-lg leading-tight truncate">${item.nama}</h3>
                   <div class="flex flex-col items-end gap-1">
                     <span class="text-[9px] bg-indigo-600 text-white px-2 py-0.5 rounded-full font-black uppercase">${item.paket}</span>
-                    ${labelLama}
+                    ${badgeStatus}
                   </div>
                 </div>
                 
@@ -132,9 +132,7 @@
 
     function copyToClipboard(text) {
       if (!text || text === "-") return;
-      navigator.clipboard.writeText(text).then(() => {
-        // Berhasil disalin
-      }).catch(err => {
+      navigator.clipboard.writeText(text).then(() => {}).catch(err => {
         const input = document.createElement('input');
         input.value = text;
         document.body.appendChild(input);
