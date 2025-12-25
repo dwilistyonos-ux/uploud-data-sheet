@@ -1,73 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <base target="_top">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body { font-family: 'Segoe UI', sans-serif; background-color: #f0f2f5; padding: 20px; display: flex; justify-content: center; }
-    .search-container { background: white; padding: 25px; border-radius: 15px; width: 100%; max-width: 500px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    h2 { text-align: center; color: #1a73e8; margin-top: 0; }
-    input { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
-    button { width: 100%; padding: 12px; background: #1a73e8; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; }
-    button:hover { background: #1557b0; }
-    
-    #resultCard { margin-top: 25px; display: none; border-top: 2px solid #eee; pt: 20px; }
-    .data-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #fafafa; }
-    .label { color: #666; font-size: 14px; }
-    .value { font-weight: bold; color: #333; text-align: right; }
-    .status-msg { text-align: center; margin-top: 15px; color: #d93025; font-weight: bold; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pencarian Pelanggan - MyRepublic</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #4c1d95; color: #333; display: flex; justify-content: center; padding: 20px; }
+        .card { background: white; padding: 25px; border-radius: 15px; width: 100%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        h2 { text-align: center; color: #7f00ff; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background-color: #7f00ff; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        button:hover { background-color: #6d00db; }
+        #loader { display: none; text-align: center; margin: 10px 0; color: #7f00ff; font-weight: bold; }
+        .result { margin-top: 20px; display: none; border-top: 2px solid #eee; padding-top: 15px; }
+        .row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; }
+        .label { color: #666; }
+        .value { font-weight: bold; text-align: right; }
+    </style>
 </head>
 <body>
 
-<div class="search-container">
-  <h2>Cari Data Pelanggan</h2>
-  <input type="text" id="idInput" placeholder="Masukkan ID CST (Contoh: 4437199)">
-  <button onclick="search()">Cari Sekarang</button>
-  
-  <div id="status" class="status-msg"></div>
+<div class="card">
+    <h2>Cari Data CST</h2>
+    <input type="text" id="inputId" placeholder="Masukkan ID CST (44XXXXX)">
+    <button onclick="cari()">CARI SEKARANG</button>
 
-  <div id="resultCard">
-    <div class="data-row"><span class="label">Nama:</span> <span class="value" id="resNama"></span></div>
-    <div class="data-row"><span class="label">ID CST:</span> <span class="value" id="resId"></span></div>
-    <div class="data-row"><span class="label">No. HP:</span> <span class="value" id="resHp"></span></div>
-    <div class="data-row"><span class="label">Alamat:</span> <span class="value" id="resAlamat"></span></div>
-    <div class="data-row"><span class="label">Paket:</span> <span class="value" id="resPaket"></span></div>
-    <div class="data-row"><span class="label">Tanggal:</span> <span class="value" id="resTanggal"></span></div>
-    <div class="data-row"><span class="label">Email:</span> <span class="value" id="resEmail"></span></div>
-    <div class="data-row"><span class="label">Bonus:</span> <span class="value" id="resBonus" style="color: green;"></span></div>
-  </div>
+    <div id="loader">Mohon tunggu...</div>
+
+    <div id="result" class="result">
+        <div class="row"><span class="label">Nama:</span> <span id="resNama" class="value"></span></div>
+        <div class="row"><span class="label">ID CST:</span> <span id="resId" class="value"></span></div>
+        <div class="row"><span class="label">Paket:</span> <span id="resPaket" class="value"></span></div>
+        <div class="row"><span class="label">Alamat:</span> <span id="resAlamat" class="value"></span></div>
+    </div>
 </div>
 
 <script>
-  function search() {
-    var id = document.getElementById('idInput').value;
-    var status = document.getElementById('status');
-    var card = document.getElementById('resultCard');
-    
-    if(!id) return alert("Masukkan ID terlebih dahulu");
-    
-    status.innerHTML = "Sedang mencari...";
-    card.style.display = "none";
-
-    google.script.run.withSuccessHandler(function(res) {
-      status.innerHTML = "";
-      if (res) {
-        document.getElementById('resNama').innerText = res.nama;
-        document.getElementById('resId').innerText = res.idCst;
-        document.getElementById('resHp').innerText = res.noHp;
-        document.getElementById('resAlamat').innerText = res.alamat;
-        document.getElementById('resPaket').innerText = res.paket;
-        document.getElementById('resTanggal').innerText = res.tanggal;
-        document.getElementById('resEmail').innerText = res.email;
-        document.getElementById('resBonus').innerText = "Rp" + res.bonus.toLocaleString('id-ID');
+    async function cari() {
+        const id = document.getElementById('inputId').value;
+        const loader = document.getElementById('loader');
+        const resultDiv = document.getElementById('result');
         
-        card.style.display = "block";
-      } else {
-        status.innerHTML = "Data ID CST tersebut tidak ditemukan.";
-      }
-    }).cariData(id);
-  }
+        if (!id) return alert("Masukkan ID CST!");
+
+        // URL Web App Google Script Anda
+        const webAppUrl = "https://script.google.com/macros/s/AKfycbz4SiqUL0JPMmey47dTGCIgFCHt3IGjJKta3oKf56B4jCLsO36br4eho4o06UrnQK0d/exec";
+
+        loader.style.display = "block";
+        resultDiv.style.display = "none";
+
+        try {
+            // Memanggil data dari Google Sheets melalui API
+            const response = await fetch(`${webAppUrl}?id=${id}`);
+            const data = await response.json();
+
+            loader.style.display = "none";
+
+            if (data.status === "success") {
+                document.getElementById('resNama').innerText = data.nama;
+                document.getElementById('resId').innerText = data.idCst;
+                document.getElementById('resPaket').innerText = data.paket;
+                document.getElementById('resAlamat').innerText = data.alamat;
+                resultDiv.style.display = "block";
+            } else {
+                alert("Maaf, ID " + id + " tidak ditemukan!");
+            }
+        } catch (error) {
+            loader.style.display = "none";
+            alert("Terjadi kesalahan koneksi atau URL Web App salah.");
+        }
+    }
 </script>
 
 </body>
