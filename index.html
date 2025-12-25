@@ -140,17 +140,6 @@
             </button>
 
 
-const inputNomor = document.getElementById('nomor_hp');
-
-inputNomor.addEventListener('input', function() {
-    let value = this.value;
-    
-    // Jika dimulai dengan 0, ganti jadi 62
-    if (value.startsWith('0')) {
-        this.value = '62' + value.substring(1);
-    }
-});
-
         </div>
     </div>
 
@@ -190,4 +179,4 @@ inputNomor.addEventListener('input', function() {
                     console.error('Error!', error.message);
                 });
         });
-
+
