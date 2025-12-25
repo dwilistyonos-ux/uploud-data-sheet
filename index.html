@@ -190,18 +190,4 @@ inputNomor.addEventListener('input', function() {
                     console.error('Error!', error.message);
                 });
         });
-
-        function resetButton() {
-            btnKirim.disabled = false;
-            btnKirim.innerText = "KIRIM DATA KE SPREADSHEET";
-            btnKirim.classList.remove('opacity-50', 'cursor-not-allowed');
-            
-            // Sembunyikan pesan status setelah 8 detik
-            setTimeout(() => {
-                statusBox.classList.add('hidden');
-            }, 8000);
-        }
-    </script>
-</body>
-</html>
-
+
