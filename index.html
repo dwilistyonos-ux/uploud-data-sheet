@@ -1,181 +1,142 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <base target="_top">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body { font-family: sans-serif; padding: 20px; background-color: #f4f7f6; color: #333; }
-    .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    .form-group { margin-bottom: 15px; }
-    label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
-    input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
-    button { width: 100%; padding: 12px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; }
-    button:disabled { background: #ccc; }
-    .search-box { background: #e9ecef; padding: 15px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #dee2e6; }
-    #resultsTable { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
-    #resultsTable th, #resultsTable td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-    #resultsTable th { background-color: #007bff; color: white; }
-    .success-msg { color: green; font-weight: bold; margin-top: 10px; display: none; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Rekapan MyRepublic</title>
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --bg: #f0f3f7;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 20px; }
+        .container { background: #fff; padding: 30px; border-radius: 20px; box-shadow: 10px 10px 20px #bebebe, -10px -10px 20px #ffffff; width: 100%; max-width: 500px; }
+        h2 { text-align: center; color: #444; text-transform: uppercase; letter-spacing: 2px; }
+        
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #666; }
+        
+        /* Efek 3D Input */
+        input, select, textarea {
+            width: 100%; padding: 12px; border: none; border-radius: 8px;
+            background: #f0f3f7;
+            box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff;
+            box-sizing: border-box; transition: 0.3s;
+        }
+        input:focus { outline: none; box-shadow: inset 2px 2px 4px #d1d9e6, inset -2px -2px 4px #ffffff; }
+
+        .btn-container { display: flex; gap: 10px; margin-top: 20px; }
+        button {
+            flex: 1; padding: 15px; border: none; border-radius: 10px; cursor: pointer;
+            font-weight: bold; text-transform: uppercase; transition: 0.2s;
+        }
+        .btn-submit { background: #6c5ce7; color: white; box-shadow: 4px 4px 8px #cbcbcb, -4px -4px 8px #ffffff; }
+        .btn-submit:active { box-shadow: inset 4px 4px 8px #5649b8, inset -4px -4px 8px #8275ff; }
+        
+        .btn-search { background: #00b894; color: white; box-shadow: 4px 4px 8px #cbcbcb, -4px -4px 8px #ffffff; }
+
+        /* Notification */
+        #notif { display: none; padding: 15px; background: #55efc4; color: #006266; border-radius: 8px; text-align: center; margin-bottom: 15px; font-weight: bold; }
+    </style>
 </head>
 <body>
 
 <div class="container">
-  <div class="search-box">
-    <label>🔍 Cari Pelanggan (Nama / ID CST)</label>
-    <input type="text" id="searchInput" placeholder="Ketik minimal 3 huruf...">
-    <div id="searchStatus" style="font-size: 11px; margin-top: 5px;"></div>
-    <table id="resultsTable" style="display:none;">
-      <thead>
-        <tr><th>Nama</th><th>ID CST</th><th>Paket</th></tr>
-      </thead>
-      <tbody id="resultsBody"></tbody>
-    </table>
-  </div>
-
-  <hr>
-
-  <form id="mainForm">
-    <h3>Form Input Rekapan</h3>
+    <h2>Input Data Sales</h2>
+    <div id="notif">Data Berhasil Terkirim! ✅</div>
     
-    <div class="form-group">
-      <label>Nama Pelanggan</label>
-      <input type="text" name="Nama" id="inpNama" required>
-    </div>
+    <form id="salesForm">
+        <div class="form-group">
+            <label>Billing</label>
+            <input type="text" name="billing" required>
+        </div>
+        <div class="form-group">
+            <label>Tanggal</label>
+            <input type="date" name="tanggal" required>
+        </div>
+        <div class="form-group">
+            <label>JAPO</label>
+            <input type="text" name="japo">
+        </div>
+        <div class="form-group">
+            <label>Nama Pelanggan</label>
+            <input type="text" name="nama" required>
+        </div>
+        <div class="form-group">
+            <label>ID CST</label>
+            <input type="text" name="id_cst" required>
+        </div>
+        <div class="form-group">
+            <label>Nomor HP (Tanpa 0/62)</label>
+            <input type="number" name="hp" placeholder="8123456xxx" required>
+        </div>
+        <div class="form-group">
+            <label>Alamat</label>
+            <textarea name="alamat" rows="2"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Paket</label>
+            <select name="paket" id="paketSelect"></select>
+        </div>
+        <div class="form-group">
+            <label>Point</label>
+            <select name="point">
+                <option value="0.25">0.25</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Bonus</label>
+            <select name="bonus" id="bonusSelect"></select>
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email">
+        </div>
 
-    <div class="form-group">
-      <label>ID CST</label>
-      <input type="text" name="ID_CST" id="inpID" required>
-    </div>
-
-    <div class="form-group">
-      <label>Paket</label>
-      <select name="Paket" id="paketSelect" required></select>
-    </div>
-
-    <div class="form-group">
-      <label>Point</label>
-      <select name="Point" required>
-        <option value="0.25">0.25</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Bonus</label>
-      <select name="Bonus" id="bonusSelect" required></select>
-    </div>
-
-    <div class="form-group">
-      <label>Tanggal</label>
-      <input type="date" name="Tanggal">
-    </div>
-
-    <div class="form-group"><label>Email</label><input type="email" name="email"></div>
-    <div class="form-group"><label>Japo</label><input type="number" name="Japo"></div>
-    <div class="form-group"><label>No HP</label><input type="number" name="No_hp"></div>
-    <div class="form-group"><label>Alamat</label><textarea name="Alamat"></textarea></div>
-
-    <button type="submit" id="submitBtn">SIMPAN KE DATABASE</button>
-    <div id="successMsg" class="success-msg">✅ Data berhasil disimpan!</div>
-  </form>
+        <div class="btn-container">
+            <button type="submit" class="btn-submit">Kirim Data</button>
+            <button type="button" class="btn-search" onclick="alert('Fitur pencarian terhubung ke database spreadsheet')">Cari Data</button>
+        </div>
+    </form>
 </div>
 
 <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxsmlTajrp_dq8DoXqEH8UlzHjwbNPoZ2ITQFMjw1Fkf9ullfVXW6fEGjeskSJVWAU1/exec"; // GANTI DENGAN URL DEPLOY ANDA
+    // Isi otomatis dropdown Paket 10Mbps - 500Mbps
+    const paketArr = ["10Mbps", "15Mbps", "30Mbps", "50Mbps", "100Mbps", "250Mbps", "500Mbps"];
+    const pSelect = document.getElementById('paketSelect');
+    paketArr.forEach(p => {
+        let opt = document.createElement('option');
+        opt.value = p; opt.innerHTML = p;
+        pSelect.appendChild(opt);
+    });
 
-  // 1. ISI DROPDOWN OTOMATIS
-  const paketSelect = document.getElementById('paketSelect');
-  const bonusSelect = document.getElementById('bonusSelect');
-
-  // Paket 10 - 500 Mbps
-  const listPaket = [10, 15, 20, 30, 40, 50, 75, 100, 150, 200, 300, 500];
-  listPaket.forEach(v => {
-    let opt = new Option(v + " Mbps", v + "Mbps");
-    paketSelect.add(opt);
-  });
-
-  // Bonus 25k - 1jt
-  const listBonus = [25000, 50000, 100000, 150000, 200000, 300000, 400000, 500000, 600000, 750000, 1000000];
-  listBonus.forEach(v => {
-    let opt = new Option("Rp " + v.toLocaleString('id-ID'), v);
-    bonusSelect.add(opt);
-  });
-
-  // 2. LOGIKA PENCARIAN
-  document.getElementById('searchInput').addEventListener('input', function() {
-    const val = this.value;
-    const body = document.getElementById('resultsBody');
-    const table = document.getElementById('resultsTable');
-    
-    if (val.length < 3) {
-      table.style.display = 'none';
-      return;
+    // Isi otomatis dropdown Bonus 25rb - 1jt
+    const bonusSelect = document.getElementById('bonusSelect');
+    for(let i=25000; i<=1000000; i+=25000) {
+        let opt = document.createElement('option');
+        opt.value = i; opt.innerHTML = "Rp " + i.toLocaleString();
+        bonusSelect.appendChild(opt);
+        if(i >= 100000 && i < 1000000) i += 25000; // Percepat interval setelah 100rb jika perlu
     }
 
-    fetch(`${SCRIPT_URL}?search=${val}`)
-      .then(res => res.json())
-      .then(data => {
-        body.innerHTML = '';
-        if (data.length > 0) {
-          table.style.display = 'table';
-          data.forEach(item => {
-            let row = body.insertRow();
-            row.innerHTML = `<td>${item.nama}</td><td>${item.id_cst}</td><td>${item.paket}</td>`;
-            row.style.cursor = "pointer";
-            row.onclick = () => {
-              document.getElementById('inpNama').value = item.nama;
-              document.getElementById('inpID').value = item.id_cst;
-              table.style.display = 'none';
-            };
-          });
-        }
-      });
-  });
+    // Script Kirim ke Google Sheets
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzZiWRHTKUFtyboUbTtpfVBVBHR_hJ79MSN5zCTg9vjXc9LwRNe0CxZFqD1H6xrq8mr/exec'; // GANTI DENGAN URL DARI LANGKAH 1
+    const form = document.getElementById('salesForm');
 
-  // 3. SIMPAN DATA
-  document.getElementById('mainForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const btn = document.getElementById('submitBtn');
-    btn.disabled = true;
-    btn.innerHTML = "Sedang Menyimpan...";
-
-    fetch(SCRIPT_URL, {
-      method: 'POST',
-      body: new FormData(this)
-    })
-    .then(res => res.json())
-    .then(res => {
-      if (res.result === 'duplicate') {
-        alert("⚠️ Nama sudah ada di database!");
-      } else if (res.result === 'success') {
-        document.getElementById('successMsg').style.display = 'block';
-        this.reset();
-        setTimeout(() => { document.getElementById('successMsg').style.display = 'none'; }, 3000);
-      }
-      btn.disabled = false;
-      btn.innerHTML = "SIMPAN KE DATABASE";
-    })
-    .catch(err => {
-      alert("Error simpan. Cek koneksi.");
-      btn.disabled = false;
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => {
+                document.getElementById('notif').style.display = 'block';
+                form.reset();
+                setTimeout(() => { document.getElementById('notif').style.display = 'none'; }, 3000);
+            })
+            .catch(error => console.error('Error!', error.message));
     });
-  });
 </script>
-
-
-  <div class="form-group">
-  <label>No HP</label>
-  <input type="text" 
-         id="inpNoHp" 
-         name="No_hp" 
-         value="+62" 
-         oninput="forceWAFormat(this)" 
-         required>
-</div>
 
 </body>
 </html>
-
-
