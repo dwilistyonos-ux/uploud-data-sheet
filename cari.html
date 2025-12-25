@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cari Data Customer</title>
+  <title>Cari Pelanggan</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-900 p-5 font-sans text-slate-100 flex flex-col items-center">
@@ -25,8 +25,8 @@
       const kueri = document.getElementById('userInput').value;
       const list = document.getElementById('resultsList');
       const loader = document.getElementById('loader');
-      // Gunakan URL Web App Anda
-      const url = "https://script.google.com/macros/s/AKfycbwBG8EEDIXwSdChRAtKJdb_1c9vmVgjj2ciizW7XydcY6lE9gQWtS7CRUOW1nYF07T4/exec";
+      // Pastikan URL di bawah ini adalah URL Web App (Deployment) terbaru Anda
+      const url = "https://script.google.com/macros/s/AKfycbykwB0D8zN3VP26z39WD0GF687TnBeU8k9ji2A1XZRpY_Bx5jlccqIDtIjvMA5DiDj9/exec (LENGKAPI URL ANDA)";
 
       if(!kueri) return alert("Masukkan Nama atau ID!");
 
@@ -41,26 +41,29 @@
         if (result.status === "success") {
           result.data.forEach(item => {
             let num = item.noHp.toString().replace(/\D/g, '');
-            // Pastikan format nomor WA benar
             if (num.startsWith('0')) num = '62' + num.slice(1);
             if (!num.startsWith('62')) num = '62' + num;
 
             const card = `
-              <div class="bg-slate-800 rounded-2xl p-5 shadow-xl border-l-4 border-purple-500 animate-fade-in">
+              <div class="bg-slate-800 rounded-2xl p-5 shadow-xl border-l-4 border-purple-500">
                 <div class="flex justify-between items-start mb-2">
                   <h3 class="font-bold text-purple-300 uppercase">${item.nama}</h3>
                   <span class="text-[10px] bg-slate-700 text-slate-300 px-2 py-1 rounded-md font-bold">${item.paket}</span>
                 </div>
                 <p class="text-xs text-slate-500 mb-3">${item.idCst} | ${item.email || '-'}</p>
                 
-                <div class="space-y-2 text-sm bg-slate-900/50 p-3 rounded-lg border border-slate-700 mb-4">
+                <div class="space-y-2 text-sm bg-slate-900/50 p-3 rounded-lg border border-slate-700 mb-4 text-slate-300">
                   <div class="flex justify-between border-b border-slate-700 pb-1">
-                    <span class="text-slate-400">Jatuh Tempo:</span> 
-                    <span class="font-bold text-red-400">${item.japo}</span>
+                    <span>Tanggal Pasang:</span> 
+                    <span class="font-semibold text-white">${item.tanggal}</span>
                   </div>
-                  <div class="flex flex-col">
-                    <span class="text-slate-400 text-xs">Alamat Lengkap:</span>
-                    <span class="text-slate-200 mt-1 italic text-xs leading-relaxed">${item.alamat || "Alamat tidak diisi"}</span>
+                  <div class="flex justify-between border-b border-slate-700 pb-1">
+                    <span>Jatuh Tempo:</span> 
+                    <span class="font-bold text-red-400">Tgl ${item.japo}</span>
+                  </div>
+                  <div class="flex flex-col pt-1">
+                    <span class="text-slate-500 text-xs">Alamat Lengkap:</span>
+                    <span class="text-slate-200 mt-1 italic text-xs leading-relaxed font-medium">${item.alamat || "Alamat tidak tersedia"}</span>
                   </div>
                 </div>
 
