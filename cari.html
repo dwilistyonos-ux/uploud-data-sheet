@@ -30,6 +30,7 @@
     <div id="result" class="result">
         <div class="row"><span class="label">Nama:</span> <span id="resNama" class="value"></span></div>
         <div class="row"><span class="label">ID CST:</span> <span id="resId" class="value"></span></div>
+        <div class="row"><span class="label">No. HP:</span> <span id="resHp" class="value"></span></div>
         <div class="row"><span class="label">Paket:</span> <span id="resPaket" class="value"></span></div>
         <div class="row"><span class="label">Alamat:</span> <span id="resAlamat" class="value"></span></div>
     </div>
@@ -59,6 +60,8 @@
             if (data.status === "success") {
                 document.getElementById('resNama').innerText = data.nama;
                 document.getElementById('resId').innerText = data.idCst;
+                document.getElementById('resHp').innerText = data.noHp;
+                <a id="resHpLink" href="#" target="_blank">Hubungi WA</a>
                 document.getElementById('resPaket').innerText = data.paket;
                 document.getElementById('resAlamat').innerText = data.alamat;
                 resultDiv.style.display = "block";
@@ -74,4 +77,5 @@
 
 </body>
 </html>
+
 
