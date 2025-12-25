@@ -1,82 +1,82 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cari</title>
-  <style>
-    body { font-family: sans-serif; background-color: #4c1d95; display: flex; justify-content: center; padding: 20px; }
-    .card { background: white; padding: 25px; border-radius: 15px; width: 100%; max-width: 450px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-    h2 { text-align: center; color: #7f00ff; }
-    input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-    button { width: 100%; padding: 12px; background: #7f00ff; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-    #resultCard { margin-top: 20px; display: none; border-top: 2px solid #eee; padding-top: 15px; }
-    .row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f9f9f9; font-size: 14px; }
-    .val { font-weight: bold; text-align: right; }
-    .wa-btn { display: block; text-align: center; margin-top: 15px; color: #25D366; text-decoration: none; font-weight: bold; border: 2px solid #25D366; padding: 10px; border-radius: 8px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cari Data Customer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-slate-900 min-h-screen p-6 text-slate-100 flex flex-col items-center">
+    
+    <div class="max-w-xl w-full">
+        <div class="bg-slate-800 border border-slate-700 rounded-3xl shadow-2xl p-6 mb-6">
+            <h2 class="text-2xl font-bold text-purple-400 mb-4 text-center">PENCARIAN DATA</h2>
+            <div class="flex gap-2">
+                <input type="text" id="userInput" placeholder="Ketik nama (contoh: sun)..." 
+                       class="w-full bg-slate-700 border-none rounded-xl p-4 focus:ring-2 focus:ring-purple-500 text-white">
+                <button onclick="cari()" class="bg-purple-600 hover:bg-purple-500 px-6 rounded-xl font-bold transition-all">CARI</button>
+            </div>
+            <div id="statusInfo" class="mt-2 text-sm text-slate-400 text-center"></div>
+        </div>
 
-<div class="card">
-  <h2>CARI DATA CUSTOMER</h2>
-  <input type="text" id="userInput" placeholder="Masukkan Nama atau ID CST...">
-  <button onclick="cari()">CARI</button>
-  
-  <div id="loader" style="display:none; text-align:center; margin-top:10px;">Mencari...</div>
+        <div id="resultsContainer" class="space-y-4"></div>
+    </div>
 
-  <div id="resultCard">
-    <div class="row"><span>Nama:</span> <span class="val" id="resNama"></span></div>
-    <div class="row"><span>ID CST:</span> <span class="val" id="resId"></span></div>
-    <div class="row"><span>Tgl Pasang:</span> <span class="val" id="resTgl"></span></div>
-    <div class="row"><span>Jatuh Tempo:</span> <span class="val" id="resJapo"></span></div>
-    <div class="row"><span>Paket:</span> <span class="val" id="resPaket"></span></div>
-    <div class="row"><span>Alamat:</span> <span class="val" id="resAlamat"></span></div>
-    <div class="row"><span>No. HP:</span> <span class="val" id="resHp"></span></div>
-    <a id="waLink" href="#" target="_blank" class="wa-btn">HUBUNGI WA 📱</a>
-  </div>
-</div>
+    <script>
+        async function cari() {
+            const kueri = document.getElementById('userInput').value;
+            const container = document.getElementById('resultsContainer');
+            const info = document.getElementById('statusInfo');
+            const url = 'https://script.google.com/macros/s/AKfycbz7TAAnHQXjqeuiY4rudNRh_9fQzMc8B3XhvdfdNLvMP900L6WVDBSu1nRnEwhBvwr4/exec'; // Ganti dengan URL deployment baru
 
-<script>
-  async function cari() {
-    const kueri = document.getElementById('userInput').value;
-    if(!kueri) return alert("Masukkan Nama atau ID!");
+            if(!kueri) return alert("Masukkan kata kunci!");
 
-    // GANTI DENGAN URL WEB APP ANDA YANG BARU
-    const url = "https://script.google.com/macros/s/AKfycbyMl8Dj4cKLTGtq36oBhg8NLZC3QFkTShH0DyIBJsQ9BpFL2NGhj6GLmoLA7K5bFo77/exec";
+            container.innerHTML = "";
+            info.innerText = "⏳ Mencari data...";
 
-    document.getElementById('loader').style.display = "block";
-    document.getElementById('resultCard').style.display = "none";
+            try {
+                const res = await fetch(`${url}?id=${encodeURIComponent(kueri)}`);
+                const result = await res.json();
 
-    try {
-      const response = await fetch(`${url}?id=${encodeURIComponent(kueri)}`);
-      const data = await response.json();
-      document.getElementById('loader').style.display = "none";
+                if (result.status === "success") {
+                    info.innerText = `Ditemukan ${result.data.length} data.`;
+                    
+                    result.data.forEach(item => {
+                        let rawHp = item.noHp.toString().replace(/\D/g, '');
+                        if (rawHp.startsWith('0')) rawHp = '62' + rawHp.slice(1);
 
-      if (data.status === "success") {
-        document.getElementById('resNama').innerText = data.nama;
-        document.getElementById('resId').innerText = data.idCst;
-        document.getElementById('resTgl').innerText = data.tanggal;
-        document.getElementById('resJapo').innerText = data.japo;
-        document.getElementById('resPaket').innerText = data.paket;
-        document.getElementById('resAlamat').innerText = data.alamat;
-        document.getElementById('resHp').innerText = data.noHp;
+                        const card = `
+                            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-lg animate-fade-in">
+                                <div class="flex justify-between items-start mb-3">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-purple-300">${item.nama}</h3>
+                                        <p class="text-xs text-slate-500">${item.idCst || '-'}</p>
+                                    </div>
+                                    <span class="bg-slate-700 text-purple-400 text-[10px] px-2 py-1 rounded-full font-bold uppercase">${item.paket}</span>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 gap-2 text-sm mb-4">
+                                    <div class="text-slate-400 font-medium">Jatuh Tempo: <span class="text-red-400">${item.japo}</span></div>
+                                    <div class="text-slate-400 font-medium text-right">Email: <span class="text-slate-200 text-xs">${item.email || '-'}</span></div>
+                                </div>
 
-        let num = data.noHp.toString().replace(/\D/g, '');
-        if (!num.startsWith('62')) num = '62' + num.replace(/^0/, '');
-        document.getElementById('waLink').href = `https://wa.me/${num}`;
-
-        document.getElementById('resultCard').style.display = "block";
-      } else {
-        alert("Data tidak ditemukan!");
-      }
-    } catch (e) {
-      document.getElementById('loader').style.display = "none";
-      alert("Error koneksi!");
-    }
-  }
-</script>
+                                <a href="https://wa.me/${rawHp}" target="_blank" 
+                                   class="block w-full text-center bg-green-600 hover:bg-green-500 text-white py-2 rounded-xl font-bold text-sm transition-all">
+                                    HUBUNGI WHATSAPP
+                                </a>
+                            </div>
+                        `;
+                        container.innerHTML += card;
+                    });
+                } else {
+                    info.innerText = "";
+                    alert("Data tidak ditemukan!");
+                }
+            } catch (e) { 
+                info.innerText = "";
+                alert("Kesalahan koneksi!"); 
+            }
+        }
+    </script>
 </body>
 </html>
-
-
