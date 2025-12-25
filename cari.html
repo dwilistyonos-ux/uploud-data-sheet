@@ -3,81 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pencarian Pelanggan - MyRepublic</title>
+    <title>Pencarian CST - MyRepublic</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #4c1d95; color: #333; display: flex; justify-content: center; padding: 20px; }
-        .card { background: white; padding: 25px; border-radius: 15px; width: 100%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        body { font-family: sans-serif; background-color: #4c1d95; display: flex; justify-content: center; padding: 20px; margin: 0; }
+        .card { background: white; padding: 25px; border-radius: 15px; width: 100%; max-width: 450px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); margin-top: 20px; }
         h2 { text-align: center; color: #7f00ff; margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background-color: #7f00ff; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        button:hover { background-color: #6d00db; }
-        #loader { display: none; text-align: center; margin: 10px 0; color: #7f00ff; font-weight: bold; }
-        .result { margin-top: 20px; display: none; border-top: 2px solid #eee; padding-top: 15px; }
-        .row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; }
-        .label { color: #666; }
-        .value { font-weight: bold; text-align: right; }
+        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+        button { width: 100%; padding: 12px; background: #7f00ff; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; }
+        button:hover { background: #6d00db; }
+        #loader { display: none; text-align: center; margin-top: 15px; font-weight: bold; color: #7f00ff; }
+        #resultCard { margin-top: 25px; display: none; border-top: 2px solid #eee; padding-top: 15px; }
+        .row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f9f9f9; }
+        .label { color: #666; font-size: 13px; }
+        .val { font-weight: bold; color: #333; text-align: right; font-size: 14px; }
+        .wa-btn { display: block; text-align: center; margin-top: 15px; color: #25D366; text-decoration: none; font-weight: bold; border: 2px solid #25D366; padding: 10px; border-radius: 8px; transition: 0.3s; }
+        .wa-btn:hover { background: #25D366; color: white; }
     </style>
 </head>
 <body>
 
 <div class="card">
     <h2>Cari Data CST</h2>
-    <input type="text" id="inputId" placeholder="Masukkan ID CST (44XXXXX)">
+    <input type="text" id="idCst" placeholder="Masukkan ID CST (Contoh: 4390674)">
     <button onclick="cari()">CARI SEKARANG</button>
+    
+    <div id="loader">Sedang mencari data...</div>
 
-    <div id="loader">Mohon tunggu...</div>
-
-    <div id="result" class="result">
-        <div class="row"><span class="label">Nama:</span> <span id="resNama" class="value"></span></div>
-        <div class="row"><span class="label">ID CST:</span> <span id="resId" class="value"></span></div>
-        <div class="row"><span class="label">No. HP:</span> <span id="resHp" class="value"></span></div>
-        <div class="row"><span class="label">Paket:</span> <span id="resPaket" class="value"></span></div>
-        <div class="row"><span class="label">Alamat:</span> <span id="resAlamat" class="value"></span></div>
+    <div id="resultCard">
+        <div class="row"><span class="label">Nama:</span> <span class="val" id="resNama"></span></div>
+        <div class="row"><span class="label">ID CST:</span> <span class="val" id="resId"></span></div>
+        <div class="row"><span class="label">Tgl Pemasangan:</span> <span class="val" id="resTgl"></span></div>
+        <div class="row"><span class="label">JAPO:</span> <span class="val" id="resJapo"></span></div>
+        <div class="row"><span class="label">Paket:</span> <span class="val" id="resPaket"></span></div>
+        <div class="row"><span class="label">Alamat:</span> <span class="val" id="resAlamat"></span></div>
+        <div class="row"><span class="label">No. HP:</span> <span class="val" id="resHp"></span></div>
+        <a id="waLink" href="#" target="_blank" class="wa-btn">HUBUNGI VIA WHATSAPP 📱</a>
     </div>
 </div>
 
 <script>
     async function cari() {
-        const id = document.getElementById('inputId').value;
-        const loader = document.getElementById('loader');
-        const resultDiv = document.getElementById('result');
-        
-        if (!id) return alert("Masukkan ID CST!");
+        const id = document.getElementById('idCst').value;
+        if(!id) return alert("Isi ID CST!");
 
-        // URL Web App Google Script Anda
-        const webAppUrl = "https://script.google.com/macros/s/AKfycbzYdMeuBBWL-RTcqEchQwlehmHdpk0ZOokc1Cv3BE0KOIRouuUPRKUf_-UegHlEqjiH/exec";
+        // GANTI URL DI BAWAH INI DENGAN URL WEB APP ANDA
+        const webAppUrl = "https://script.google.com/macros/s/AKfycbxl-TCdAs9KPHSIdy8XCWWAAQ2J8w5mx5oZhvux21VOwU84nU_ZwFaR3tCuVoQOhdtM/exec";
 
-        loader.style.display = "block";
-        resultDiv.style.display = "none";
+        document.getElementById('loader').style.display = "block";
+        document.getElementById('resultCard').style.display = "none";
 
         try {
-            // Memanggil data dari Google Sheets melalui API
             const response = await fetch(`${webAppUrl}?id=${id}`);
             const data = await response.json();
-
-            loader.style.display = "none";
+            document.getElementById('loader').style.display = "none";
 
             if (data.status === "success") {
                 document.getElementById('resNama').innerText = data.nama;
                 document.getElementById('resId').innerText = data.idCst;
-                document.getElementById('resHp').innerText = data.noHp;
-                
+                document.getElementById('resTgl').innerText = data.tanggal;
+                document.getElementById('resJapo').innerText = data.japo;
                 document.getElementById('resPaket').innerText = data.paket;
                 document.getElementById('resAlamat').innerText = data.alamat;
-                resultDiv.style.display = "block";
+                document.getElementById('resHp').innerText = data.noHp;
+
+                // Set Link WhatsApp
+                let num = data.noHp.toString().replace(/\D/g, '');
+                if (!num.startsWith('62')) num = '62' + num.replace(/^0/, '');
+                document.getElementById('waLink').href = `https://wa.me/${num}`;
+
+                document.getElementById('resultCard').style.display = "block";
             } else {
-                alert("Maaf, ID " + id + " tidak ditemukan!");
+                alert("Data tidak ditemukan!");
             }
-        } catch (error) {
-            loader.style.display = "none";
-            alert("Terjadi kesalahan koneksi atau URL Web App salah.");
+        } catch (e) {
+            document.getElementById('loader').style.display = "none";
+            alert("Terjadi kesalahan koneksi!");
         }
     }
 </script>
 
 </body>
 </html>
-
-
-
-
