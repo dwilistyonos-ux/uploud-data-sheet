@@ -138,6 +138,19 @@
             <button onclick="window.open('https://docs.google.com/spreadsheets/d/1Oxf_IWC0VniDYWpboyEH-qbiMHwfrZnk0kJnfsLsFMQ/edit?gid=1290146518#gid=1290146518')" class="inline-flex items-center text-purple-700 hover:text-purple-900 font-semibold underline decoration-2 underline-offset-4">
                 🔍 Buka & Cari di Database Spreadsheet
             </button>
+
+
+const inputNomor = document.getElementById('nomor_hp');
+
+inputNomor.addEventListener('input', function() {
+    let value = this.value;
+    
+    // Jika dimulai dengan 0, ganti jadi 62
+    if (value.startsWith('0')) {
+        this.value = '62' + value.substring(1);
+    }
+});
+
         </div>
     </div>
 
