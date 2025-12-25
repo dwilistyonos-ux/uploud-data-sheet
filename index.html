@@ -1,117 +1,68 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input Rekapan Online - MyRepublic</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            background: linear-gradient(135deg, #662d91 0%, #2e3192 100%);
-            min-height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-        }
-        .input-field {
-            width: 100%;
-            padding: 10px 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            outline: none;
-            transition: all 0.3s;
-        }
-        .input-field:focus {
-            border-color: #662d91;
-            box-shadow: 0 0 0 3px rgba(102, 45, 145, 0.2);
-        }
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #4a5568;
-            font-size: 0.875rem;
-        }
-    </style>
-</head>
-<body class="flex items-center justify-center p-4 md:p-10">
 
     <div class="max-w-4xl w-full glass-card p-8">
         <div class="flex flex-col items-center mb-8">
+            <img src="https://myrepublic.co.id/wp-content/uploads/2022/04/Logo-MyRepublic-1.png" alt="Logo" class="h-12 mb-4">
+            <h2 class="text-2xl font-black text-purple-900 tracking-tight">FORM REKAPAN ONLINE</h2>
+            <p class="text-gray-500 text-sm">Input data pelanggan ke sheet REKAPAN_ONLINE</p>
             
             <h2 class="text-2xl font-black text-purple-900 tracking-tight">REKAPAN ONLINE</h2>
             <p class="text-gray-500 text-sm">Input data pelanggan</p>
         </div>
 
         <form id="rekapanForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
+
             <div>
                 <label>Billing (Opsional)</label>
+                <input type="text" name="billing" class="input-field" placeholder="Masukkan No. Billing">
                 <input type="text" name="billing" class="input-field" placeholder=" ">
             </div>
             <div>
                 <label>Tanggal</label>
-                <input type="date" name="tanggal" class="input-field" required>
-            </div>
+@@ -60,20 +60,20 @@ <h2 class="text-2xl font-black text-purple-900 tracking-tight">FORM REKAPAN ONLI
 
             <div>
                 <label>JAPO</label>
+                <input type="text" name="japo" class="input-field" placeholder="Jatuh Tempo" required>
                 <input type="number" name="Jatuh Tempo" class="input-field" placeholder=" " required>
             </div>
             <div>
                 <label>Nama Pelanggan</label>
+                <input type="text" name="nama" class="input-field" placeholder="Nama Lengkap" required>
                 <input type="text" name="nama" class="input-field" placeholder=" " required>
             </div>
 
             <div>
                 <label>ID CST</label>
+                <input type="text" name="id_cst" class="input-field" placeholder="Customer ID" required>
                 <input type="text" name="id_cst" class="input-field" placeholder=" " required>
             </div>
             <div>
                 <label>Email Pelanggan</label>
+                <input type="email" name="email" class="input-field" placeholder="email@contoh.com" required>
                 <input type="email" name="email" class="input-field" placeholder=" " required>
             </div>
 
             <div>
-                <label>Nomor HP (WhatsApp)</label>
-                <input type="number" name="hp" class="input-field" placeholder="628123456xxx" required>
-                <p class="text-xs text-gray-400 mt-1">*Awali dengan 62 (Tanpa +)</p>
-            </div>
-            <div>
-                <label>Paket MyRepublic</label>
-                <select name="paket" class="input-field" required>
+@@ -87,11 +87,11 @@ <h2 class="text-2xl font-black text-purple-900 tracking-tight">FORM REKAPAN ONLI
                     <option value="">-- Pilih Paket --</option>
                     <option value="10Mbps">10 Mbps</option>
                     <option value="15Mbps">15 Mbps</option>
+                    <option value="30Mbps">30 Mbps</option>
                     <option value="30Mbps">20 Mbps</option>
                     <option value="50Mbps">50 Mbps</option>
                     <option value="100Mbps">100 Mbps</option>
+                    <option value="150Mbps">150 Mbps</option>
+                    <option value="250Mbps">250 Mbps</option>
                     <option value="150Mbps">200 Mbps</option>
                     <option value="250Mbps">300 Mbps</option>
                     <option value="500Mbps">500 Mbps</option>
                 </select>
             </div>
-
-            <div>
-                <label>Point</label>
-                <select name="point" class="input-field" required>
-                    <option value="">-- Pilih Point --</option>
-                    <option value="0,25">0,25</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                </select>
-            </div>
-            <div>
-                <label>Bonus (Rp)</label>
-                <select name="bonus" class="input-field" required>
-                    <option value="">-- Pilih Bonus --</option>
+@@ -112,15 +112,15 @@ <h2 class="text-2xl font-black text-purple-900 tracking-tight">FORM REKAPAN ONLI
                     <option value="25.000">25,000</option>
                     <option value="50.000">50,000</option>
                     <option value="100.000">100,000</option>
+                    <option value="250.000">250,000</option>
                     <option value="250.000">200,000</option>
                     <option value="500.000">500,000</option>
                     <option value="1.000.000">1,000,000</option>
@@ -120,63 +71,21 @@
 
             <div class="md:col-span-2">
                 <label>Alamat Lengkap</label>
+                <textarea name="alamat" rows="2" class="input-field" placeholder="Alamat pemasangan..." required></textarea>
                 <textarea name="alamat" rows="2" class="input-field" placeholder=" " required></textarea>
             </div>
 
             <div class="md:col-span-2 mt-4">
-                <button type="submit" id="btnKirim" class="w-full bg-purple-600 hover:bg-purple-800 text-white font-bold py-4 rounded-xl shadow-lg transform transition active:scale-95">
-                    KIRIM DATA KE SPREADSHEET
-                </button>
-            </div>
-        </form>
-
-        <div id="statusBox" class="hidden mt-6 p-4 rounded-xl text-center font-bold"></div>
-
+@@ -135,7 +135,7 @@ <h2 class="text-2xl font-black text-purple-900 tracking-tight">FORM REKAPAN ONLI
         <hr class="my-8 border-gray-200">
 
         <div class="text-center">
+            <button onclick="window.open('https://docs.google.com/spreadsheets/d/ID_SPREADSHEET_ANDA/edit')" class="inline-flex items-center text-purple-700 hover:text-purple-900 font-semibold underline decoration-2 underline-offset-4">
             <button onclick="window.open('https://docs.google.com/spreadsheets/d/1Oxf_IWC0VniDYWpboyEH-qbiMHwfrZnk0kJnfsLsFMQ/edit?gid=1290146518#gid=1290146518')" class="inline-flex items-center text-purple-700 hover:text-purple-900 font-semibold underline decoration-2 underline-offset-4">
                 🔍 Buka & Cari di Database Spreadsheet
             </button>
-
-
         </div>
-    </div>
-
-    <script>
-        // GANTI LINK INI dengan link Web App dari Apps Script Anda
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyZXbXURoSfPQrFSUzfyBxtaZZFyP-980d7OuR8AO3gcNdPU77y2392bs6JNUjC9Sho/exec';
-        
-        const form = document.getElementById('rekapanForm');
-        const statusBox = document.getElementById('statusBox');
-        const btnKirim = document.getElementById('btnKirim');
-
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            
-            // Animasi Loading
-            btnKirim.disabled = true;
-            btnKirim.innerText = "⏳ Sedang Mengirim Data...";
-            btnKirim.classList.add('opacity-50', 'cursor-not-allowed');
-
-            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-                .then(response => {
-                    // Berhasil
-                    statusBox.innerText = "✅ Berhasil! Data sudah tersimpan di REKAPAN_ONLINE.";
-                    statusBox.className = "mt-6 p-4 rounded-xl text-center font-bold bg-green-100 text-green-700 border border-green-200";
-                    statusBox.classList.remove('hidden');
-                    
-                    form.reset(); // Kosongkan form
-                    resetButton();
-                })
-                .catch(error => {
-                    // Gagal/Error
-                    statusBox.innerText = "❌ Gagal: Terjadi kesalahan koneksi atau URL Script salah.";
-                    statusBox.className = "mt-6 p-4 rounded-xl text-center font-bold bg-red-100 text-red-700 border border-red-200";
-                    statusBox.classList.remove('hidden');
-                    
-                    resetButton();
-                    console.error('Error!', error.message);
-                });
-        });
-
+@@ -191,3 +191,4 @@ <h2 class="text-2xl font-black text-purple-900 tracking-tight">FORM REKAPAN ONLI
+    </script>
+</body>
+</html>
