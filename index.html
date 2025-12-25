@@ -42,16 +42,16 @@
 
     <div class="max-w-4xl w-full glass-card p-8">
         <div class="flex flex-col items-center mb-8">
-            <img src="https://myrepublic.co.id/wp-content/uploads/2022/04/Logo-MyRepublic-1.png" alt="Logo" class="h-12 mb-4">
-            <h2 class="text-2xl font-black text-purple-900 tracking-tight">FORM REKAPAN ONLINE</h2>
-            <p class="text-gray-500 text-sm">Input data pelanggan ke sheet REKAPAN_ONLINE</p>
+            
+            <h2 class="text-2xl font-black text-purple-900 tracking-tight">REKAPAN ONLINE</h2>
+            <p class="text-gray-500 text-sm">Input data pelanggan</p>
         </div>
 
         <form id="rekapanForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
             
             <div>
                 <label>Billing (Opsional)</label>
-                <input type="text" name="billing" class="input-field" placeholder="Masukkan No. Billing">
+                <input type="text" name="billing" class="input-field" placeholder=" ">
             </div>
             <div>
                 <label>Tanggal</label>
@@ -60,20 +60,20 @@
 
             <div>
                 <label>JAPO</label>
-                <input type="text" name="japo" class="input-field" placeholder="Jatuh Tempo" required>
+                <input type="number" name="Jatuh Tempo" class="input-field" placeholder=" " required>
             </div>
             <div>
                 <label>Nama Pelanggan</label>
-                <input type="text" name="nama" class="input-field" placeholder="Nama Lengkap" required>
+                <input type="text" name="nama" class="input-field" placeholder=" " required>
             </div>
 
             <div>
                 <label>ID CST</label>
-                <input type="text" name="id_cst" class="input-field" placeholder="Customer ID" required>
+                <input type="text" name="id_cst" class="input-field" placeholder=" " required>
             </div>
             <div>
                 <label>Email Pelanggan</label>
-                <input type="email" name="email" class="input-field" placeholder="email@contoh.com" required>
+                <input type="email" name="email" class="input-field" placeholder=" " required>
             </div>
 
             <div>
@@ -87,11 +87,11 @@
                     <option value="">-- Pilih Paket --</option>
                     <option value="10Mbps">10 Mbps</option>
                     <option value="15Mbps">15 Mbps</option>
-                    <option value="30Mbps">30 Mbps</option>
+                    <option value="30Mbps">20 Mbps</option>
                     <option value="50Mbps">50 Mbps</option>
                     <option value="100Mbps">100 Mbps</option>
-                    <option value="150Mbps">150 Mbps</option>
-                    <option value="250Mbps">250 Mbps</option>
+                    <option value="150Mbps">200 Mbps</option>
+                    <option value="250Mbps">300 Mbps</option>
                     <option value="500Mbps">500 Mbps</option>
                 </select>
             </div>
@@ -112,7 +112,7 @@
                     <option value="25.000">25,000</option>
                     <option value="50.000">50,000</option>
                     <option value="100.000">100,000</option>
-                    <option value="250.000">250,000</option>
+                    <option value="250.000">200,000</option>
                     <option value="500.000">500,000</option>
                     <option value="1.000.000">1,000,000</option>
                 </select>
@@ -120,7 +120,7 @@
 
             <div class="md:col-span-2">
                 <label>Alamat Lengkap</label>
-                <textarea name="alamat" rows="2" class="input-field" placeholder="Alamat pemasangan..." required></textarea>
+                <textarea name="alamat" rows="2" class="input-field" placeholder=" " required></textarea>
             </div>
 
             <div class="md:col-span-2 mt-4">
@@ -135,7 +135,7 @@
         <hr class="my-8 border-gray-200">
 
         <div class="text-center">
-            <button onclick="window.open('https://docs.google.com/spreadsheets/d/ID_SPREADSHEET_ANDA/edit')" class="inline-flex items-center text-purple-700 hover:text-purple-900 font-semibold underline decoration-2 underline-offset-4">
+            <button onclick="window.open('https://docs.google.com/spreadsheets/d/1Oxf_IWC0VniDYWpboyEH-qbiMHwfrZnk0kJnfsLsFMQ/edit?gid=1290146518#gid=1290146518')" class="inline-flex items-center text-purple-700 hover:text-purple-900 font-semibold underline decoration-2 underline-offset-4">
                 🔍 Buka & Cari di Database Spreadsheet
             </button>
         </div>
@@ -191,3 +191,4 @@
     </script>
 </body>
 </html>
+
