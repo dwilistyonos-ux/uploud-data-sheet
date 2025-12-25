@@ -6,125 +6,188 @@
     <title>Input Rekapan Online - MyRepublic</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: linear-gradient(135deg, #662d91 0%, #2e3192 100%); min-height: 100vh; }
-        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 20px; }
+        body {
+            background: linear-gradient(135deg, #662d91 0%, #2e3192 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .input-field:focus {
+            border-color: #662d91;
+            box-shadow: 0 0 0 3px rgba(102, 45, 145, 0.2);
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #4a5568;
+            font-size: 0.875rem;
+        }
     </style>
 </head>
-<body class="p-4 md:p-8">
-    <div class="max-w-2xl mx-auto glass shadow-2xl p-6">
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-purple-800">REKAPAN ONLINE</h1>
-            <p class="text-gray-600">Input Data Pelanggan Baru</p>
+<body class="flex items-center justify-center p-4 md:p-10">
+
+    <div class="max-w-4xl w-full glass-card p-8">
+        <div class="flex flex-col items-center mb-8">
+            <img src="https://myrepublic.co.id/wp-content/uploads/2022/04/Logo-MyRepublic-1.png" alt="Logo" class="h-12 mb-4">
+            <h2 class="text-2xl font-black text-purple-900 tracking-tight">FORM REKAPAN ONLINE</h2>
+            <p class="text-gray-500 text-sm">Input data pelanggan ke sheet REKAPAN_ONLINE</p>
         </div>
 
-        <form id="myForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form id="rekapanForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
             <div>
-                <label class="block text-sm font-semibold">Billing</label>
-                <input type="text" name="billing" required class="w-full p-2 border rounded shadow-sm focus:ring-2 focus:ring-purple-500">
+                <label>Billing</label>
+                <input type="text" name="billing" class="input-field" placeholder="Masukkan No. Billing" required>
             </div>
             <div>
-                <label class="block text-sm font-semibold">Tanggal</label>
-                <input type="date" name="tanggal" required class="w-full p-2 border rounded shadow-sm">
-            </div>
-            <div>
-                <label class="block text-sm font-semibold">JAPO</label>
-                <input type="text" name="japo" required class="w-full p-2 border rounded shadow-sm">
-            </div>
-            <div>
-                <label class="block text-sm font-semibold">Nama Pelanggan</label>
-                <input type="text" name="nama" required class="w-full p-2 border rounded shadow-sm">
-            </div>
-            <div>
-                <label class="block text-sm font-semibold">ID CST</label>
-                <input type="text" name="id_cst" required class="w-full p-2 border rounded shadow-sm">
-            </div>
-            <div>
-                <label class="block text-sm font-semibold">Nomor HP (Contoh: 6281xxx)</label>
-                <input type="number" name="hp" placeholder="628..." required class="w-full p-2 border rounded shadow-sm">
-            </div>
-            <div class="md:col-span-2">
-                <label class="block text-sm font-semibold">Alamat</label>
-                <textarea name="alamat" required class="w-full p-2 border rounded shadow-sm"></textarea>
+                <label>Tanggal</label>
+                <input type="date" name="tanggal" class="input-field" required>
             </div>
 
             <div>
-                <label class="block text-sm font-semibold">Paket</label>
-                <select name="paket" required class="w-full p-2 border rounded shadow-sm">
+                <label>JAPO</label>
+                <input type="text" name="japo" class="input-field" placeholder="Jatuh Tempo" required>
+            </div>
+            <div>
+                <label>Nama Pelanggan</label>
+                <input type="text" name="nama" class="input-field" placeholder="Nama Lengkap" required>
+            </div>
+
+            <div>
+                <label>ID CST</label>
+                <input type="text" name="id_cst" class="input-field" placeholder="Customer ID" required>
+            </div>
+            <div>
+                <label>Email Pelanggan</label>
+                <input type="email" name="email" class="input-field" placeholder="email@contoh.com" required>
+            </div>
+
+            <div>
+                <label>Nomor HP (WhatsApp)</label>
+                <input type="number" name="hp" class="input-field" placeholder="628123456xxx" required>
+                <p class="text-xs text-gray-400 mt-1">*Awali dengan 62 (Tanpa +)</p>
+            </div>
+            <div>
+                <label>Paket MyRepublic</label>
+                <select name="paket" class="input-field" required>
                     <option value="">-- Pilih Paket --</option>
                     <option value="10Mbps">10 Mbps</option>
                     <option value="15Mbps">15 Mbps</option>
                     <option value="30Mbps">30 Mbps</option>
                     <option value="50Mbps">50 Mbps</option>
                     <option value="100Mbps">100 Mbps</option>
+                    <option value="150Mbps">150 Mbps</option>
                     <option value="250Mbps">250 Mbps</option>
                     <option value="500Mbps">500 Mbps</option>
                 </select>
             </div>
 
             <div>
-                <label class="block text-sm font-semibold">Point</label>
-                <select name="point" required class="w-full p-2 border rounded shadow-sm">
+                <label>Point</label>
+                <select name="point" class="input-field" required>
                     <option value="">-- Pilih Point --</option>
-                    <option value="0.25">0.25</option>
+                    <option value="0,25">0,25</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                 </select>
             </div>
-
-            <div class="md:col-span-2">
-                <label class="block text-sm font-semibold">Bonus</label>
-                <select name="bonus" required class="w-full p-2 border rounded shadow-sm">
+            <div>
+                <label>Bonus (Rp)</label>
+                <select name="bonus" class="input-field" required>
                     <option value="">-- Pilih Bonus --</option>
-                    <option value="Rp25.000">Rp 25,000</option>
-                    <option value="Rp50.000">Rp 50,000</option>
-                    <option value="Rp100.000">Rp 100,000</option>
-                    <option value="Rp1.000.000">Rp 1,000,000</option>
+                    <option value="25.000">25,000</option>
+                    <option value="50.000">50,000</option>
+                    <option value="100.000">100,000</option>
+                    <option value="250.000">250,000</option>
+                    <option value="500.000">500,000</option>
+                    <option value="1.000.000">1,000,000</option>
                 </select>
             </div>
 
-            <button type="submit" id="submitBtn" class="md:col-span-2 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-lg transition duration-300 shadow-lg">
-                KIRIM DATA
-            </button>
+            <div class="md:col-span-2">
+                <label>Alamat Lengkap</label>
+                <textarea name="alamat" rows="2" class="input-field" placeholder="Alamat pemasangan..." required></textarea>
+            </div>
+
+            <div class="md:col-span-2 mt-4">
+                <button type="submit" id="btnKirim" class="w-full bg-purple-600 hover:bg-purple-800 text-white font-bold py-4 rounded-xl shadow-lg transform transition active:scale-95">
+                    KIRIM DATA KE SPREADSHEET
+                </button>
+            </div>
         </form>
 
-        <div class="mt-4 flex gap-2">
-            <button onclick="window.open('URL_SPREADSHEET_ANDA')" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 rounded border border-gray-300 text-sm">
-                🔍 Cari di Database (Sheet)
+        <div id="statusBox" class="hidden mt-6 p-4 rounded-xl text-center font-bold"></div>
+
+        <hr class="my-8 border-gray-200">
+
+        <div class="text-center">
+            <button onclick="window.open('https://docs.google.com/spreadsheets/d/ID_SPREADSHEET_ANDA/edit')" class="inline-flex items-center text-purple-700 hover:text-purple-900 font-semibold underline decoration-2 underline-offset-4">
+                🔍 Buka & Cari di Database Spreadsheet
             </button>
         </div>
-
-        <div id="msg" class="mt-4 p-3 rounded hidden text-center font-bold"></div>
     </div>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzkbn79gxrHO1OH1t2dprpIKCHPSYzaywXPUacL4Ujw8PO-8R23OiXyHu5p8OmnL7V0/exec';
-        const form = document.getElementById('myForm');
-        const msg = document.getElementById('msg');
-        const btn = document.getElementById('submitBtn');
+        // GANTI LINK INI dengan link Web App dari Apps Script Anda
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxrySB8weEpHqNlyIc6RDxzXltDtbmp8ruepYM_XLE1_p09AXm68Y58JQ817MgJpbHq/exec';
+        
+        const form = document.getElementById('rekapanForm');
+        const statusBox = document.getElementById('statusBox');
+        const btnKirim = document.getElementById('btnKirim');
 
         form.addEventListener('submit', e => {
             e.preventDefault();
-            btn.disabled = true;
-            btn.innerText = "Mengirim...";
             
+            // Animasi Loading
+            btnKirim.disabled = true;
+            btnKirim.innerText = "⏳ Sedang Mengirim Data...";
+            btnKirim.classList.add('opacity-50', 'cursor-not-allowed');
+
             fetch(scriptURL, { method: 'POST', body: new FormData(form)})
                 .then(response => {
-                    msg.classList.remove('hidden', 'bg-red-500');
-                    msg.classList.add('bg-green-500', 'text-white');
-                    msg.innerHTML = "✅ Berhasil! Data telah masuk ke REKAPAN_ONLINE";
-                    form.reset();
-                    btn.disabled = false;
-                    btn.innerText = "KIRIM DATA";
-                    setTimeout(() => { msg.classList.add('hidden'); }, 5000);
+                    // Berhasil
+                    statusBox.innerText = "✅ Berhasil! Data sudah tersimpan di REKAPAN_ONLINE.";
+                    statusBox.className = "mt-6 p-4 rounded-xl text-center font-bold bg-green-100 text-green-700 border border-green-200";
+                    statusBox.classList.remove('hidden');
+                    
+                    form.reset(); // Kosongkan form
+                    resetButton();
                 })
                 .catch(error => {
-                    msg.classList.remove('hidden', 'bg-green-500');
-                    msg.classList.add('bg-red-500', 'text-white');
-                    msg.innerHTML = "❌ Error: Gagal terhubung ke server!";
-                    btn.disabled = false;
-                    btn.innerText = "KIRIM DATA";
+                    // Gagal/Error
+                    statusBox.innerText = "❌ Gagal: Terjadi kesalahan koneksi atau URL Script salah.";
+                    statusBox.className = "mt-6 p-4 rounded-xl text-center font-bold bg-red-100 text-red-700 border border-red-200";
+                    statusBox.classList.remove('hidden');
+                    
+                    resetButton();
+                    console.error('Error!', error.message);
                 });
         });
+
+        function resetButton() {
+            btnKirim.disabled = false;
+            btnKirim.innerText = "KIRIM DATA KE SPREADSHEET";
+            btnKirim.classList.remove('opacity-50', 'cursor-not-allowed');
+            
+            // Sembunyikan pesan status setelah 8 detik
+            setTimeout(() => {
+                statusBox.classList.add('hidden');
+            }, 8000);
+        }
     </script>
 </body>
 </html>
