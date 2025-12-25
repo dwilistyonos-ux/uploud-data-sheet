@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background-color: #f0f2f5; padding: 20px; display: flex; justify-content: center; }
+    .search-container { background: white; padding: 25px; border-radius: 15px; width: 100%; max-width: 500px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    h2 { text-align: center; color: #1a73e8; margin-top: 0; }
+    input { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+    button { width: 100%; padding: 12px; background: #1a73e8; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; }
+    button:hover { background: #1557b0; }
+    
+    #resultCard { margin-top: 25px; display: none; border-top: 2px solid #eee; pt: 20px; }
+    .data-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #fafafa; }
+    .label { color: #666; font-size: 14px; }
+    .value { font-weight: bold; color: #333; text-align: right; }
+    .status-msg { text-align: center; margin-top: 15px; color: #d93025; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<div class="search-container">
+  <h2>Cari Data Pelanggan</h2>
+  <input type="text" id="idInput" placeholder="Masukkan ID CST (Contoh: 4437199)">
+  <button onclick="search()">Cari Sekarang</button>
+  
+  <div id="status" class="status-msg"></div>
+
+  <div id="resultCard">
+    <div class="data-row"><span class="label">Nama:</span> <span class="value" id="resNama"></span></div>
+    <div class="data-row"><span class="label">ID CST:</span> <span class="value" id="resId"></span></div>
+    <div class="data-row"><span class="label">No. HP:</span> <span class="value" id="resHp"></span></div>
+    <div class="data-row"><span class="label">Alamat:</span> <span class="value" id="resAlamat"></span></div>
+    <div class="data-row"><span class="label">Paket:</span> <span class="value" id="resPaket"></span></div>
+    <div class="data-row"><span class="label">Tanggal:</span> <span class="value" id="resTanggal"></span></div>
+    <div class="data-row"><span class="label">Email:</span> <span class="value" id="resEmail"></span></div>
+    <div class="data-row"><span class="label">Bonus:</span> <span class="value" id="resBonus" style="color: green;"></span></div>
+  </div>
+</div>
+
+<script>
+  function search() {
+    var id = document.getElementById('idInput').value;
+    var status = document.getElementById('status');
+    var card = document.getElementById('resultCard');
+    
+    if(!id) return alert("Masukkan ID terlebih dahulu");
+    
+    status.innerHTML = "Sedang mencari...";
+    card.style.display = "none";
+
+    google.script.run.withSuccessHandler(function(res) {
+      status.innerHTML = "";
+      if (res) {
+        document.getElementById('resNama').innerText = res.nama;
+        document.getElementById('resId').innerText = res.idCst;
+        document.getElementById('resHp').innerText = res.noHp;
+        document.getElementById('resAlamat').innerText = res.alamat;
+        document.getElementById('resPaket').innerText = res.paket;
+        document.getElementById('resTanggal').innerText = res.tanggal;
+        document.getElementById('resEmail').innerText = res.email;
+        document.getElementById('resBonus').innerText = "Rp" + res.bonus.toLocaleString('id-ID');
+        
+        card.style.display = "block";
+      } else {
+        status.innerHTML = "Data ID CST tersebut tidak ditemukan.";
+      }
+    }).cariData(id);
+  }
+</script>
+
+</body>
+</html>
