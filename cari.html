@@ -1,82 +1,85 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cari Data Customer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cari Data Customer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-900 min-h-screen p-6 text-slate-100 flex flex-col items-center">
-    
-    <div class="max-w-xl w-full">
-        <div class="bg-slate-800 border border-slate-700 rounded-3xl shadow-2xl p-6 mb-6">
-            <h2 class="text-2xl font-bold text-purple-400 mb-4 text-center">PENCARIAN DATA</h2>
-            <div class="flex gap-2">
-                <input type="text" id="userInput" placeholder="Ketik nama (contoh: sun)..." 
-                       class="w-full bg-slate-700 border-none rounded-xl p-4 focus:ring-2 focus:ring-purple-500 text-white">
-                <button onclick="cari()" class="bg-purple-600 hover:bg-purple-500 px-6 rounded-xl font-bold transition-all">CARI</button>
-            </div>
-            <div id="statusInfo" class="mt-2 text-sm text-slate-400 text-center"></div>
-        </div>
+<body class="bg-slate-900 p-5 font-sans text-slate-100 flex flex-col items-center">
 
-        <div id="resultsContainer" class="space-y-4"></div>
-    </div>
+  <div class="max-w-md w-full bg-slate-800 rounded-3xl p-6 shadow-2xl mb-6 border border-slate-700">
+    <h2 class="text-2xl font-bold text-center text-purple-400 mb-4 uppercase tracking-wider">Cari Pelanggan</h2>
+    <input type="text" id="userInput" placeholder="Ketik nama atau ID..." 
+           class="w-full bg-slate-700 border-none rounded-xl p-3 mb-4 focus:ring-2 focus:ring-purple-500 outline-none text-white">
+    <button onclick="cari()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl transition-all shadow-lg active:scale-95">
+      CARI DATA
+    </button>
+    <div id="loader" class="hidden text-center mt-3 text-purple-300 animate-pulse">🔎 Mencari data...</div>
+  </div>
 
-    <script>
-        async function cari() {
-            const kueri = document.getElementById('userInput').value;
-            const container = document.getElementById('resultsContainer');
-            const info = document.getElementById('statusInfo');
-            const url = 'https://script.google.com/macros/s/AKfycbz7TAAnHQXjqeuiY4rudNRh_9fQzMc8B3XhvdfdNLvMP900L6WVDBSu1nRnEwhBvwr4/exec'; // Ganti dengan URL deployment baru
+  <div id="resultsList" class="max-w-md w-full space-y-4"></div>
 
-            if(!kueri) return alert("Masukkan kata kunci!");
+  <script>
+    async function cari() {
+      const kueri = document.getElementById('userInput').value;
+      const list = document.getElementById('resultsList');
+      const loader = document.getElementById('loader');
+      // Gunakan URL Web App Anda
+      const url = "https://script.google.com/macros/s/AKfycbwBG8EEDIXwSdChRAtKJdb_1c9vmVgjj2ciizW7XydcY6lE9gQWtS7CRUOW1nYF07T4/exec";
 
-            container.innerHTML = "";
-            info.innerText = "⏳ Mencari data...";
+      if(!kueri) return alert("Masukkan Nama atau ID!");
 
-            try {
-                const res = await fetch(`${url}?id=${encodeURIComponent(kueri)}`);
-                const result = await res.json();
+      list.innerHTML = "";
+      loader.classList.remove('hidden');
 
-                if (result.status === "success") {
-                    info.innerText = `Ditemukan ${result.data.length} data.`;
-                    
-                    result.data.forEach(item => {
-                        let rawHp = item.noHp.toString().replace(/\D/g, '');
-                        if (rawHp.startsWith('0')) rawHp = '62' + rawHp.slice(1);
+      try {
+        const response = await fetch(`${url}?id=${encodeURIComponent(kueri)}`);
+        const result = await response.json();
+        loader.classList.add('hidden');
 
-                        const card = `
-                            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-lg animate-fade-in">
-                                <div class="flex justify-between items-start mb-3">
-                                    <div>
-                                        <h3 class="text-lg font-bold text-purple-300">${item.nama}</h3>
-                                        <p class="text-xs text-slate-500">${item.idCst || '-'}</p>
-                                    </div>
-                                    <span class="bg-slate-700 text-purple-400 text-[10px] px-2 py-1 rounded-full font-bold uppercase">${item.paket}</span>
-                                </div>
-                                
-                                <div class="grid grid-cols-2 gap-2 text-sm mb-4">
-                                    <div class="text-slate-400 font-medium">Jatuh Tempo: <span class="text-red-400">${item.japo}</span></div>
-                                    <div class="text-slate-400 font-medium text-right">Email: <span class="text-slate-200 text-xs">${item.email || '-'}</span></div>
-                                </div>
+        if (result.status === "success") {
+          result.data.forEach(item => {
+            let num = item.noHp.toString().replace(/\D/g, '');
+            // Pastikan format nomor WA benar
+            if (num.startsWith('0')) num = '62' + num.slice(1);
+            if (!num.startsWith('62')) num = '62' + num;
 
-                                <a href="https://wa.me/${rawHp}" target="_blank" 
-                                   class="block w-full text-center bg-green-600 hover:bg-green-500 text-white py-2 rounded-xl font-bold text-sm transition-all">
-                                    HUBUNGI WHATSAPP
-                                </a>
-                            </div>
-                        `;
-                        container.innerHTML += card;
-                    });
-                } else {
-                    info.innerText = "";
-                    alert("Data tidak ditemukan!");
-                }
-            } catch (e) { 
-                info.innerText = "";
-                alert("Kesalahan koneksi!"); 
-            }
+            const card = `
+              <div class="bg-slate-800 rounded-2xl p-5 shadow-xl border-l-4 border-purple-500 animate-fade-in">
+                <div class="flex justify-between items-start mb-2">
+                  <h3 class="font-bold text-purple-300 uppercase">${item.nama}</h3>
+                  <span class="text-[10px] bg-slate-700 text-slate-300 px-2 py-1 rounded-md font-bold">${item.paket}</span>
+                </div>
+                <p class="text-xs text-slate-500 mb-3">${item.idCst} | ${item.email || '-'}</p>
+                
+                <div class="space-y-2 text-sm bg-slate-900/50 p-3 rounded-lg border border-slate-700 mb-4">
+                  <div class="flex justify-between border-b border-slate-700 pb-1">
+                    <span class="text-slate-400">Jatuh Tempo:</span> 
+                    <span class="font-bold text-red-400">${item.japo}</span>
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="text-slate-400 text-xs">Alamat Lengkap:</span>
+                    <span class="text-slate-200 mt-1 italic text-xs leading-relaxed">${item.alamat || "Alamat tidak diisi"}</span>
+                  </div>
+                </div>
+
+                <a href="https://wa.me/${num}" target="_blank" 
+                   class="block text-center bg-green-600 hover:bg-green-500 text-white font-bold py-2 rounded-xl transition-all shadow-md">
+                  HUBUNGI WHATSAPP
+                </a>
+              </div>
+            `;
+            list.innerHTML += card;
+          });
+        } else {
+          alert("Data tidak ditemukan!");
         }
-    </script>
+      } catch (e) {
+        loader.classList.add('hidden');
+        alert("Terjadi kesalahan koneksi!");
+      }
+    }
+  </script>
 </body>
 </html>
