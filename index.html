@@ -161,7 +161,7 @@
                     } catch (e) {}
 
                     let waNum = item.noHp.toString().includes('wa.me/') ? item.noHp : 'wa.me/62' + item.noHp.toString().replace(/\D/g, '').replace(/^0/, '');
-                    const pesan = `Halo Bpk/ibu *${item.nama}*,\n\nKami dari *Tim MyRepublic* ingin menginformasikan rincian layanan WiFi Anda:\n\n📌 *ID Pembayaran:* ${item.idCst}\n🚀 *Paket Layanan:* ${item.paket}\n📍 *Alamat:* ${item.alamat || '-'}\n📧 *Email:* ${item.email}\n🗓️ *Tanggal Pasang:* ${item.tanggal}\n🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\n⚠️ *Note:* Mohon lakukan pembayaran tepat waktu. Keterlambatan akan dikenakan *Denda* dan *Internet Nonaktif* secara otomatis.\n\nJika sudah membayar, abaikan pesan ini. Terima kasih! 🙏`;
+                    const pesan = `Halo Bpk/ibu *${item.nama.trim()}*,\n\nKami dari *Tim MyRepublic* ingin menginformasikan rincian layanan WiFi Anda:\n\n📌 *ID Pembayaran:* ${item.idCst}\n🚀 *Paket Layanan:* ${item.paket}\n📍 *Alamat:* ${item.alamat || '-'}\n📧 *Email:* ${item.email}\n🗓️ *Tanggal Pasang:* ${item.tanggal}\n🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\n⚠️ *Note:* Mohon lakukan pembayaran tepat waktu. Keterlambatan akan dikenakan *Denda* dan *Internet Nonaktif* secara otomatis.\n\nJika sudah membayar, abaikan pesan ini. Terima kasih! 🙏`;
 
                     // Template Kartu untuk Download (Desain MyRepublic)
                     const cardID = `card-capture-${index}`;
