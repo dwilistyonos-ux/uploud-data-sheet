@@ -19,6 +19,20 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <body class="p-4 md:p-8 flex flex-col items-center text-slate-800">
 
+    <div id="pinOverlay" class="fixed inset-0 z-[100] flex items-center justify-center bg-indigo-950">
+        <div class="glass-card p-8 w-full max-w-sm text-center mx-4">
+            <h2 class="text-2xl font-black text-indigo-900 mb-2 uppercase">Akses Terkunci</h2>
+            <p class="text-sm text-slate-500 mb-6">Masukkan PIN untuk melanjutkan</p>
+            <input type="password" id="pinInput" inputmode="numeric" maxlength="6" 
+                   class="input-field text-center text-3xl tracking-[0.5em] mb-4 font-mono" 
+                   placeholder="******">
+            <button onclick="checkPin()" id="btnPin" class="w-full bg-indigo-600 text-white font-black py-4 rounded-xl shadow-lg uppercase active:scale-95 transition">
+                Buka Sistem
+            </button>
+            <p id="pinError" class="text-red-500 text-sm mt-4 hidden font-bold">⚠️ PIN SALAH!</p>
+        </div>
+    </div>
+
     <div class="flex gap-2 mb-8 bg-white/10 p-2 rounded-2xl backdrop-blur-md">
         <button onclick="switchTab('input')" id="tabInput" class="tab-btn tab-active">📝 Input</button>
         <button onclick="switchTab('cari')" id="tabCari" class="tab-btn">🔍 Cari</button>
@@ -88,9 +102,34 @@
     </div>
 
    <script>
-    // GANTI URL DI BAWAH DENGAN URL WEB APP BARU ANDA DARI DEPLOY GOOGLE SCRIPT
+    // GANTI DENGAN URL WEB APP ANDA
     const scriptURL = 'https://script.google.com/macros/s/AKfycbxptqr7pqO3wjn3Z7jhWPMsFQvezI9WlUew4tKCJqEFHMdOQ8-xrGpKzk2TujyjNss/exec'; 
 
+    // --- FUNGSI KEAMANAN PIN ---
+    async function checkPin() {
+        const pin = document.getElementById('pinInput').value;
+        const btn = document.getElementById('btnPin');
+        const error = document.getElementById('pinError');
+        
+        if(!pin) return;
+        btn.disabled = true; btn.innerText = "⏳ VALIDASI...";
+        
+        try {
+            const res = await fetch(`${scriptURL}?action=checkPin&pin=${pin}`);
+            const text = await res.text();
+            if(text === "success") {
+                document.getElementById('pinOverlay').style.display = 'none';
+            } else {
+                error.classList.remove('hidden');
+                document.getElementById('pinInput').value = "";
+            }
+        } catch (e) { alert("Error koneksi!"); }
+        btn.disabled = false; btn.innerText = "Buka Sistem";
+    }
+
+    document.getElementById('pinInput').addEventListener('keypress', (e) => { if(e.key === 'Enter') checkPin(); });
+
+    // --- FUNGSI TAB ---
     function switchTab(tab) {
         document.getElementById('sectionInput').classList.toggle('hidden', tab !== 'input');
         document.getElementById('sectionCari').classList.toggle('hidden', tab !== 'cari');
@@ -98,6 +137,7 @@
         document.getElementById('tabCari').className = tab === 'cari' ? 'tab-btn tab-active' : 'tab-btn';
     }
 
+    // --- FUNGSI KIRIM DATA ---
     document.getElementById('rekapanForm').addEventListener('submit', e => {
         e.preventDefault();
         const btn = document.getElementById('btnKirim');
@@ -110,6 +150,7 @@
             });
     });
 
+    // --- FUNGSI CARI DATA ---
     async function cariData() {
         const kueri = document.getElementById('userInput').value;
         const filterHari = document.getElementById('tglPasangFilter').value;
@@ -121,20 +162,15 @@
         loader.classList.remove('hidden');
 
         try {
-            const response = await fetch(`${scriptURL}?id=${encodeURIComponent(kueri)}`);
+            const response = await fetch(`${scriptURL}?id=${encodeURIComponent(kueri)}&action=search`);
             const result = await response.json();
             loader.classList.add('hidden');
 
             if (result.status === "success") {
                 let items = Array.isArray(result.data) ? result.data : [result.data];
-                
                 if (filterHari) {
-                    items = items.filter(i => {
-                        const tgl = i.tanggal.split('/')[0].padStart(2, '0');
-                        return tgl === filterHari;
-                    });
+                    items = items.filter(i => i.tanggal.split('/')[0].padStart(2, '0') === filterHari);
                 }
-
                 if (items.length === 0) return alert("Data tidak ditemukan.");
 
                 items.forEach((item, index) => {
@@ -145,8 +181,7 @@
                         badge = diff >= 90 ? `<span class="bg-emerald-100 text-emerald-700 text-[10px] px-2 py-1 rounded font-bold">✨ LAMA</span>` : `<span class="bg-orange-100 text-orange-700 text-[10px] px-2 py-1 rounded font-bold">⚠️ BARU</span>`;
                     } catch (e) {}
 
-                    // VARIABEL COMMAND (KOLOM M)
-                   let commandHtml = item.command ? `<div class="mt-2 bg-slate-100 p-2 rounded-lg border-l-4 border-indigo-500 text-[11px] font-bold text-red-600 italic">💬 Note: ${item.command}</div>` : "";
+                    let commandHtml = item.command ? `<div class="mt-2 bg-slate-100 p-2 rounded-lg border-l-4 border-indigo-500 text-[11px] font-bold text-red-600 italic">💬 Note: ${item.command}</div>` : "";
 
                     let waNum = item.noHp.toString().includes('wa.me/') ? item.noHp : 'wa.me/62' + item.noHp.toString().replace(/\D/g, '').replace(/^0/, '');
                     const pesan = `Halo Bpk/ibu *${item.nama.trim()}*,\n\nKami dari *Tim MyRepublic* ingin menginformasikan rincian layanan WiFi Anda:\n\n📌 *ID Pembayaran:* ${item.idCst}\n🚀 *Paket Layanan:* ${item.paket}\n📍 *Alamat:* ${item.alamat || '-'}\n📧 *Email:* ${item.email}\n🗓️ *Tanggal Pasang:* ${item.tanggal}\n🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\n⚠️ *Note:* Mohon lakukan pembayaran tepat waktu. untuk menghindari *denda* keterlambatan\n\nabaikan pesan ini apabila internet sudah di bayar\n\nTerima kasih! 🙏`;
