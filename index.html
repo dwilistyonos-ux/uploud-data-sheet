@@ -36,34 +36,22 @@
             <div><label class="block text-sm font-bold text-slate-600 mb-1">ID CST (ID Pembayaran)</label><input type="number" name="id_cst" class="input-field" required></div>
             <div><label class="block text-sm font-bold text-slate-600 mb-1">Email</label><input type="email" name="email" class="input-field" required></div>
             <div><label class="block text-sm font-bold text-slate-600 mb-1">WhatsApp (08...)</label><input type="number" name="hp" class="input-field" required></div>
-            
             <div>
                 <label class="block text-sm font-bold text-slate-600 mb-1">Paket</label>
                 <select name="paket" class="input-field" required>
                     <option value="">Pilih paket</option>
-                    <option value="10Mbps">10Mbps</option>
-                    <option value="15Mbps">15Mbps</option>
-                    <option value="20Mbps">20Mbps</option>
-                    <option value="30Mbps">30Mbps</option>
-                    <option value="100Mbps">100Mbps</option>
-                    <option value="200Mbps">200Mbps</option>
-                    <option value="400Mbps">400Mbps</option>
-                    <option value="500Mbps">500Mbps</option>
-                    <option value="750Mbps">750Mbps</option>
+                    <option value="10Mbps">10Mbps</option><option value="15Mbps">15Mbps</option><option value="20Mbps">20Mbps</option>
+                    <option value="30Mbps">30Mbps</option><option value="100Mbps">100Mbps</option><option value="200Mbps">200Mbps</option>
+                    <option value="400Mbps">400Mbps</option><option value="500Mbps">500Mbps</option><option value="750Mbps">750Mbps</option>
                     <option value="1Gps">1Gps</option>
                 </select>
             </div>
-
             <div>
                 <label class="block text-sm font-bold text-slate-600 mb-1">Point</label>
                 <select name="point" class="input-field">
-                    <option value="0">0</option>
-                    <option value="0.25">0.25</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
+                    <option value="0">0</option><option value="0.25">0.25</option><option value="1">1</option><option value="2">2</option>
                 </select>
             </div>
-
             <div>
                 <label class="block text-sm font-bold text-slate-600 mb-1">Bonus</label>
                 <select name="bonus" class="input-field">
@@ -76,9 +64,7 @@
                     </script>
                 </select>
             </div>
-
             <div class="md:col-span-1"></div>
-
             <div class="md:col-span-2"><label class="block text-sm font-bold text-slate-600 mb-1">Alamat Lengkap</label><textarea name="alamat" rows="2" class="input-field" required></textarea></div>
             <div class="md:col-span-2 mt-2"><button type="submit" id="btnKirim" class="w-full bg-indigo-600 text-white font-black py-4 rounded-xl shadow-lg uppercase transition active:scale-95">Kirim Data</button></div>
         </form>
@@ -88,7 +74,6 @@
         <div class="glass-card p-6 mb-8 text-slate-800">
             <h2 class="text-2xl font-black text-center text-indigo-700 mb-6 uppercase">Cari Pelanggan</h2>
             <input type="text" id="userInput" placeholder="Nama atau ID CST..." class="w-full border-2 border-slate-200 rounded-2xl p-4 mb-4 outline-none focus:border-indigo-500">
-            
             <div class="mb-6">
                 <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Filter Hari Pemasangan:</label>
                 <select id="tglPasangFilter" class="w-full border-2 border-slate-200 rounded-xl p-3 mt-1 bg-slate-50 font-bold text-indigo-900 outline-none">
@@ -96,7 +81,6 @@
                     <script>for(let i=1; i<=31; i++) { let t = i < 10 ? '0' + i : i; document.write(`<option value="${t}">${t}</option>`); }</script>
                 </select>
             </div>
-
             <button onclick="cariData()" class="w-full bg-indigo-600 text-white font-black py-4 rounded-2xl shadow-xl uppercase transition active:scale-95">Cek Data</button>
             <div id="loader" class="hidden text-center mt-4 text-indigo-600 font-bold animate-pulse">🔎 Mencari...</div>
         </div>
@@ -104,7 +88,8 @@
     </div>
 
    <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwNLVjO4ZfWUwCSUNnscTKxKNu63GrRl9hFvXwzomoyD9JF7F-5NC1xP_GTOCQKu3qy/exec'; 
+    // GANTI URL DI BAWAH DENGAN URL WEB APP BARU ANDA DARI DEPLOY GOOGLE SCRIPT
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxptqr7pqO3wjn3Z7jhWPMsFQvezI9WlUew4tKCJqEFHMdOQ8-xrGpKzk2TujyjNss/exec'; 
 
     function switchTab(tab) {
         document.getElementById('sectionInput').classList.toggle('hidden', tab !== 'input');
@@ -160,10 +145,12 @@
                         badge = diff >= 90 ? `<span class="bg-emerald-100 text-emerald-700 text-[10px] px-2 py-1 rounded font-bold">✨ LAMA</span>` : `<span class="bg-orange-100 text-orange-700 text-[10px] px-2 py-1 rounded font-bold">⚠️ BARU</span>`;
                     } catch (e) {}
 
-                    let waNum = item.noHp.toString().includes('wa.me/') ? item.noHp : 'wa.me/62' + item.noHp.toString().replace(/\D/g, '').replace(/^0/, '');
-                    const pesan = `Halo Bpk/ibu *${item.nama.trim()}*,\n\nKami dari *Tim MyRepublic* ingin menginformasikan rincian layanan WiFi Anda:\n\n📌 *ID Pembayaran:* ${item.idCst}\n🚀 *Paket Layanan:* ${item.paket}\n📍 *Alamat:* ${item.alamat || '-'}\n📧 *Email:* ${item.email}\n🗓️ *Tanggal Pasang:* ${item.tanggal}\n🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\n⚠️ *Note:* Mohon lakukan pembayaran tepat waktu. Keterlambatan akan dikenakan *Denda* dan *Internet Nonaktif* secara otomatis.\n\nJika sudah membayar, abaikan pesan ini. Terima kasih! 🙏`;
+                    // VARIABEL COMMAND (KOLOM M)
+                   let commandHtml = item.command ? `<div class="mt-2 bg-slate-100 p-2 rounded-lg border-l-4 border-indigo-500 text-[11px] font-bold text-red-600 italic">💬 Note: ${item.command}</div>` : "";
 
-                    // Template Kartu untuk Download (Desain MyRepublic)
+                    let waNum = item.noHp.toString().includes('wa.me/') ? item.noHp : 'wa.me/62' + item.noHp.toString().replace(/\D/g, '').replace(/^0/, '');
+                    const pesan = `Halo Bpk/ibu *${item.nama.trim()}*,\n\nKami dari *Tim MyRepublic* ingin menginformasikan rincian layanan WiFi Anda:\n\n📌 *ID Pembayaran:* ${item.idCst}\n🚀 *Paket Layanan:* ${item.paket}\n📍 *Alamat:* ${item.alamat || '-'}\n📧 *Email:* ${item.email}\n🗓️ *Tanggal Pasang:* ${item.tanggal}\n🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\n⚠️ *Note:* Mohon lakukan pembayaran tepat waktu.\n\nTerima kasih! 🙏`;
+
                     const cardID = `card-capture-${index}`;
                     const cardTemplate = `
                         <div id="${cardID}" style="width: 500px; padding: 40px; background: #ffffff; position: absolute; left: -9999px; font-family: sans-serif; border-radius: 20px;">
@@ -178,9 +165,6 @@
                                 <p><strong>Email:</strong> ${item.email}</p>
                                 <p><strong>Alamat:</strong> ${item.alamat || '-'}</p>
                             </div>
-                            <div style="margin-top: 40px; border-top: 1px solid #e2e8f0; pt: 15px; font-size: 12px; color: #64748b;">
-                                Terima kasih telah menggunakan layanan MyRepublic.
-                            </div>
                         </div>
                     `;
 
@@ -188,8 +172,11 @@
                         <div class="bg-white rounded-3xl p-6 shadow-xl border-l-[12px] border-indigo-500 mb-4 fade-in">
                             ${cardTemplate}
                             <div class="flex justify-between items-start">
-                                <h3 class="font-black text-indigo-900 uppercase text-lg">${item.nama}</h3>
-                                ${badge}
+                                <div>
+                                    <h3 class="font-black text-indigo-900 uppercase text-lg">${item.nama}</h3>
+                                    ${badge}
+                                    ${commandHtml}
+                                </div>
                             </div>
                             <div class="text-xs space-y-1 my-3 text-slate-600">
                                 <p>🆔 ID CST: <b class="text-slate-900">${item.idCst}</b></p>
@@ -214,10 +201,7 @@
 
     function downloadGambar(elementId, nama) {
         const target = document.getElementById(elementId);
-        html2canvas(target, { 
-            useCORS: true,
-            scale: 2 
-        }).then(canvas => {
+        html2canvas(target, { useCORS: true, scale: 2 }).then(canvas => {
             const link = document.createElement('a');
             link.download = `Tagihan_MyRep_${nama}.png`;
             link.href = canvas.toDataURL("image/png");
@@ -225,3 +209,5 @@
         });
     }
 </script>
+</body>
+</html>
