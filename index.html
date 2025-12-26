@@ -35,9 +35,11 @@
             <div><label class="block text-sm font-bold text-slate-600 mb-1">ID CST (ID Pembayaran)</label><input type="number" name="id_cst" class="input-field" required></div>
             <div><label class="block text-sm font-bold text-slate-600 mb-1">Email</label><input type="email" name="email" class="input-field" required></div>
             <div><label class="block text-sm font-bold text-slate-600 mb-1">WhatsApp (08...)</label><input type="number" name="hp" class="input-field" required></div>
+            
             <div>
                 <label class="block text-sm font-bold text-slate-600 mb-1">Paket</label>
                 <select name="paket" class="input-field" required>
+                    <option value="">Pilih paket</option>
                     <option value="10Mbps">10Mbps</option>
                     <option value="15Mbps">15Mbps</option>
                     <option value="20Mbps">20Mbps</option>
@@ -50,18 +52,32 @@
                     <option value="1Gps">1Gps</option>
                 </select>
             </div>
+
+            <div>
+                <label class="block text-sm font-bold text-slate-600 mb-1">Point</label>
+                <select name="point" class="input-field">
+                    <option value="0">0</option>
+                    <option value="0.25">0.25</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
+            </div>
+
             <div>
                 <label class="block text-sm font-bold text-slate-600 mb-1">Bonus</label>
                 <select name="bonus" class="input-field">
                     <option value="0">Tanpa Bonus</option>
                     <script>
-                        for(let i=50000; i<=1000000; i+=50000) {
+                        for(let i=25000; i<=1000000; i+=25000) {
                             let formatted = i.toLocaleString('id-ID');
                             document.write(`<option value="${formatted}">${formatted}</option>`);
                         }
                     </script>
                 </select>
             </div>
+
+            <div class="md:col-span-1"></div>
+
             <div class="md:col-span-2"><label class="block text-sm font-bold text-slate-600 mb-1">Alamat Lengkap</label><textarea name="alamat" rows="2" class="input-field" required></textarea></div>
             <div class="md:col-span-2 mt-2"><button type="submit" id="btnKirim" class="w-full bg-indigo-600 text-white font-black py-4 rounded-xl shadow-lg uppercase transition active:scale-95">Kirim Data</button></div>
         </form>
@@ -87,7 +103,6 @@
     </div>
 
     <script>
-        // Sesuaikan scriptURL dengan hasil deploy terbaru Anda
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxCVtnMJ3eF3lLJtwT2jxo3ptNT8xFTJPDLoJiSCMao8oARwhdn-zUUM6S37ajw5Ak/exec'; 
 
         function switchTab(tab) {
@@ -138,7 +153,7 @@
 
                         let waNum = item.noHp.toString().includes('wa.me/') ? item.noHp : 'wa.me/62' + item.noHp.toString().replace(/\D/g, '').replace(/^0/, '');
 
-                        const pesan = `Halo Bpk/ibu *${item.nama}*,\n\nKami dari *MyRepublic* ingin menginformasikan rincian layanan WiFi Anda:\n\n📌 *ID Pembayaran:* ${item.idCst}\n🚀 *Paket Layanan:* ${item.paket}\n📍 *Alamat:* ${item.alamat || '-'}\n📧 *Email:* ${item.email}\n🗓️ *Tanggal Pasang:* ${item.tanggal}\n🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\n⚠️ *Note:* Mohon lakukan pembayaran tepat waktu. Keterlambatan akan dikenakan *Denda* dan *Internet Nonaktif* secara otomatis.\n\nJika sudah membayar, abaikan pesan ini. Terima kasih! 🙏`;
+                        const pesan = `Halo Bpk/ibu *${item.nama}*,\n\nKami dari *Tim MyRepublic* ingin menginformasikan rincian layanan WiFi Anda:\n\n📌 *ID Pembayaran:* ${item.idCst}\n🚀 *Paket Layanan:* ${item.paket}\n📍 *Alamat:* ${item.alamat || '-'}\n📧 *Email:* ${item.email}\n🗓️ *Tanggal Pasang:* ${item.tanggal}\n🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\n⚠️ *Note:* Mohon lakukan pembayaran tepat waktu. Keterlambatan akan dikenakan *Denda* dan *Internet Nonaktif* secara otomatis.\n\nJika sudah membayar, abaikan pesan ini. Terima kasih! 🙏`;
 
                         list.innerHTML += `
                             <div class="bg-white rounded-3xl p-6 shadow-xl border-l-[12px] border-indigo-500 mb-4 fade-in">
