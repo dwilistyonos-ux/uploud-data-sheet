@@ -1,4 +1,4 @@
-                            <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -6,24 +6,9 @@
     <title>Sistem Pelanggan MyRepublic</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            background: linear-gradient(135deg, #4c1d95 0%, #1e1b4b 100%);
-            min-height: 100vh;
-            font-family: 'Segoe UI', sans-serif;
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 24px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-        }
-        .input-field {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            outline: none;
-            transition: all 0.3s;
-        }
+        body { background: linear-gradient(135deg, #4c1d95 0%, #1e1b4b 100%); min-height: 100vh; font-family: 'Segoe UI', sans-serif; }
+        .glass-card { background: rgba(255, 255, 255, 0.98); border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        .input-field { width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 12px; outline: none; transition: all 0.3s; }
         .input-field:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); }
         .tab-btn { padding: 12px 24px; font-weight: 800; border-radius: 12px; transition: all 0.3s; color: #cbd5e1; text-transform: uppercase; }
         .tab-active { background-color: #6366f1; color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
@@ -34,16 +19,15 @@
 <body class="p-4 md:p-8 flex flex-col items-center text-slate-800">
 
     <div class="flex gap-2 mb-8 bg-white/10 p-2 rounded-2xl backdrop-blur-md">
-        <button onclick="switchTab('input')" id="tabInput" class="tab-btn tab-active">➕ Input Baru</button>
-        <button onclick="switchTab('cari')" id="tabCari" class="tab-btn">🔍 Cari & Ingatkan</button>
+        <button onclick="switchTab('input')" id="tabInput" class="tab-btn tab-active">📝 Input</button>
+        <button onclick="switchTab('cari')" id="tabCari" class="tab-btn">🔍 Cari</button>
     </div>
 
     <div id="sectionInput" class="max-w-4xl w-full glass-card p-6 md:p-8 fade-in">
         <div class="text-center mb-8">
-            <h2 class="text-2xl font-black text-indigo-900 uppercase">REKAPAN ONLINE</h2>
-            <p class="text-slate-500 text-sm">Input data pelanggan ke Spreadsheet</p>
+            <h2 class="text-2xl font-black text-indigo-900 uppercase">MyRepublic</h2>
+            <p class="text-slate-500 text-sm">Input data pelanggan baru</p>
         </div>
-
         <form id="rekapanForm" class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div><label class="block text-sm font-bold text-slate-600 mb-1">Billing (Opsional)</label><input type="text" name="billing" class="input-field"></div>
             <div><label class="block text-sm font-bold text-slate-600 mb-1">Tanggal Pasang</label><input type="date" name="tanggal" class="input-field" required></div> 
@@ -51,35 +35,31 @@
             <div><label class="block text-sm font-bold text-slate-600 mb-1">ID CST (ID Pembayaran)</label><input type="number" name="id_cst" class="input-field" required></div>
             <div><label class="block text-sm font-bold text-slate-600 mb-1">Email</label><input type="email" name="email" class="input-field" required></div>
             <div><label class="block text-sm font-bold text-slate-600 mb-1">WhatsApp (08...)</label><input type="number" name="hp" class="input-field" required></div>
-            
             <div>
-                <label class="block text-sm font-bold text-slate-600 mb-1">Paket MyRepublic</label>
+                <label class="block text-sm font-bold text-slate-600 mb-1">Paket</label>
                 <select name="paket" class="input-field" required>
-                    <option value="">-- Pilih Paket --</option>
-                    <option value="10Mbps">10 Mbps</option>
-                    <option value="20Mbps">20 Mbps</option>
-                    <option value="30Mbps">30 Mbps</option>
-                    <option value="50Mbps">50 Mbps</option>
-                    <option value="100Mbps">100 Mbps</option>
-                    <option value="1Gbps">1 Gbps</option>
+                    <option value="10Mbps">10Mbps</option>
+                    <option value="15Mbps">15Mbps</option>
+                    <option value="20Mbps">20Mbps</option>
+                    <option value="30Mbps">30Mbps</option>
+                    <option value="100Mbps">100Mbps</option>
+                    <option value="200Mbps">200Mbps</option>
+                    <option value="400Mbps">400Mbps</option>
+                    <option value="500Mbps">500Mbps</option>
+                    <option value="750Mbps">750Mbps</option>
+                    <option value="1Gps">1Gps</option>
                 </select>
             </div>
-
             <div>
-                <label class="block text-sm font-bold text-slate-600 mb-1">Bonus (Rp)</label>
-                <select name="bonus" class="input-field" required>
+                <label class="block text-sm font-bold text-slate-600 mb-1">Bonus</label>
+                <select name="bonus" class="input-field">
                     <option value="0">Tanpa Bonus</option>
-                    <option value="25.000">25,000</option>
-                    <option value="50.000">50,000</option>
-                    <option value="100.000">100,000</option>
-                </select>
-            </div>
-            <div>
-                <label class="block text-sm font-bold text-slate-600 mb-1">Point</label>
-                <select name="point" class="input-field" required>
-                    <option value="PILIHAN">Pilihan</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
+                    <script>
+                        for(let i=50000; i<=1000000; i+=50000) {
+                            let formatted = i.toLocaleString('id-ID');
+                            document.write(`<option value="${formatted}">${formatted}</option>`);
+                        }
+                    </script>
                 </select>
             </div>
             <div class="md:col-span-2"><label class="block text-sm font-bold text-slate-600 mb-1">Alamat Lengkap</label><textarea name="alamat" rows="2" class="input-field" required></textarea></div>
@@ -96,25 +76,19 @@
                 <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Filter Hari Pemasangan:</label>
                 <select id="tglPasangFilter" class="w-full border-2 border-slate-200 rounded-xl p-3 mt-1 bg-slate-50 font-bold text-indigo-900 outline-none">
                     <option value="">-- Semua Tanggal --</option>
-                    <script>
-                        for(let i=1; i<=31; i++) { 
-                            let t = i < 10 ? '0' + i : i; 
-                            document.write(`<option value="${t}">${t}</option>`); 
-                        }
-                    </script>
+                    <script>for(let i=1; i<=31; i++) { let t = i < 10 ? '0' + i : i; document.write(`<option value="${t}">${t}</option>`); }</script>
                 </select>
             </div>
 
             <button onclick="cariData()" class="w-full bg-indigo-600 text-white font-black py-4 rounded-2xl shadow-xl uppercase transition active:scale-95">Cek Data</button>
             <div id="loader" class="hidden text-center mt-4 text-indigo-600 font-bold animate-pulse">🔎 Mencari...</div>
         </div>
-
         <div id="resultsList" class="space-y-4"></div>
     </div>
 
     <script>
-        // MASUKKAN URL WEB APP ANDA DI SINI
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzdTjAuRLVVb-IYGQ0bpPgYnsUSyDvmJWuSkX8we5I2Vkxwp45F13mHXWVWEYlh-c8Y/exec'; 
+        // Sesuaikan scriptURL dengan hasil deploy terbaru Anda
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxCVtnMJ3eF3lLJtwT2jxo3ptNT8xFTJPDLoJiSCMao8oARwhdn-zUUM6S37ajw5Ak/exec'; 
 
         function switchTab(tab) {
             document.getElementById('sectionInput').classList.toggle('hidden', tab !== 'input');
@@ -126,27 +100,12 @@
         document.getElementById('rekapanForm').addEventListener('submit', e => {
             e.preventDefault();
             const btn = document.getElementById('btnKirim');
-            btn.disabled = true; 
-            btn.innerText = "⏳ MEMVERIFIKASI DATA...";
-
+            btn.disabled = true; btn.innerText = "⏳ MEMVERIFIKASI...";
             fetch(scriptURL, { method: 'POST', body: new FormData(e.target)})
-                .then(response => response.text())
-                .then(result => {
-                    if (result === "ALREADY_EXISTS") {
-                        alert("⚠️ GAGAL MENYIMPAN!\n\nID CST ini sudah terdaftar di sistem.");
-                    } else if (result === "success") {
-                        alert("✅ BERHASIL!\n\nData pelanggan telah disimpan.");
-                        e.target.reset();
-                    } else {
-                        alert("❌ ERROR: " + result);
-                    }
-                    btn.disabled = false;
-                    btn.innerText = "KIRIM DATA";
-                })
-                .catch(err => {
-                    alert("❌ KONEKSI GAGAL!");
-                    btn.disabled = false;
-                    btn.innerText = "KIRIM DATA";
+                .then(res => res.text()).then(res => {
+                    if (res === "ALREADY_EXISTS") alert("⚠️ ID CST SUDAH ADA!");
+                    else if (res === "success") { alert("✅ BERHASIL!"); e.target.reset(); }
+                    btn.disabled = false; btn.innerText = "KIRIM DATA";
                 });
         });
 
@@ -166,60 +125,39 @@
 
                 if (result.status === "success") {
                     let items = Array.isArray(result.data) ? result.data : [result.data];
-                    
-                    if (filterHari) {
-                        items = items.filter(item => {
-                            const tglAngka = item.tanggal.split('/')[0].replace(/\D/g, '');
-                            return tglAngka === filterHari;
-                        });
-                    }
-
-                    if (items.length === 0) return alert("Data tidak ditemukan pada tanggal tersebut.");
+                    if (filterHari) items = items.filter(i => i.tanggal.split('/')[0].replace(/\D/g, '') === filterHari);
+                    if (items.length === 0) return alert("Data tidak ditemukan.");
 
                     items.forEach(item => {
-                        // LOGIKA PENANDA LAMA/BARU
-                        let badgeStatus = "";
+                        let badge = "";
                         try {
                             const p = item.tanggal.split('/'); 
-                            const tglPasang = new Date(p[2], p[1] - 1, p[0]);
-                            const diffDays = Math.floor((new Date() - tglPasang) / (1000 * 60 * 60 * 24));
-                            badgeStatus = diffDays >= 90 ? 
-                                `<span class="bg-emerald-100 text-emerald-700 text-[10px] px-2 py-1 rounded-md font-bold border border-emerald-200">✨ LAMA</span>` : 
-                                `<span class="bg-orange-100 text-orange-700 text-[10px] px-2 py-1 rounded-md font-bold border border-orange-200">⚠️ PELANGGAN BARU</span>`;
-                        } catch (e) { badgeStatus = ""; }
+                            const diff = Math.floor((new Date() - new Date(p[2], p[1]-1, p[0])) / (1000*3600*24));
+                            badge = diff >= 90 ? `<span class="bg-emerald-100 text-emerald-700 text-[10px] px-2 py-1 rounded font-bold">✨ LAMA</span>` : `<span class="bg-orange-100 text-orange-700 text-[10px] px-2 py-1 rounded font-bold">⚠️ BARU</span>`;
+                        } catch (e) {}
 
-                        // LOGIKA FORMAT WA.ME/62
-                        let waBase = item.noHp.toString();
-                        let finalWa = waBase.includes('wa.me/') ? waBase : 'wa.me/62' + waBase.replace(/\D/g, '').replace(/^0/, '');
+                        let waNum = item.noHp.toString().includes('wa.me/') ? item.noHp : 'wa.me/62' + item.noHp.toString().replace(/\D/g, '').replace(/^0/, '');
 
-                        // FORMAT PESAN SESUAI GAMBAR
-                        const pesanTeks = `Halo Bpk/ibu *${item.nama.trim()}*,\n\n` +
-                            `Kami dari *MyRepublic* ingin menginformasikan rincian layanan WiFi Anda:\n\n` +
-                            `📌 *ID Pembayaran:* ${item.idCst}\n` +
-                            `🚀 *Paket Layanan:* ${item.paket}\n` +
-                            `📧 *Email:* ${item.email}\n` +
-                            `🗓️ *Tanggal Pasang:* ${item.tanggal}\n` +
-                            `🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\n` +
-                            `⚠️ *Note:* Mohon lakukan pembayaran tepat waktu. Keterlambatan akan dikenakan *Denda* dan *Internet Nonaktif* secara otomatis.\n\n` +
-                            `📢 *Informasi:* Jika ada kerusakan atau internet lelet, hubungi saya segera agar segera diperbaiki.\n\n` +
-                            `Jika sudah membayar, abaikan pesan ini. Terima kasih! 🙏`;
+                        const pesan = `Halo Bpk/ibu *${item.nama}*,\n\nKami dari *MyRepublic* ingin menginformasikan rincian layanan WiFi Anda:\n\n📌 *ID Pembayaran:* ${item.idCst}\n🚀 *Paket Layanan:* ${item.paket}\n📍 *Alamat:* ${item.alamat || '-'}\n📧 *Email:* ${item.email}\n🗓️ *Tanggal Pasang:* ${item.tanggal}\n🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\n⚠️ *Note:* Mohon lakukan pembayaran tepat waktu. Keterlambatan akan dikenakan *Denda* dan *Internet Nonaktif* secara otomatis.\n\nJika sudah membayar, abaikan pesan ini. Terima kasih! 🙏`;
 
                         list.innerHTML += `
                             <div class="bg-white rounded-3xl p-6 shadow-xl border-l-[12px] border-indigo-500 mb-4 fade-in">
-                                <div class="flex justify-between items-start mb-2">
+                                <div class="flex justify-between items-start">
                                     <h3 class="font-black text-indigo-900 uppercase text-lg">${item.nama}</h3>
-                                    ${badgeStatus}
+                                    ${badge}
                                 </div>
                                 <div class="text-xs space-y-1 my-3 text-slate-600">
                                     <p>🆔 ID CST: <b class="text-slate-900">${item.idCst}</b></p>
+                                    <p>🚀 Paket: <b class="text-indigo-600 uppercase">${item.paket}</b></p>
                                     <p>🗓️ Pasang: <b>${item.tanggal}</b></p>
-                                    <p>📧 Email: <b class="text-indigo-600 font-medium italic">${item.email}</b></p>
+                                    <p>📧 Email: <b class="text-indigo-600 italic">${item.email}</b></p>
+                                    <p>📍 Alamat: <b>${item.alamat || '-'}</b></p>
                                     <p>🔔 JAPO: <span class="text-red-600 font-bold">Tgl ${item.japo}</span></p>
                                 </div>
-                                <a href="https://${finalWa}?text=${encodeURIComponent(pesanTeks)}" target="_blank" class="block w-full bg-green-500 text-white font-black py-3 rounded-xl text-center shadow-lg uppercase active:scale-95 transition">Kirim WA 📱</a>
+                                <a href="https://${waNum}?text=${encodeURIComponent(pesan)}" target="_blank" class="block w-full bg-green-500 text-white font-black py-3 rounded-xl text-center uppercase active:scale-95 transition">Kirim WA 📱</a>
                             </div>`;
                     });
-                } else { alert("Data tidak ditemukan!"); }
+                } else alert("Data tidak ditemukan!");
             } catch (e) { loader.classList.add('hidden'); alert("Gagal memuat data."); }
         }
     </script>
