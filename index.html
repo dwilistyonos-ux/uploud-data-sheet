@@ -1,270 +1,425 @@
 <!DOCTYPE html>
+
 <html lang="id">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Sistem Pelanggan MyRepublic</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
+
         body { background: linear-gradient(135deg, #4c1d95 0%, #1e1b4b 100%); min-height: 100vh; font-family: 'Segoe UI', sans-serif; }
+
         .glass-card { background: rgba(255, 255, 255, 0.98); border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+
         .input-field { width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 12px; outline: none; transition: all 0.3s; }
+
         .input-field:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); }
+
         .tab-btn { padding: 12px 24px; font-weight: 800; border-radius: 12px; transition: all 0.3s; color: #cbd5e1; text-transform: uppercase; }
+
         .tab-active { background-color: #6366f1; color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
+
         .fade-in { animation: fadeIn 0.4s ease-out; }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
     </style>
+
 </head>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 <body class="p-4 md:p-8 flex flex-col items-center text-slate-800">
 
-    <div id="pinOverlay" class="fixed inset-0 z-[100] flex items-center justify-center bg-indigo-950">
-        <div class="glass-card p-8 w-full max-w-sm text-center mx-4">
-            <h2 class="text-2xl font-black text-indigo-900 mb-2 uppercase">Akses Terkunci</h2>
-            <p class="text-sm text-slate-500 mb-6">Masukkan PIN untuk melanjutkan</p>
-            <input type="password" id="pinInput" inputmode="numeric" maxlength="6" 
-                   class="input-field text-center text-3xl tracking-[0.5em] mb-4 font-mono" 
-                   placeholder="******">
-            <button onclick="checkPin()" id="btnPin" class="w-full bg-indigo-600 text-white font-black py-4 rounded-xl shadow-lg uppercase active:scale-95 transition">
-                Buka Sistem
-            </button>
-            <p id="pinError" class="text-red-500 text-sm mt-4 hidden font-bold">⚠️ PIN SALAH ATAU SERVER ERROR!</p>
-        </div>
-    </div>
+
 
     <div class="flex gap-2 mb-8 bg-white/10 p-2 rounded-2xl backdrop-blur-md">
+
         <button onclick="switchTab('input')" id="tabInput" class="tab-btn tab-active">📝 Input</button>
+
         <button onclick="switchTab('cari')" id="tabCari" class="tab-btn">🔍 Cari</button>
+
     </div>
+
+
 
     <div id="sectionInput" class="max-w-4xl w-full glass-card p-6 md:p-8 fade-in">
+
         <div class="text-center mb-8">
+
             <h2 class="text-2xl font-black text-indigo-900 uppercase">MyRepublic</h2>
-            <p class="text-slate-500 text-sm">Input data pelanggan baru (JAPO Otomatis +5 Hari)</p>
+
+            <p class="text-slate-500 text-sm">Input data pelanggan baru</p>
+
         </div>
+
         <form id="rekapanForm" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
             <div><label class="block text-sm font-bold text-slate-600 mb-1">Billing (Opsional)</label><input type="text" name="billing" class="input-field"></div>
+
             <div><label class="block text-sm font-bold text-slate-600 mb-1">Tanggal Pasang</label><input type="date" name="tanggal" class="input-field" required></div> 
+
             <div><label class="block text-sm font-bold text-slate-600 mb-1">Nama Pelanggan</label><input type="text" name="nama" class="input-field" required></div>
+
             <div><label class="block text-sm font-bold text-slate-600 mb-1">ID CST (ID Pembayaran)</label><input type="number" name="id_cst" class="input-field" required></div>
+
             <div><label class="block text-sm font-bold text-slate-600 mb-1">Email</label><input type="email" name="email" class="input-field" required></div>
+
             <div><label class="block text-sm font-bold text-slate-600 mb-1">WhatsApp (08...)</label><input type="number" name="hp" class="input-field" required></div>
+
             <div>
+
                 <label class="block text-sm font-bold text-slate-600 mb-1">Paket</label>
+
                 <select name="paket" class="input-field" required>
+
                     <option value="">Pilih paket</option>
+
                     <option value="10Mbps">10Mbps</option><option value="15Mbps">15Mbps</option><option value="20Mbps">20Mbps</option>
+
                     <option value="30Mbps">30Mbps</option><option value="100Mbps">100Mbps</option><option value="200Mbps">200Mbps</option>
+
                     <option value="400Mbps">400Mbps</option><option value="500Mbps">500Mbps</option><option value="750Mbps">750Mbps</option>
-                    <option value="1Gbps">1Gbps</option>
+
+                    <option value="1Gps">1Gps</option>
+
                 </select>
+
             </div>
+
             <div>
+
                 <label class="block text-sm font-bold text-slate-600 mb-1">Point</label>
+
                 <select name="point" class="input-field">
+
                     <option value="0">0</option><option value="0.25">0.25</option><option value="1">1</option><option value="2">2</option>
+
                 </select>
+
             </div>
+
             <div>
+
                 <label class="block text-sm font-bold text-slate-600 mb-1">Bonus</label>
+
                 <select name="bonus" class="input-field">
+
                     <option value="0">Tanpa Bonus</option>
+
                     <script>
+
                         for(let i=25000; i<=1000000; i+=25000) {
+
                             let formatted = i.toLocaleString('id-ID');
+
                             document.write(`<option value="${formatted}">${formatted}</option>`);
+
                         }
+
                     </script>
+
                 </select>
+
             </div>
+
             <div class="md:col-span-1"></div>
+
             <div class="md:col-span-2"><label class="block text-sm font-bold text-slate-600 mb-1">Alamat Lengkap</label><textarea name="alamat" rows="2" class="input-field" required></textarea></div>
+
             <div class="md:col-span-2 mt-2"><button type="submit" id="btnKirim" class="w-full bg-indigo-600 text-white font-black py-4 rounded-xl shadow-lg uppercase transition active:scale-95">Kirim Data</button></div>
+
         </form>
+
     </div>
+
+
 
     <div id="sectionCari" class="max-w-xl w-full hidden fade-in">
+
         <div class="glass-card p-6 mb-8 text-slate-800">
+
             <h2 class="text-2xl font-black text-center text-indigo-700 mb-6 uppercase">Cari Pelanggan</h2>
+
             <input type="text" id="userInput" placeholder="Nama atau ID CST..." class="w-full border-2 border-slate-200 rounded-2xl p-4 mb-4 outline-none focus:border-indigo-500">
+
             <div class="mb-6">
+
                 <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Filter Hari Pemasangan:</label>
+
                 <select id="tglPasangFilter" class="w-full border-2 border-slate-200 rounded-xl p-3 mt-1 bg-slate-50 font-bold text-indigo-900 outline-none">
+
                     <option value="">-- Semua Tanggal --</option>
+
                     <script>for(let i=1; i<=31; i++) { let t = i < 10 ? '0' + i : i; document.write(`<option value="${t}">${t}</option>`); }</script>
+
                 </select>
+
             </div>
+
             <button onclick="cariData()" class="w-full bg-indigo-600 text-white font-black py-4 rounded-2xl shadow-xl uppercase transition active:scale-95">Cek Data</button>
+
             <div id="loader" class="hidden text-center mt-4 text-indigo-600 font-bold animate-pulse">🔎 Mencari...</div>
+
         </div>
+
         <div id="resultsList" class="space-y-4"></div>
+
     </div>
 
+
+
    <script>
-    // --- GANTI DENGAN URL WEB APP ANDA ---
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbweRf0C6IkKXxyBuvy7mUoro6Ub2mzdjsPnL0xPqUxP9835CX08vZsy_988G5Ql-WQ/exec'; 
 
-    // --- FUNGSI KEAMANAN PIN ---
-    async function checkPin() {
-        const pin = document.getElementById('pinInput').value;
-        const btn = document.getElementById('btnPin');
-        const error = document.getElementById('pinError');
-        
-        if(!pin) return;
-        btn.disabled = true; btn.innerText = "⏳ VALIDASI...";
-        error.classList.add('hidden');
-        
-        try {
-            // Menggunakan cache buster (?t=...) agar tidak ambil cache lama
-            const res = await fetch(`${scriptURL}?action=checkPin&pin=${pin}&t=${new Date().getTime()}`);
-            const text = await res.text();
-            
-            if(text.trim() === "success") {
-                document.getElementById('pinOverlay').style.display = 'none';
-            } else {
-                error.classList.remove('hidden');
-                document.getElementById('pinInput').value = "";
-            }
-        } catch (e) { 
-            console.error(e);
-            alert("Koneksi gagal! Pastikan URL Web App benar dan sudah di-Deploy."); 
-        }
-        btn.disabled = false; btn.innerText = "Buka Sistem";
-    }
+    // GANTI URL DI BAWAH DENGAN URL WEB APP BARU ANDA DARI DEPLOY GOOGLE SCRIPT
 
-    document.getElementById('pinInput').addEventListener('keypress', (e) => { if(e.key === 'Enter') checkPin(); });
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxptqr7pqO3wjn3Z7jhWPMsFQvezI9WlUew4tKCJqEFHMdOQ8-xrGpKzk2TujyjNss/exec'; 
 
-    // --- FUNGSI TAB ---
+
+
     function switchTab(tab) {
+
         document.getElementById('sectionInput').classList.toggle('hidden', tab !== 'input');
+
         document.getElementById('sectionCari').classList.toggle('hidden', tab !== 'cari');
+
         document.getElementById('tabInput').className = tab === 'input' ? 'tab-btn tab-active' : 'tab-btn';
+
         document.getElementById('tabCari').className = tab === 'cari' ? 'tab-btn tab-active' : 'tab-btn';
+
     }
 
-    // --- FUNGSI KIRIM DATA ---
+
+
     document.getElementById('rekapanForm').addEventListener('submit', e => {
+
         e.preventDefault();
+
         const btn = document.getElementById('btnKirim');
+
         btn.disabled = true; btn.innerText = "⏳ MEMVERIFIKASI...";
-        
+
         fetch(scriptURL, { method: 'POST', body: new FormData(e.target)})
+
             .then(res => res.text()).then(res => {
-                const cleanRes = res.trim();
-                if (cleanRes === "ALREADY_EXISTS") alert("⚠️ ID CST SUDAH ADA!");
-                else if (cleanRes === "success") { 
-                    alert("✅ BERHASIL DISIMPAN!"); 
-                    e.target.reset(); 
-                } else {
-                    alert("Terjadi masalah: " + cleanRes);
-                }
+
+                if (res === "ALREADY_EXISTS") alert("⚠️ ID CST SUDAH ADA!");
+
+                else if (res === "success") { alert("✅ BERHASIL!"); e.target.reset(); }
+
                 btn.disabled = false; btn.innerText = "KIRIM DATA";
-            }).catch(err => {
-                alert("Error koneksi saat mengirim data.");
-                btn.disabled = false; btn.innerText = "KIRIM DATA";
+
             });
+
     });
 
-    // --- FUNGSI CARI DATA ---
+
+
     async function cariData() {
+
         const kueri = document.getElementById('userInput').value;
+
         const filterHari = document.getElementById('tglPasangFilter').value;
+
         const list = document.getElementById('resultsList');
+
         const loader = document.getElementById('loader');
 
+
+
         if(!kueri && !filterHari) return alert("Masukkan Nama atau Pilih Tanggal!");
+
         list.innerHTML = ""; 
+
         loader.classList.remove('hidden');
 
+
+
         try {
-            const response = await fetch(`${scriptURL}?id=${encodeURIComponent(kueri)}&action=search`);
+
+            const response = await fetch(`${scriptURL}?id=${encodeURIComponent(kueri)}`);
+
             const result = await response.json();
+
             loader.classList.add('hidden');
 
+
+
             if (result.status === "success") {
+
                 let items = Array.isArray(result.data) ? result.data : [result.data];
+
                 
+
                 if (filterHari) {
+
                     items = items.filter(i => {
-                        const tglPart = i.tanggal.split('/'); 
-                        return tglPart[0].padStart(2, '0') === filterHari;
+
+                        const tgl = i.tanggal.split('/')[0].padStart(2, '0');
+
+                        return tgl === filterHari;
+
                     });
+
                 }
-                
+
+
+
                 if (items.length === 0) return alert("Data tidak ditemukan.");
 
+
+
                 items.forEach((item, index) => {
+
                     let badge = "";
+
                     try {
+
                         const p = item.tanggal.split('/'); 
+
                         const diff = Math.floor((new Date() - new Date(p[2], p[1]-1, p[0])) / (1000*3600*24));
+
                         badge = diff >= 90 ? `<span class="bg-emerald-100 text-emerald-700 text-[10px] px-2 py-1 rounded font-bold">✨ LAMA</span>` : `<span class="bg-orange-100 text-orange-700 text-[10px] px-2 py-1 rounded font-bold">⚠️ BARU</span>`;
+
                     } catch (e) {}
 
-                    let commandHtml = item.command ? `<div class="mt-2 bg-slate-100 p-2 rounded-lg border-l-4 border-indigo-500 text-[11px] font-bold text-red-600 italic">💬 Note: ${item.command}</div>` : "";
+
+
+                    // VARIABEL COMMAND (KOLOM M)
+
+                   let commandHtml = item.command ? `<div class="mt-2 bg-slate-100 p-2 rounded-lg border-l-4 border-indigo-500 text-[11px] font-bold text-red-600 italic">💬 Note: ${item.command}</div>` : "";
+
+
 
                     let waNum = item.noHp.toString().includes('wa.me/') ? item.noHp : 'wa.me/62' + item.noHp.toString().replace(/\D/g, '').replace(/^0/, '');
-                    const pesan = `Halo Bpk/ibu *${item.nama.trim()}*,\n\nKami dari *Tim MyRepublic* ingin menginformasikan rincian layanan WiFi Anda:\n\n📌 *ID Pembayaran:* ${item.idCst}\n🚀 *Paket Layanan:* ${item.paket}\n📍 *Alamat:* ${item.alamat || '-'}\n📧 *Email:* ${item.email}\n🗓️ *Tanggal Pasang:* ${item.tanggal}\n🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\n⚠️ *Note:* Mohon lakukan pembayaran tepat waktu untuk menghindari *denda* keterlambatan.\n\nabaikan pesan ini apabila internet sudah di bayar.\n\nTerima kasih! 🙏`;
+
+                    const pesan = `Halo Bpk/ibu *${item.nama.trim()}*,\n\nKami dari *Tim MyRepublic* ingin menginformasikan rincian layanan WiFi Anda:\n\n📌 *ID Pembayaran:* ${item.idCst}\n🚀 *Paket Layanan:* ${item.paket}\n📍 *Alamat:* ${item.alamat || '-'}\n📧 *Email:* ${item.email}\n🗓️ *Tanggal Pasang:* ${item.tanggal}\n🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\n⚠️ *Note:* Mohon lakukan pembayaran tepat waktu. untuk menghindari *denda* keterlambatan\n\nabaikan pesan ini apabila internet sudah di bayar\n\nTerima kasih! 🙏`;
+
+
 
                     const cardID = `card-capture-${index}`;
+
                     const cardTemplate = `
+
                         <div id="${cardID}" style="width: 500px; padding: 40px; background: #ffffff; position: absolute; left: -9999px; font-family: sans-serif; border-radius: 20px;">
+
                             <img src="https://upload.wikimedia.org/wikipedia/commons/4/43/MyRepublic_NEW_LOGO_%28September_2023%29_Logo_MyRepublic_Horizontal_-_Black_%281%29.png" style="width: 220px; margin-bottom: 25px;">
+
                             <div style="background: #4f46e5; height: 5px; width: 100px; margin-bottom: 25px;"></div>
+
                             <h2 style="font-size: 24px; font-weight: 900; color: #1e1b4b; margin-bottom: 20px; text-transform: uppercase;">Informasi Pelanggan</h2>
+
                             <div style="display: grid; gap: 12px; font-size: 16px; color: #334155;">
+
                                 <p><strong>Nama:</strong> ${item.nama}</p>
+
                                 <p><strong>ID Pelanggan:</strong> ${item.idCst}</p>
+
                                 <p><strong>Jatuh Tempo:</strong> Tanggal ${item.japo}</p>
+
                                 <p><strong>Paket:</strong> ${item.paket}</p>
+
                                 <p><strong>Email:</strong> ${item.email}</p>
+
                                 <p><strong>Alamat:</strong> ${item.alamat || '-'}</p>
+
                             </div>
+
                         </div>
+
                     `;
 
+
+
                     list.innerHTML += `
+
                         <div class="bg-white rounded-3xl p-6 shadow-xl border-l-[12px] border-indigo-500 mb-4 fade-in">
+
                             ${cardTemplate}
+
                             <div class="flex justify-between items-start">
+
                                 <div>
+
                                     <h3 class="font-black text-indigo-900 uppercase text-lg">${item.nama}</h3>
+
                                     ${badge}
+
                                     ${commandHtml}
+
                                 </div>
+
                             </div>
+
                             <div class="text-xs space-y-1 my-3 text-slate-600">
+
                                 <p>🆔 ID CST: <b class="text-slate-900">${item.idCst}</b></p>
+
                                 <p>🚀 Paket: <b class="text-indigo-600 uppercase">${item.paket}</b></p>
+
                                 <p>🗓️ Pasang: <b>${item.tanggal}</b></p>
+
                                 <p>📧 Email: <b class="text-indigo-600 italic">${item.email}</b></p>
+
                                 <p>📍 Alamat: <b>${item.alamat || '-'}</b></p>
+
                                 <p>🔔 JAPO: <span class="text-red-600 font-bold">Tgl ${item.japo}</span></p>
+
                             </div>
+
                             <div class="flex gap-2">
+
                                 <a href="https://${waNum}?text=${encodeURIComponent(pesan)}" target="_blank" class="flex-[2] bg-green-500 text-white font-black py-3 rounded-xl text-center uppercase active:scale-95 transition">Kirim WA 📱</a>
+
                                 <button onclick="downloadGambar('${cardID}', '${item.nama}')" class="flex-1 bg-indigo-600 text-white font-black py-3 rounded-xl text-center uppercase active:scale-95 transition">🖼️ Gambar</button>
+
                             </div>
+
                         </div>`;
+
                 });
+
             } else alert("Data tidak ditemukan!");
+
         } catch (e) { 
+
             loader.classList.add('hidden'); 
+
             alert("Terjadi kesalahan saat mencari data."); 
+
         }
+
     }
+
+
 
     function downloadGambar(elementId, nama) {
-        const target = document.getElementById(elementId);
-        html2canvas(target, { useCORS: true, scale: 2 }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = `Tagihan_MyRep_${nama}.png`;
-            link.href = canvas.toDataURL("image/png");
-            link.click();
-        });
-    }
-</script>
-</body>
-</html>
 
+        const target = document.getElementById(elementId);
+
+        html2canvas(target, { useCORS: true, scale: 2 }).then(canvas => {
+
+            const link = document.createElement('a');
+
+            link.download = `Tagihan_MyRep_${nama}.png`;
+
+            link.href = canvas.toDataURL("image/png");
+
+            link.click();
+
+        });
+
+    }
+
+</script>
+
+</body>
+
+</html>
