@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+                            <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -48,25 +48,19 @@
             <div><label class="block text-sm font-bold text-slate-600 mb-1">Billing (Opsional)</label><input type="text" name="billing" class="input-field"></div>
             <div><label class="block text-sm font-bold text-slate-600 mb-1">Tanggal Pasang</label><input type="date" name="tanggal" class="input-field" required></div> 
             <div><label class="block text-sm font-bold text-slate-600 mb-1">Nama Pelanggan</label><input type="text" name="nama" class="input-field" required></div>
-            <div><label class="block text-sm font-bold text-slate-600 mb-1">ID CST (ID Pembayaran)</label><input type="number" name="id_cst" class="input-field">required></div>
+            <div><label class="block text-sm font-bold text-slate-600 mb-1">ID CST (ID Pembayaran)</label><input type="number" name="id_cst" class="input-field" required></div>
             <div><label class="block text-sm font-bold text-slate-600 mb-1">Email</label><input type="email" name="email" class="input-field" required></div>
-            <div><label class="block text-sm font-bold text-slate-600 mb-1">WhatsApp (628...)</label><input type="number" name="hp" class="input-field" required></div>
+            <div><label class="block text-sm font-bold text-slate-600 mb-1">WhatsApp (08...)</label><input type="number" name="hp" class="input-field" required></div>
             
             <div>
                 <label class="block text-sm font-bold text-slate-600 mb-1">Paket MyRepublic</label>
                 <select name="paket" class="input-field" required>
                     <option value="">-- Pilih Paket --</option>
                     <option value="10Mbps">10 Mbps</option>
-                    <option value="15Mbps">15 Mbps</option>
                     <option value="20Mbps">20 Mbps</option>
                     <option value="30Mbps">30 Mbps</option>
                     <option value="50Mbps">50 Mbps</option>
                     <option value="100Mbps">100 Mbps</option>
-                    <option value="200Mbps">200 Mbps</option>
-                    <option value="300Mbps">300 Mbps</option>
-                    <option value="400Mbps">400 Mbps</option>
-                    <option value="500Mbps">500 Mbps</option>
-                    <option value="750Mbps">750 Mbps</option>
                     <option value="1Gbps">1 Gbps</option>
                 </select>
             </div>
@@ -78,17 +72,12 @@
                     <option value="25.000">25,000</option>
                     <option value="50.000">50,000</option>
                     <option value="100.000">100,000</option>
-                    <option value="150.000">150,000</option>
-                    <option value="250.000">250,000</option>
-                    <option value="300.000">300,000</option>
-                    <option value="500.000">500,000</option>
                 </select>
             </div>
             <div>
                 <label class="block text-sm font-bold text-slate-600 mb-1">Point</label>
                 <select name="point" class="input-field" required>
                     <option value="PILIHAN">Pilihan</option>
-                    <option value="0,25">0,25</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                 </select>
@@ -123,90 +112,116 @@
         <div id="resultsList" class="space-y-4"></div>
     </div>
 
-    // GANTI DENGAN URL WEB APP ANDA SETELAH DEPLOY
-const scriptURL = 'https://script.google.com/macros/s/AKfycby-Nr5e9dnUKayOPBwAF2Y5x9HjNqXOgpIAo0IXojW-RgFPc2dZ3BxH5mt3_IPuUeqw/exec'; 
+    <script>
+        // MASUKKAN URL WEB APP ANDA DI SINI
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzdTjAuRLVVb-IYGQ0bpPgYnsUSyDvmJWuSkX8we5I2Vkxwp45F13mHXWVWEYlh-c8Y/exec'; 
 
-function switchTab(tab) {
-    document.getElementById('sectionInput').classList.toggle('hidden', tab !== 'input');
-    document.getElementById('sectionCari').classList.toggle('hidden', tab !== 'cari');
-    document.getElementById('tabInput').className = tab === 'input' ? 'tab-btn tab-active' : 'tab-btn';
-    document.getElementById('tabCari').className = tab === 'cari' ? 'tab-btn tab-active' : 'tab-btn';
-}
+        function switchTab(tab) {
+            document.getElementById('sectionInput').classList.toggle('hidden', tab !== 'input');
+            document.getElementById('sectionCari').classList.toggle('hidden', tab !== 'cari');
+            document.getElementById('tabInput').className = tab === 'input' ? 'tab-btn tab-active' : 'tab-btn';
+            document.getElementById('tabCari').className = tab === 'cari' ? 'tab-btn tab-active' : 'tab-btn';
+        }
 
-// LOGIKA KIRIM DATA (INPUT BARU)
-document.getElementById('rekapanForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const btn = document.getElementById('btnKirim');
-    btn.disabled = true; 
-    btn.innerText = "⏳ MEMVERIFIKASI DATA...";
+        document.getElementById('rekapanForm').addEventListener('submit', e => {
+            e.preventDefault();
+            const btn = document.getElementById('btnKirim');
+            btn.disabled = true; 
+            btn.innerText = "⏳ MEMVERIFIKASI DATA...";
 
-    fetch(scriptURL, { method: 'POST', body: new FormData(e.target)})
-        .then(response => response.text())
-        .then(result => {
-            if (result === "ALREADY_EXISTS") {
-                alert("⚠️ GAGAL MENYIMPAN!\n\nID CST ini sudah terdaftar di sistem.\nMohon gunakan ID yang berbeda atau cek data yang sudah ada.");
-            } else if (result === "success") {
-                alert("✅ BERHASIL!\n\nData pelanggan telah disimpan dan JAPO dihitung otomatis.");
-                e.target.reset();
-            } else {
-                alert("❌ ERROR: " + result);
-            }
-            btn.disabled = false;
-            btn.innerText = "KIRIM DATA";
-        })
-        .catch(err => {
-            alert("❌ KONEKSI GAGAL!");
-            btn.disabled = false;
-            btn.innerText = "KIRIM DATA";
-        });
-});
-
-// LOGIKA CARI DATA
-async function cariData() {
-    const kueri = document.getElementById('userInput').value;
-    const filterHari = document.getElementById('tglPasangFilter').value;
-    const list = document.getElementById('resultsList');
-    const loader = document.getElementById('loader');
-
-    if(!kueri && !filterHari) return alert("Masukkan Nama atau Pilih Tanggal!");
-    list.innerHTML = ""; loader.classList.remove('hidden');
-
-    try {
-        const response = await fetch(`${scriptURL}?id=${encodeURIComponent(kueri)}`);
-        const result = await response.json();
-        loader.classList.add('hidden');
-
-        if (result.status === "success") {
-            let items = Array.isArray(result.data) ? result.data : [result.data];
-            
-            // Filter berdasarkan tanggal pasang jika dipilih
-            if (filterHari) {
-                items = items.filter(item => {
-                    const tgl = item.tanggal.split('/')[0];
-                    return tgl === filterHari;
+            fetch(scriptURL, { method: 'POST', body: new FormData(e.target)})
+                .then(response => response.text())
+                .then(result => {
+                    if (result === "ALREADY_EXISTS") {
+                        alert("⚠️ GAGAL MENYIMPAN!\n\nID CST ini sudah terdaftar di sistem.");
+                    } else if (result === "success") {
+                        alert("✅ BERHASIL!\n\nData pelanggan telah disimpan.");
+                        e.target.reset();
+                    } else {
+                        alert("❌ ERROR: " + result);
+                    }
+                    btn.disabled = false;
+                    btn.innerText = "KIRIM DATA";
+                })
+                .catch(err => {
+                    alert("❌ KONEKSI GAGAL!");
+                    btn.disabled = false;
+                    btn.innerText = "KIRIM DATA";
                 });
-            }
+        });
 
-            if (items.length === 0) return alert("Data tidak ditemukan pada tanggal tersebut.");
+        async function cariData() {
+            const kueri = document.getElementById('userInput').value;
+            const filterHari = document.getElementById('tglPasangFilter').value;
+            const list = document.getElementById('resultsList');
+            const loader = document.getElementById('loader');
 
-            items.forEach(item => {
-                let num = item.noHp.toString().replace(/\D/g, '');
-                if (num.startsWith('0')) num = '62' + num.slice(1);
+            if(!kueri && !filterHari) return alert("Masukkan Nama atau Pilih Tanggal!");
+            list.innerHTML = ""; loader.classList.remove('hidden');
 
-                const pesanTeks = `Halo Bpk/ibu *${item.nama.trim()}*,\n\nKami dari *MyRepublic* menginformasikan:\n📌 *ID CST:* ${item.idCst}\n🚀 *Paket:* ${item.paket}\n🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\nTerima kasih! 🙏`;
+            try {
+                const response = await fetch(`${scriptURL}?id=${encodeURIComponent(kueri)}`);
+                const result = await response.json();
+                loader.classList.add('hidden');
 
-                list.innerHTML += `
-                    <div class="bg-white rounded-3xl p-6 shadow-xl border-l-[12px] border-indigo-500 mb-4 fade-in">
-                        <h3 class="font-black text-indigo-900 uppercase">${item.nama}</h3>
-                        <div class="text-xs space-y-1 my-3">
-                            <p>🆔 ID CST: <b>${item.idCst}</b></p>
-                            <p>🗓️ Pasang: ${item.tanggal}</p>
-                            <p>🔔 JAPO: <span class="text-red-600 font-bold">Tgl ${item.japo}</span></p>
-                        </div>
-                        <a href="https://wa.me/${num}?text=${encodeURIComponent(pesanTeks)}" target="_blank" class="block w-full bg-green-500 text-white font-black py-3 rounded-xl text-center shadow-lg uppercase">Kirim WA 📱</a>
-                    </div>`;
-            });
-        } else { alert("Data tidak ditemukan!"); }
-    } catch (e) { loader.classList.add('hidden'); alert("Gagal memuat data."); }
-}
+                if (result.status === "success") {
+                    let items = Array.isArray(result.data) ? result.data : [result.data];
+                    
+                    if (filterHari) {
+                        items = items.filter(item => {
+                            const tglAngka = item.tanggal.split('/')[0].replace(/\D/g, '');
+                            return tglAngka === filterHari;
+                        });
+                    }
 
+                    if (items.length === 0) return alert("Data tidak ditemukan pada tanggal tersebut.");
+
+                    items.forEach(item => {
+                        // LOGIKA PENANDA LAMA/BARU
+                        let badgeStatus = "";
+                        try {
+                            const p = item.tanggal.split('/'); 
+                            const tglPasang = new Date(p[2], p[1] - 1, p[0]);
+                            const diffDays = Math.floor((new Date() - tglPasang) / (1000 * 60 * 60 * 24));
+                            badgeStatus = diffDays >= 90 ? 
+                                `<span class="bg-emerald-100 text-emerald-700 text-[10px] px-2 py-1 rounded-md font-bold border border-emerald-200">✨ LAMA</span>` : 
+                                `<span class="bg-orange-100 text-orange-700 text-[10px] px-2 py-1 rounded-md font-bold border border-orange-200">⚠️ PELANGGAN BARU</span>`;
+                        } catch (e) { badgeStatus = ""; }
+
+                        // LOGIKA FORMAT WA.ME/62
+                        let waBase = item.noHp.toString();
+                        let finalWa = waBase.includes('wa.me/') ? waBase : 'wa.me/62' + waBase.replace(/\D/g, '').replace(/^0/, '');
+
+                        // FORMAT PESAN SESUAI GAMBAR
+                        const pesanTeks = `Halo Bpk/ibu *${item.nama.trim()}*,\n\n` +
+                            `Kami dari *MyRepublic* ingin menginformasikan rincian layanan WiFi Anda:\n\n` +
+                            `📌 *ID Pembayaran:* ${item.idCst}\n` +
+                            `🚀 *Paket Layanan:* ${item.paket}\n` +
+                            `📧 *Email:* ${item.email}\n` +
+                            `🗓️ *Tanggal Pasang:* ${item.tanggal}\n` +
+                            `🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\n` +
+                            `⚠️ *Note:* Mohon lakukan pembayaran tepat waktu. Keterlambatan akan dikenakan *Denda* dan *Internet Nonaktif* secara otomatis.\n\n` +
+                            `📢 *Informasi:* Jika ada kerusakan atau internet lelet, hubungi saya segera agar segera diperbaiki.\n\n` +
+                            `Jika sudah membayar, abaikan pesan ini. Terima kasih! 🙏`;
+
+                        list.innerHTML += `
+                            <div class="bg-white rounded-3xl p-6 shadow-xl border-l-[12px] border-indigo-500 mb-4 fade-in">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-black text-indigo-900 uppercase text-lg">${item.nama}</h3>
+                                    ${badgeStatus}
+                                </div>
+                                <div class="text-xs space-y-1 my-3 text-slate-600">
+                                    <p>🆔 ID CST: <b class="text-slate-900">${item.idCst}</b></p>
+                                    <p>🗓️ Pasang: <b>${item.tanggal}</b></p>
+                                    <p>📧 Email: <b class="text-indigo-600 font-medium italic">${item.email}</b></p>
+                                    <p>🔔 JAPO: <span class="text-red-600 font-bold">Tgl ${item.japo}</span></p>
+                                </div>
+                                <a href="https://${finalWa}?text=${encodeURIComponent(pesanTeks)}" target="_blank" class="block w-full bg-green-500 text-white font-black py-3 rounded-xl text-center shadow-lg uppercase active:scale-95 transition">Kirim WA 📱</a>
+                            </div>`;
+                    });
+                } else { alert("Data tidak ditemukan!"); }
+            } catch (e) { loader.classList.add('hidden'); alert("Gagal memuat data."); }
+        }
+    </script>
+</body>
+</html>
