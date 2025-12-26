@@ -29,7 +29,7 @@
             <button onclick="checkPin()" id="btnPin" class="w-full bg-indigo-600 text-white font-black py-4 rounded-xl shadow-lg uppercase active:scale-95 transition">
                 Buka Sistem
             </button>
-            <p id="pinError" class="text-red-500 text-sm mt-4 hidden font-bold">⚠️ PIN SALAH!</p>
+            <p id="pinError" class="text-red-500 text-sm mt-4 hidden font-bold">⚠️ PIN SALAH ATAU SERVER ERROR!</p>
         </div>
     </div>
 
@@ -41,7 +41,7 @@
     <div id="sectionInput" class="max-w-4xl w-full glass-card p-6 md:p-8 fade-in">
         <div class="text-center mb-8">
             <h2 class="text-2xl font-black text-indigo-900 uppercase">MyRepublic</h2>
-            <p class="text-slate-500 text-sm">Input data pelanggan baru</p>
+            <p class="text-slate-500 text-sm">Input data pelanggan baru (JAPO Otomatis +5 Hari)</p>
         </div>
         <form id="rekapanForm" class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div><label class="block text-sm font-bold text-slate-600 mb-1">Billing (Opsional)</label><input type="text" name="billing" class="input-field"></div>
@@ -102,8 +102,8 @@
     </div>
 
    <script>
-    // GANTI DENGAN URL WEB APP ANDA
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbz4bRbhsT8ojDh9FtqWXPU67hb1Aty5jOXqfweVYEgUY2C-HK8OVby_Tse2360_RUjo/exec'; 
+    // --- GANTI DENGAN URL WEB APP ANDA ---
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyEfMBEaNtHxyp7mR-NxW-xx3YQu8AnrTJmCsfO-ctUiXWNH2Zxe4e6RU6Xfl2DWBDZ/exec'; 
 
     // --- FUNGSI KEAMANAN PIN ---
     async function checkPin() {
@@ -113,17 +113,23 @@
         
         if(!pin) return;
         btn.disabled = true; btn.innerText = "⏳ VALIDASI...";
+        error.classList.add('hidden');
         
         try {
-            const res = await fetch(`${scriptURL}?action=checkPin&pin=${pin}`);
+            // Menggunakan cache buster (?t=...) agar tidak ambil cache lama
+            const res = await fetch(`${scriptURL}?action=checkPin&pin=${pin}&t=${new Date().getTime()}`);
             const text = await res.text();
-            if(text === "success") {
+            
+            if(text.trim() === "success") {
                 document.getElementById('pinOverlay').style.display = 'none';
             } else {
                 error.classList.remove('hidden');
                 document.getElementById('pinInput').value = "";
             }
-        } catch (e) { alert("Error koneksi!"); }
+        } catch (e) { 
+            console.error(e);
+            alert("Koneksi gagal! Pastikan URL Web App benar dan sudah di-Deploy."); 
+        }
         btn.disabled = false; btn.innerText = "Buka Sistem";
     }
 
@@ -142,10 +148,20 @@
         e.preventDefault();
         const btn = document.getElementById('btnKirim');
         btn.disabled = true; btn.innerText = "⏳ MEMVERIFIKASI...";
+        
         fetch(scriptURL, { method: 'POST', body: new FormData(e.target)})
             .then(res => res.text()).then(res => {
-                if (res === "ALREADY_EXISTS") alert("⚠️ ID CST SUDAH ADA!");
-                else if (res === "success") { alert("✅ BERHASIL!"); e.target.reset(); }
+                const cleanRes = res.trim();
+                if (cleanRes === "ALREADY_EXISTS") alert("⚠️ ID CST SUDAH ADA!");
+                else if (cleanRes === "success") { 
+                    alert("✅ BERHASIL DISIMPAN!"); 
+                    e.target.reset(); 
+                } else {
+                    alert("Terjadi masalah: " + cleanRes);
+                }
+                btn.disabled = false; btn.innerText = "KIRIM DATA";
+            }).catch(err => {
+                alert("Error koneksi saat mengirim data.");
                 btn.disabled = false; btn.innerText = "KIRIM DATA";
             });
     });
@@ -168,9 +184,14 @@
 
             if (result.status === "success") {
                 let items = Array.isArray(result.data) ? result.data : [result.data];
+                
                 if (filterHari) {
-                    items = items.filter(i => i.tanggal.split('/')[0].padStart(2, '0') === filterHari);
+                    items = items.filter(i => {
+                        const tglPart = i.tanggal.split('/'); 
+                        return tglPart[0].padStart(2, '0') === filterHari;
+                    });
                 }
+                
                 if (items.length === 0) return alert("Data tidak ditemukan.");
 
                 items.forEach((item, index) => {
@@ -184,7 +205,7 @@
                     let commandHtml = item.command ? `<div class="mt-2 bg-slate-100 p-2 rounded-lg border-l-4 border-indigo-500 text-[11px] font-bold text-red-600 italic">💬 Note: ${item.command}</div>` : "";
 
                     let waNum = item.noHp.toString().includes('wa.me/') ? item.noHp : 'wa.me/62' + item.noHp.toString().replace(/\D/g, '').replace(/^0/, '');
-                    const pesan = `Halo Bpk/ibu *${item.nama.trim()}*,\n\nKami dari *Tim MyRepublic* ingin menginformasikan rincian layanan WiFi Anda:\n\n📌 *ID Pembayaran:* ${item.idCst}\n🚀 *Paket Layanan:* ${item.paket}\n📍 *Alamat:* ${item.alamat || '-'}\n📧 *Email:* ${item.email}\n🗓️ *Tanggal Pasang:* ${item.tanggal}\n🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\n⚠️ *Note:* Mohon lakukan pembayaran tepat waktu. untuk menghindari *denda* keterlambatan\n\nabaikan pesan ini apabila internet sudah di bayar\n\nTerima kasih! 🙏`;
+                    const pesan = `Halo Bpk/ibu *${item.nama.trim()}*,\n\nKami dari *Tim MyRepublic* ingin menginformasikan rincian layanan WiFi Anda:\n\n📌 *ID Pembayaran:* ${item.idCst}\n🚀 *Paket Layanan:* ${item.paket}\n📍 *Alamat:* ${item.alamat || '-'}\n📧 *Email:* ${item.email}\n🗓️ *Tanggal Pasang:* ${item.tanggal}\n🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\n⚠️ *Note:* Mohon lakukan pembayaran tepat waktu untuk menghindari *denda* keterlambatan.\n\nabaikan pesan ini apabila internet sudah di bayar.\n\nTerima kasih! 🙏`;
 
                     const cardID = `card-capture-${index}`;
                     const cardTemplate = `
@@ -246,7 +267,3 @@
 </script>
 </body>
 </html>
-
-
-
-
