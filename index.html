@@ -46,10 +46,9 @@
 
         <form id="rekapanForm" class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div><label class="block text-sm font-bold text-slate-600 mb-1">Billing (Opsional)</label><input type="text" name="billing" class="input-field"></div>
-            <div><label class="block text-sm font-bold text-slate-600 mb-1">Tanggal Pasang</label><input type="date" name="tanggal" class="input-field" required></div>
-            <div><label class="block text-sm font-bold text-slate-600 mb-1">JAPO (Tgl 1-31)</label><input type="number" name="japo" min="1" max="31" class="input-field" required></div>
+            <div><label class="block text-sm font-bold text-slate-600 mb-1">Tanggal Pasang</label><input type="date" name="tanggal" class="input-field" required></div> 
             <div><label class="block text-sm font-bold text-slate-600 mb-1">Nama Pelanggan</label><input type="text" name="nama" class="input-field" required></div>
-            <div><label class="block text-sm font-bold text-slate-600 mb-1">ID CST (ID Pembayaran)</label><input type="text" name="id_cst" class="input-field"></div>
+            <div><label class="block text-sm font-bold text-slate-600 mb-1">ID CST (ID Pembayaran)</label><input type="number" name="id_cst" class="input-field">required></div>
             <div><label class="block text-sm font-bold text-slate-600 mb-1">Email</label><input type="email" name="email" class="input-field" required></div>
             <div><label class="block text-sm font-bold text-slate-600 mb-1">WhatsApp (628...)</label><input type="number" name="hp" class="input-field" required></div>
             
@@ -125,8 +124,8 @@
     </div>
 
     <script>
-        const scriptInputURL = 'https://script.google.com/macros/s/AKfycbzOqa_SZd2C6ibqCUmMFAO7rn2Q62Ps6gMy0yp3UGCbC9DF5qwTBrvzuM0ZcGlX4wPz/exec';
-        const scriptCariURL = 'https://script.google.com/macros/s/AKfycbzOqa_SZd2C6ibqCUmMFAO7rn2Q62Ps6gMy0yp3UGCbC9DF5qwTBrvzuM0ZcGlX4wPz/exec';
+        const scriptInputURL = 'https://script.google.com/macros/s/AKfycbxfN-Y-9sJ8ibwkiVb5s_Glr11pvCmOaoQvWCSeK7n3cinBzuhe2FbDX7ActzfGO6oh/exec';
+        const scriptCariURL = 'https://script.google.com/macros/s/AKfycbxfN-Y-9sJ8ibwkiVb5s_Glr11pvCmOaoQvWCSeK7n3cinBzuhe2FbDX7ActzfGO6oh/exec';
     
     
 
@@ -209,6 +208,7 @@
     </script>
 </body>
 </html>
+
 
 
 
