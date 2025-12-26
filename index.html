@@ -149,7 +149,7 @@
                    let commandHtml = item.command ? `<div class="mt-2 bg-slate-100 p-2 rounded-lg border-l-4 border-indigo-500 text-[11px] font-bold text-red-600 italic">💬 Note: ${item.command}</div>` : "";
 
                     let waNum = item.noHp.toString().includes('wa.me/') ? item.noHp : 'wa.me/62' + item.noHp.toString().replace(/\D/g, '').replace(/^0/, '');
-                    const pesan = `Halo Bpk/ibu *${item.nama.trim()}*,\n\nKami dari *Tim MyRepublic* ingin menginformasikan rincian layanan WiFi Anda:\n\n📌 *ID Pembayaran:* ${item.idCst}\n🚀 *Paket Layanan:* ${item.paket}\n📍 *Alamat:* ${item.alamat || '-'}\n📧 *Email:* ${item.email}\n🗓️ *Tanggal Pasang:* ${item.tanggal}\n🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\n⚠️ *Note:* Mohon lakukan pembayaran tepat waktu.\n\nTerima kasih! 🙏`;
+                    const pesan = `Halo Bpk/ibu *${item.nama.trim()}*,\n\nKami dari *Tim MyRepublic* ingin menginformasikan rincian layanan WiFi Anda:\n\n📌 *ID Pembayaran:* ${item.idCst}\n🚀 *Paket Layanan:* ${item.paket}\n📍 *Alamat:* ${item.alamat || '-'}\n📧 *Email:* ${item.email}\n🗓️ *Tanggal Pasang:* ${item.tanggal}\n🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\n⚠️ *Note:* Mohon lakukan pembayaran tepat waktu. untuk menghindari *denda* keterlambatan\n\nabaikan pesan ini apabila internet sudah di bayar\n\nTerima kasih! 🙏`;
 
                     const cardID = `card-capture-${index}`;
                     const cardTemplate = `
