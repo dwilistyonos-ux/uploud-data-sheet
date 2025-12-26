@@ -123,95 +123,90 @@
         <div id="resultsList" class="space-y-4"></div>
     </div>
 
-    <script>
-        const scriptInputURL = 'https://script.google.com/macros/s/AKfycbwaAe9U531AX7lciMGytVkS_ljHzXq3ROwRZ9X5PorCZ_y4HSFnvXnOS5Q5udq9_7ex/exec';
-        const scriptCariURL = 'https://script.google.com/macros/s/AKfycbwaAe9U531AX7lciMGytVkS_ljHzXq3ROwRZ9X5PorCZ_y4HSFnvXnOS5Q5udq9_7ex/exec';
-    
-    
+    // GANTI DENGAN URL WEB APP ANDA SETELAH DEPLOY
+const scriptURL = 'https://script.google.com/macros/s/AKfycby-Nr5e9dnUKayOPBwAF2Y5x9HjNqXOgpIAo0IXojW-RgFPc2dZ3BxH5mt3_IPuUeqw/exec'; 
 
-        function switchTab(tab) {
-            document.getElementById('sectionInput').classList.toggle('hidden', tab !== 'input');
-            document.getElementById('sectionCari').classList.toggle('hidden', tab !== 'cari');
-            document.getElementById('tabInput').className = tab === 'input' ? 'tab-btn tab-active' : 'tab-btn';
-            document.getElementById('tabCari').className = tab === 'cari' ? 'tab-btn tab-active' : 'tab-btn';
-        }
+function switchTab(tab) {
+    document.getElementById('sectionInput').classList.toggle('hidden', tab !== 'input');
+    document.getElementById('sectionCari').classList.toggle('hidden', tab !== 'cari');
+    document.getElementById('tabInput').className = tab === 'input' ? 'tab-btn tab-active' : 'tab-btn';
+    document.getElementById('tabCari').className = tab === 'cari' ? 'tab-btn tab-active' : 'tab-btn';
+}
 
-        document.getElementById('rekapanForm').addEventListener('submit', e => {
-            e.preventDefault();
-            const btn = document.getElementById('btnKirim');
-            btn.disabled = true; btn.innerText = "⏳ MENGIRIM...";
-            fetch(scriptInputURL, { method: 'POST', body: new FormData(e.target)})
-                .then(() => { alert("Data Berhasil Disimpan!"); e.target.reset(); btn.disabled = false; btn.innerText = "KIRIM DATA"; });
+// LOGIKA KIRIM DATA (INPUT BARU)
+document.getElementById('rekapanForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const btn = document.getElementById('btnKirim');
+    btn.disabled = true; 
+    btn.innerText = "⏳ MEMVERIFIKASI DATA...";
+
+    fetch(scriptURL, { method: 'POST', body: new FormData(e.target)})
+        .then(response => response.text())
+        .then(result => {
+            if (result === "ALREADY_EXISTS") {
+                alert("⚠️ GAGAL MENYIMPAN!\n\nID CST ini sudah terdaftar di sistem.\nMohon gunakan ID yang berbeda atau cek data yang sudah ada.");
+            } else if (result === "success") {
+                alert("✅ BERHASIL!\n\nData pelanggan telah disimpan dan JAPO dihitung otomatis.");
+                e.target.reset();
+            } else {
+                alert("❌ ERROR: " + result);
+            }
+            btn.disabled = false;
+            btn.innerText = "KIRIM DATA";
+        })
+        .catch(err => {
+            alert("❌ KONEKSI GAGAL!");
+            btn.disabled = false;
+            btn.innerText = "KIRIM DATA";
         });
+});
 
-        async function cariData() {
-            const kueri = document.getElementById('userInput').value;
-            const filterHari = document.getElementById('tglPasangFilter').value;
-            const list = document.getElementById('resultsList');
-            const loader = document.getElementById('loader');
+// LOGIKA CARI DATA
+async function cariData() {
+    const kueri = document.getElementById('userInput').value;
+    const filterHari = document.getElementById('tglPasangFilter').value;
+    const list = document.getElementById('resultsList');
+    const loader = document.getElementById('loader');
 
-            if(!kueri && !filterHari) return alert("Masukkan Nama atau Pilih Tanggal!");
-            list.innerHTML = ""; loader.classList.remove('hidden');
+    if(!kueri && !filterHari) return alert("Masukkan Nama atau Pilih Tanggal!");
+    list.innerHTML = ""; loader.classList.remove('hidden');
 
-            try {
-                const response = await fetch(`${scriptCariURL}?id=${encodeURIComponent(kueri)}`);
-                const result = await response.json();
-                loader.classList.add('hidden');
+    try {
+        const response = await fetch(`${scriptURL}?id=${encodeURIComponent(kueri)}`);
+        const result = await response.json();
+        loader.classList.add('hidden');
 
-                if (result.status === "success") {
-                    let items = Array.isArray(result.data) ? result.data : [result.data];
-                    if (filterHari) items = items.filter(item => item.tanggal.toString().substring(0, 2) === filterHari);
+        if (result.status === "success") {
+            let items = Array.isArray(result.data) ? result.data : [result.data];
+            
+            // Filter berdasarkan tanggal pasang jika dipilih
+            if (filterHari) {
+                items = items.filter(item => {
+                    const tgl = item.tanggal.split('/')[0];
+                    return tgl === filterHari;
+                });
+            }
 
-                    items.forEach(item => {
-                        let num = item.noHp.toString().replace(/\D/g, '');
-                        if (num.startsWith('0')) num = '62' + num.slice(1);
+            if (items.length === 0) return alert("Data tidak ditemukan pada tanggal tersebut.");
 
-                        const tglParts = item.tanggal.split('/');
-                        const tglPasangObj = new Date(`${tglParts[2]}-${tglParts[1]}-${tglParts[0]}`);
-                        const selisihHari = Math.floor((new Date() - tglPasangObj) / (1000 * 3600 * 24));
-                        
-                        const badgeStatus = selisihHari >= 90 
-                            ? `<span class="bg-emerald-100 text-emerald-700 text-[9px] px-2 py-1 rounded font-bold border border-emerald-200 uppercase">✨ Pelanggan 3+ Bulan</span>` 
-                            : `<span class="bg-orange-100 text-orange-700 text-[9px] px-2 py-1 rounded font-bold border border-orange-200 uppercase">⚠️ Pelanggan Baru</span>`;
+            items.forEach(item => {
+                let num = item.noHp.toString().replace(/\D/g, '');
+                if (num.startsWith('0')) num = '62' + num.slice(1);
 
-                        const namaTebal = `*${item.nama.trim()}*`;
-                        const pesanTeks = `Halo Bpk/ibu ${namaTebal},\n\n` +
-                                          `Kami dari *MyRepublic* ingin menginformasikan rincian layanan WiFi Anda:\n\n` +
-                                          `📌 *ID Pembayaran:* ${item.idCst || '-'}\n` +
-                                          `🚀 *Paket Layanan:* ${item.paket || '-'}\n` +
-                                          `📍 *Alamat:* ${item.alamat || '-'}\n` +
-                                          `📧 *Email:* ${item.email || '-'}\n` +
-                                          `🗓️ *Tanggal Pasang:* ${item.tanggal}\n` +
-                                          `🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\n` +
-                                          `⚠️ *Note:* Mohon lakukan pembayaran tepat waktu. Keterlambatan akan dikenakan *Denda* dan *Internet Nonaktif* secara otomatis.\n\n` +
-                                          `Jika sudah membayar, abaikan pesan ini. Terima kasih! 🙏`;
+                const pesanTeks = `Halo Bpk/ibu *${item.nama.trim()}*,\n\nKami dari *MyRepublic* menginformasikan:\n📌 *ID CST:* ${item.idCst}\n🚀 *Paket:* ${item.paket}\n🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\nTerima kasih! 🙏`;
 
-                        list.innerHTML += `
-                            <div class="bg-white rounded-3xl p-6 shadow-xl border-l-[12px] border-indigo-500 fade-in text-slate-800">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h3 class="font-black text-indigo-900 uppercase text-lg">${item.nama}</h3>
-                                    ${badgeStatus}
-                                </div>
-                                <div class="bg-slate-50 p-4 rounded-xl mb-4 text-xs font-semibold border border-slate-100 space-y-1">
-                                    <p>🆔 ID CST: <span class="text-indigo-700 font-bold">${item.idCst}</span></p>
-                                    <p>🚀 Paket: <span class="text-indigo-600 font-bold">${item.paket}</span></p>
-                                    <p>🏠 Alamat: ${item.alamat}</p>
-                                    <p>🗓️ Pasang: ${item.tanggal}</p>
-                                    <p>🔔 JAPO: <span class="text-red-600 font-black">Tgl ${item.japo}</span></p>
-                                </div>
-                                <a href="https://wa.me/${num}?text=${encodeURIComponent(pesanTeks)}" target="_blank" class="block w-full bg-green-500 hover:bg-green-600 text-white font-black py-4 rounded-xl text-center shadow-lg uppercase transition active:scale-95">Kirim WA 📱</a>
-                            </div>`;
-                    });
-                } else { alert("Data tidak ditemukan!"); }
-            } catch (e) { loader.classList.add('hidden'); alert("Gagal memuat data."); }
-        }
-    </script>
-</body>
-</html>
-
-
-
-
-
-
+                list.innerHTML += `
+                    <div class="bg-white rounded-3xl p-6 shadow-xl border-l-[12px] border-indigo-500 mb-4 fade-in">
+                        <h3 class="font-black text-indigo-900 uppercase">${item.nama}</h3>
+                        <div class="text-xs space-y-1 my-3">
+                            <p>🆔 ID CST: <b>${item.idCst}</b></p>
+                            <p>🗓️ Pasang: ${item.tanggal}</p>
+                            <p>🔔 JAPO: <span class="text-red-600 font-bold">Tgl ${item.japo}</span></p>
+                        </div>
+                        <a href="https://wa.me/${num}?text=${encodeURIComponent(pesanTeks)}" target="_blank" class="block w-full bg-green-500 text-white font-black py-3 rounded-xl text-center shadow-lg uppercase">Kirim WA 📱</a>
+                    </div>`;
+            });
+        } else { alert("Data tidak ditemukan!"); }
+    } catch (e) { loader.classList.add('hidden'); alert("Gagal memuat data."); }
+}
 
