@@ -16,6 +16,7 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <body class="p-4 md:p-8 flex flex-col items-center text-slate-800">
 
     <div class="flex gap-2 mb-8 bg-white/10 p-2 rounded-2xl backdrop-blur-md">
@@ -102,80 +103,125 @@
         <div id="resultsList" class="space-y-4"></div>
     </div>
 
-    <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbwNLVjO4ZfWUwCSUNnscTKxKNu63GrRl9hFvXwzomoyD9JF7F-5NC1xP_GTOCQKu3qy/exec'; 
+   <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwNLVjO4ZfWUwCSUNnscTKxKNu63GrRl9hFvXwzomoyD9JF7F-5NC1xP_GTOCQKu3qy/exec'; 
 
-        function switchTab(tab) {
-            document.getElementById('sectionInput').classList.toggle('hidden', tab !== 'input');
-            document.getElementById('sectionCari').classList.toggle('hidden', tab !== 'cari');
-            document.getElementById('tabInput').className = tab === 'input' ? 'tab-btn tab-active' : 'tab-btn';
-            document.getElementById('tabCari').className = tab === 'cari' ? 'tab-btn tab-active' : 'tab-btn';
-        }
+    function switchTab(tab) {
+        document.getElementById('sectionInput').classList.toggle('hidden', tab !== 'input');
+        document.getElementById('sectionCari').classList.toggle('hidden', tab !== 'cari');
+        document.getElementById('tabInput').className = tab === 'input' ? 'tab-btn tab-active' : 'tab-btn';
+        document.getElementById('tabCari').className = tab === 'cari' ? 'tab-btn tab-active' : 'tab-btn';
+    }
 
-        document.getElementById('rekapanForm').addEventListener('submit', e => {
-            e.preventDefault();
-            const btn = document.getElementById('btnKirim');
-            btn.disabled = true; btn.innerText = "⏳ MEMVERIFIKASI...";
-            fetch(scriptURL, { method: 'POST', body: new FormData(e.target)})
-                .then(res => res.text()).then(res => {
-                    if (res === "ALREADY_EXISTS") alert("⚠️ ID CST SUDAH ADA!");
-                    else if (res === "success") { alert("✅ BERHASIL!"); e.target.reset(); }
-                    btn.disabled = false; btn.innerText = "KIRIM DATA";
-                });
-        });
+    document.getElementById('rekapanForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const btn = document.getElementById('btnKirim');
+        btn.disabled = true; btn.innerText = "⏳ MEMVERIFIKASI...";
+        fetch(scriptURL, { method: 'POST', body: new FormData(e.target)})
+            .then(res => res.text()).then(res => {
+                if (res === "ALREADY_EXISTS") alert("⚠️ ID CST SUDAH ADA!");
+                else if (res === "success") { alert("✅ BERHASIL!"); e.target.reset(); }
+                btn.disabled = false; btn.innerText = "KIRIM DATA";
+            });
+    });
 
-        async function cariData() {
-            const kueri = document.getElementById('userInput').value;
-            const filterHari = document.getElementById('tglPasangFilter').value;
-            const list = document.getElementById('resultsList');
-            const loader = document.getElementById('loader');
+    async function cariData() {
+        const kueri = document.getElementById('userInput').value;
+        const filterHari = document.getElementById('tglPasangFilter').value;
+        const list = document.getElementById('resultsList');
+        const loader = document.getElementById('loader');
 
-            if(!kueri && !filterHari) return alert("Masukkan Nama atau Pilih Tanggal!");
-            list.innerHTML = ""; loader.classList.remove('hidden');
+        if(!kueri && !filterHari) return alert("Masukkan Nama atau Pilih Tanggal!");
+        list.innerHTML = ""; 
+        loader.classList.remove('hidden');
 
-            try {
-                const response = await fetch(`${scriptURL}?id=${encodeURIComponent(kueri)}`);
-                const result = await response.json();
-                loader.classList.add('hidden');
+        try {
+            const response = await fetch(`${scriptURL}?id=${encodeURIComponent(kueri)}`);
+            const result = await response.json();
+            loader.classList.add('hidden');
 
-                if (result.status === "success") {
-                    let items = Array.isArray(result.data) ? result.data : [result.data];
-                    if (filterHari) items = items.filter(i => i.tanggal.split('/')[0].replace(/\D/g, '') === filterHari);
-                    if (items.length === 0) return alert("Data tidak ditemukan.");
-
-                    items.forEach(item => {
-                        let badge = "";
-                        try {
-                            const p = item.tanggal.split('/'); 
-                            const diff = Math.floor((new Date() - new Date(p[2], p[1]-1, p[0])) / (1000*3600*24));
-                            badge = diff >= 90 ? `<span class="bg-emerald-100 text-emerald-700 text-[10px] px-2 py-1 rounded font-bold">✨ LAMA</span>` : `<span class="bg-orange-100 text-orange-700 text-[10px] px-2 py-1 rounded font-bold">⚠️ BARU</span>`;
-                        } catch (e) {}
-
-                        let waNum = item.noHp.toString().includes('wa.me/') ? item.noHp : 'wa.me/62' + item.noHp.toString().replace(/\D/g, '').replace(/^0/, '');
-
-                        const pesan = `Halo Bpk/ibu *${item.nama}*,\n\nKami dari *Tim MyRepublic* ingin menginformasikan rincian layanan WiFi Anda:\n\n📌 *ID Pembayaran:* ${item.idCst}\n🚀 *Paket Layanan:* ${item.paket}\n📍 *Alamat:* ${item.alamat || '-'}\n📧 *Email:* ${item.email}\n🗓️ *Tanggal Pasang:* ${item.tanggal}\n🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\n⚠️ *Note:* Mohon lakukan pembayaran tepat waktu. Keterlambatan akan dikenakan *Denda* dan *Internet Nonaktif* secara otomatis.\n\nJika sudah membayar, abaikan pesan ini. Terima kasih! 🙏`;
-
-                        list.innerHTML += `
-                            <div class="bg-white rounded-3xl p-6 shadow-xl border-l-[12px] border-indigo-500 mb-4 fade-in">
-                                <div class="flex justify-between items-start">
-                                    <h3 class="font-black text-indigo-900 uppercase text-lg">${item.nama}</h3>
-                                    ${badge}
-                                </div>
-                                <div class="text-xs space-y-1 my-3 text-slate-600">
-                                    <p>🆔 ID CST: <b class="text-slate-900">${item.idCst}</b></p>
-                                    <p>🚀 Paket: <b class="text-indigo-600 uppercase">${item.paket}</b></p>
-                                    <p>🗓️ Pasang: <b>${item.tanggal}</b></p>
-                                    <p>📧 Email: <b class="text-indigo-600 italic">${item.email}</b></p>
-                                    <p>📍 Alamat: <b>${item.alamat || '-'}</b></p>
-                                    <p>🔔 JAPO: <span class="text-red-600 font-bold">Tgl ${item.japo}</span></p>
-                                </div>
-                                <a href="https://${waNum}?text=${encodeURIComponent(pesan)}" target="_blank" class="block w-full bg-green-500 text-white font-black py-3 rounded-xl text-center uppercase active:scale-95 transition">Kirim WA 📱</a>
-                            </div>`;
+            if (result.status === "success") {
+                let items = Array.isArray(result.data) ? result.data : [result.data];
+                
+                if (filterHari) {
+                    items = items.filter(i => {
+                        const tgl = i.tanggal.split('/')[0].padStart(2, '0');
+                        return tgl === filterHari;
                     });
-                } else alert("Data tidak ditemukan!");
-            } catch (e) { loader.classList.add('hidden'); alert("Gagal memuat data."); }
-        }
-    </script>
-</body>
-</html>
+                }
 
+                if (items.length === 0) return alert("Data tidak ditemukan.");
+
+                items.forEach((item, index) => {
+                    let badge = "";
+                    try {
+                        const p = item.tanggal.split('/'); 
+                        const diff = Math.floor((new Date() - new Date(p[2], p[1]-1, p[0])) / (1000*3600*24));
+                        badge = diff >= 90 ? `<span class="bg-emerald-100 text-emerald-700 text-[10px] px-2 py-1 rounded font-bold">✨ LAMA</span>` : `<span class="bg-orange-100 text-orange-700 text-[10px] px-2 py-1 rounded font-bold">⚠️ BARU</span>`;
+                    } catch (e) {}
+
+                    let waNum = item.noHp.toString().includes('wa.me/') ? item.noHp : 'wa.me/62' + item.noHp.toString().replace(/\D/g, '').replace(/^0/, '');
+                    const pesan = `Halo Bpk/ibu *${item.nama}*,\n\nKami dari *Tim MyRepublic* ingin menginformasikan rincian layanan WiFi Anda:\n\n📌 *ID Pembayaran:* ${item.idCst}\n🚀 *Paket Layanan:* ${item.paket}\n📍 *Alamat:* ${item.alamat || '-'}\n📧 *Email:* ${item.email}\n🗓️ *Tanggal Pasang:* ${item.tanggal}\n🔔 *Jatuh Tempo:* Setiap Tanggal ${item.japo}\n\n⚠️ *Note:* Mohon lakukan pembayaran tepat waktu. Keterlambatan akan dikenakan *Denda* dan *Internet Nonaktif* secara otomatis.\n\nJika sudah membayar, abaikan pesan ini. Terima kasih! 🙏`;
+
+                    // Template Kartu untuk Download (Desain MyRepublic)
+                    const cardID = `card-capture-${index}`;
+                    const cardTemplate = `
+                        <div id="${cardID}" style="width: 500px; padding: 40px; background: #ffffff; position: absolute; left: -9999px; font-family: sans-serif; border-radius: 20px;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/43/MyRepublic_NEW_LOGO_%28September_2023%29_Logo_MyRepublic_Horizontal_-_Black_%281%29.png" style="width: 220px; margin-bottom: 25px;">
+                            <div style="background: #4f46e5; height: 5px; width: 100px; margin-bottom: 25px;"></div>
+                            <h2 style="font-size: 24px; font-weight: 900; color: #1e1b4b; margin-bottom: 20px; text-transform: uppercase;">Informasi Pelanggan</h2>
+                            <div style="display: grid; gap: 12px; font-size: 16px; color: #334155;">
+                                <p><strong>Nama:</strong> ${item.nama}</p>
+                                <p><strong>ID Pelanggan:</strong> ${item.idCst}</p>
+                                <p><strong>Jatuh Tempo:</strong> Tanggal ${item.japo}</p>
+                                <p><strong>Paket:</strong> ${item.paket}</p>
+                                <p><strong>Email:</strong> ${item.email}</p>
+                                <p><strong>Alamat:</strong> ${item.alamat || '-'}</p>
+                            </div>
+                            <div style="margin-top: 40px; border-top: 1px solid #e2e8f0; pt: 15px; font-size: 12px; color: #64748b;">
+                                Terima kasih telah menggunakan layanan MyRepublic.
+                            </div>
+                        </div>
+                    `;
+
+                    list.innerHTML += `
+                        <div class="bg-white rounded-3xl p-6 shadow-xl border-l-[12px] border-indigo-500 mb-4 fade-in">
+                            ${cardTemplate}
+                            <div class="flex justify-between items-start">
+                                <h3 class="font-black text-indigo-900 uppercase text-lg">${item.nama}</h3>
+                                ${badge}
+                            </div>
+                            <div class="text-xs space-y-1 my-3 text-slate-600">
+                                <p>🆔 ID CST: <b class="text-slate-900">${item.idCst}</b></p>
+                                <p>🚀 Paket: <b class="text-indigo-600 uppercase">${item.paket}</b></p>
+                                <p>🗓️ Pasang: <b>${item.tanggal}</b></p>
+                                <p>📧 Email: <b class="text-indigo-600 italic">${item.email}</b></p>
+                                <p>📍 Alamat: <b>${item.alamat || '-'}</b></p>
+                                <p>🔔 JAPO: <span class="text-red-600 font-bold">Tgl ${item.japo}</span></p>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="https://${waNum}?text=${encodeURIComponent(pesan)}" target="_blank" class="flex-[2] bg-green-500 text-white font-black py-3 rounded-xl text-center uppercase active:scale-95 transition">Kirim WA 📱</a>
+                                <button onclick="downloadGambar('${cardID}', '${item.nama}')" class="flex-1 bg-indigo-600 text-white font-black py-3 rounded-xl text-center uppercase active:scale-95 transition">🖼️ Gambar</button>
+                            </div>
+                        </div>`;
+                });
+            } else alert("Data tidak ditemukan!");
+        } catch (e) { 
+            loader.classList.add('hidden'); 
+            alert("Terjadi kesalahan saat mencari data."); 
+        }
+    }
+
+    function downloadGambar(elementId, nama) {
+        const target = document.getElementById(elementId);
+        html2canvas(target, { 
+            useCORS: true,
+            scale: 2 
+        }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `Tagihan_MyRep_${nama}.png`;
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        });
+    }
+</script>
